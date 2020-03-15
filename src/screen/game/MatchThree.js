@@ -25,7 +25,7 @@ export default class Match extends Component {
     super(props);
 
     this.state = {
-      multipleSelectedData: ["1", "2", "3", "4",],
+      multipleSelectedData: [],
       multipleSelectedDataONE: [],
       multipleSelectedDataTWO: [],
       multipleSelectedDataTHREE: [],

@@ -42,6 +42,7 @@ import SelectFourNumber from '../../screen/game/SelectFourNumber';
 import MatchThree from '../../screen/game/MatchThree';
 import MatchTwo from '../../screen/game/MatchTwo';
 import Verify from '../../screen/user/Verify';
+import Logout from '../../screen/user/Logout';
 
 
 
@@ -60,6 +61,7 @@ export default class Main extends Component {
             <Scene key="welcome" component={Welcome} hideNavBar />
             <Scene key="login" component={Login} hideNavBar />
             <Scene key="reg" component={Register} hideNavBar />
+            <Scene key="logout" component={Logout} hideNavBar />
             <Scene key="otp" component={Verify} hideNavBar />
             <Scene key="account" component={Account} hideNavBar />
             <Scene key="forgetpass" component={ForgetPassword} hideNavBar />

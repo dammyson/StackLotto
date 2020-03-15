@@ -147,7 +147,7 @@ export default class SelectFourNumber extends Component {
               </View>
 
 
-              <View style={{ flexDirection: 'row', marginBottom: 20, marginTop: 40, }}>
+              <View style={{ flexDirection: 'row', marginBottom: 20, marginTop: 40,  alignItems: 'center', justifyContent: 'center',}}>
                 <View style={{ flexWrap: "wrap", flexDirection: "row", marginLeft: 20, justifyContent: "center", }}>
                   {this.state.multipleSelectedData.map(interest => (
                     <SelectMultipleButton
@@ -239,13 +239,19 @@ export default class SelectFourNumber extends Component {
     if (this.state.multipleSelectedData.includes(interest)) {
 
     } else {
+
       this.state.multipleSelectedData.push(interest);
+      
     }
+
     if (this.state.multipleSelectedData.length < 5) {
+
       this.setState({
         multipleSelectedData: this.state.multipleSelectedData
       });
+
     } else {
+
       Alert.alert('Information', '4 is the maximum you can select', [{ text: 'Okay' }])
     }
 
@@ -289,7 +295,7 @@ export default class SelectFourNumber extends Component {
               ))}
             </View>
 
-            <TouchableOpacity onPress={() =>  this.deleteFromSelected(i)} style={{ height: 45, width: 45, flexDirection: 'row', marginRight: 10, marginLeft: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff' }}>
+            <TouchableOpacity onPress={() =>  this.deleteFromSelected(i)} style={{ height: 40, width: 40, flexDirection: 'row', marginRight: 10, marginLeft: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff' }}>
               <Icon
                 active
                 name="close"

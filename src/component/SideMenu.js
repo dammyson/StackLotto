@@ -129,7 +129,7 @@ export default class SideMenu extends Component {
              </View>
 
 
-                <TouchableOpacity style={[styles.row, {marginTop:25}]}  onPress={()=> Actions.login()}>
+                <TouchableOpacity style={[styles.row, {marginTop:25}]}  onPress={()=> Actions.logout()}>
               <View style={{ marginRight:20,}}>
               <Image
                style={{height:30, resizeMode: 'contain',}}
