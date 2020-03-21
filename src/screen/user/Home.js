@@ -52,17 +52,17 @@ export default class Home extends Component {
       </Left>
     );
     var right = (
-      <Right style={{ flex: 1, flexDirection:'row' }}>
-      <View style={{ marginLeft:10 }}>
-      <Text style={{ color: '#000', fontSize: 10, fontWeight: '400' }}>My Balance</Text>
-      <Text style={{ color: '#000', fontSize: 10, fontWeight: '400' }}>N 45,000.00 </Text>
-      </View>
-      <Icon
-                        active
-                        name="notifications-active"
-                        type='material-icons'
-                        color='#000'
-                    />
+      <Right style={{ flex: 1, flexDirection: 'row' }}>
+        <View style={{ marginLeft: 10 }}>
+          <Text style={{ color: '#000', fontSize: 10, fontWeight: '400' }}>My Balance</Text>
+          <Text style={{ color: '#000', fontSize: 10, fontWeight: '400' }}>N 45,000.00 </Text>
+        </View>
+        <Icon
+          active
+          name="notifications-active"
+          type='material-icons'
+          color='#000'
+        />
       </Right>
     );
     return (
@@ -72,39 +72,39 @@ export default class Home extends Component {
           <Content>
             <View style={styles.backgroundImage}>
               <View style={{ flex: 1 }}>
-<ScrollView horizontal={true} style={{ flex: 1 }}>
+                <ScrollView horizontal={true} style={{ flex: 1 }}>
 
-  <View style={{ height: Dimensions.get('window').height/3, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: color.primary_color }}>
-                            <Image
-                              style={{flex:1,  height: Dimensions.get('window').height/3, width: Dimensions.get('window').width, resizeMode:'stretch'}}
-                              size="large"
-                              source={require('../../assets/banner.png')}
-                            />
-                            </View>
-                            <View style={{ height: Dimensions.get('window').height/3, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: color.primary_color }}>
-                            <Image
-                              style={{flex:1,  height: Dimensions.get('window').height/3, width: Dimensions.get('window').width, resizeMode:'stretch'}}
-                              size="large"
-                              source={require('../../assets/banner.png')}
-                            />
-                            </View>
+                  <View style={{ height: Dimensions.get('window').height / 3.5, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: color.primary_color }}>
+                    <Image
+                      style={{ flex: 1, height: Dimensions.get('window').height / 3.5, width: Dimensions.get('window').width, resizeMode: 'stretch' }}
+                      size="large"
+                      source={require('../../assets/banner.png')}
+                    />
+                  </View>
+                  <View style={{ height: Dimensions.get('window').height / 3.5, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: color.primary_color }}>
+                    <Image
+                      style={{ flex: 1, height: Dimensions.get('window').height / 3.5, width: Dimensions.get('window').width, resizeMode: 'stretch' }}
+                      size="large"
+                      source={require('../../assets/banner.png')}
+                    />
+                  </View>
 
-</ScrollView>
-                          
+                </ScrollView>
 
-                <View  style={{ paddingTop: 10, paddingBottom: 10, flexDirection: 'row', margin: 15, borderRadius: 5, backgroundColor: color.primary_color }}>
+
+                <View style={{ paddingTop: 7, paddingBottom: 7, flexDirection: 'row', margin: 15, borderRadius: 5, backgroundColor: color.primary_color }}>
                   <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
-                  <Image
-                      style={{height:30, marginBottom:10 }}
+                    <Image
+                      style={{ height: 30, marginBottom: 10 }}
                       size="large"
                       source={require('../../assets/six.png')}
                     />
                     <Text style={{ color: '#fff', fontSize: 10, fontWeight: '900' }}>N 200 / Ticket</Text>
                   </View>
 
-                  <View style={{ flex: 1,  }}>
+                  <View style={{ flex: 1, }}>
                     <Text style={{ color: '#fff', fontSize: 18, fontWeight: '900' }}>Jackpot!</Text>
-                    <Text style={{ color: '#fff', marginBottom:7, fontSize: 14, fontWeight: '900' }}>N 3,700,000.</Text>
+                    <Text style={{ color: '#fff', marginBottom: 7, fontSize: 14, fontWeight: '900' }}>N 3,700,000.</Text>
 
                     <View style={{ flexDirection: 'row', }}>
                       <View style={{ backgroundColor: '#f54278', borderRadius: 3, paddingLeft: 3, paddingRight: 3, }}>
@@ -125,7 +125,7 @@ export default class Home extends Component {
                   </View>
 
                   <View style={{ flex: 1 }}>
-                    <TouchableOpacity onPress={()=> Actions.sg()} style={{ height: 50, flexDirection: 'row', marginTop: 10, marginBottom: 10, margin: 10, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: color.secondary_color }}>
+                    <TouchableOpacity onPress={() => Actions.sg()} style={{ height: 50, flexDirection: 'row', marginTop: 10, marginBottom: 10, margin: 10, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: color.secondary_color }}>
                       <Text style={{ color: '#fff', fontSize: 13, fontWeight: '600' }}>Play Now </Text>
                       <Icon
                         name="play"
@@ -135,107 +135,107 @@ export default class Home extends Component {
                   </View>
 
                 </View>
-                <View style={{ flexDirection: 'row', marginTop: 30 }}>
-                  <TouchableOpacity  onPress={()=> Actions.selectFive()}  style={[styles.card, { marginLeft: 12 }]}>
+                <View style={{ flexDirection: 'row', marginTop: 5 }}>
+                  <TouchableOpacity onPress={() => Actions.selectFive()} style={[styles.card, { marginLeft: 12 }]}>
 
-                    <Text style={{ color: '#000', fontSize: 14, fontWeight: '900', opacity:0.7 }}>Lucky 5 Jackpot</Text>
-                    <Text style={{ color: '#000', fontSize: 14, fontWeight: '900', opacity:0.7 }}>N 350,000.00</Text>
+                    <Text style={{ color: '#000', fontSize: 14, fontWeight: '900', opacity: 0.7 }}>Lucky 5 Jackpot</Text>
+                    <Text style={{ color: '#000', fontSize: 14, fontWeight: '900', opacity: 0.7 }}>N 350,000.00</Text>
                     <View style={{ flexDirection: 'row', }}>
 
-                    <View style={{ flexDirection: 'row', }}>
-                    <View style={{ backgroundColor: '#f54278', borderRadius: 3, paddingLeft: 3, paddingRight: 3, }}>
-                        <Text style={{ color: '#fff', fontSize: 11, fontWeight: '600' }}>00</Text>
-                      </View>
-                      <View style={{ backgroundColor: '#f54278', borderRadius: 3, paddingLeft: 3, paddingRight: 3, marginLeft: 4, }}>
-                        <Text style={{ color: '#fff', fontSize: 11, fontWeight: '600' }}>00</Text>
-                      </View>
-                      <View style={{ backgroundColor: '#f54278', borderRadius: 3, paddingLeft: 3, paddingRight: 3, marginLeft: 4, }}>
-                        <Text style={{ color: '#fff', fontSize: 11, fontWeight: '600' }}>00</Text>
-                      </View>
-                      <View style={{ backgroundColor: '#f54278', borderRadius: 3, paddingLeft: 4, paddingRight: 3, marginLeft: 4, marginRight: 1 }}>
-                        <Text style={{ color: '#fff', fontSize: 11, fontWeight: '600' }}>00</Text>
+                      <View style={{ flexDirection: 'row', alignItems:'center'}}>
+                        <View style={{ backgroundColor: '#f54278', borderRadius: 3, paddingLeft: 3, paddingRight: 3, }}>
+                          <Text style={{ color: '#fff', fontSize: 11, fontWeight: '600' }}>00</Text>
+                        </View>
+                        <View style={{ backgroundColor: '#f54278', borderRadius: 3, paddingLeft: 3, paddingRight: 3, marginLeft: 4, }}>
+                          <Text style={{ color: '#fff', fontSize: 11, fontWeight: '600' }}>00</Text>
+                        </View>
+                        <View style={{ backgroundColor: '#f54278', borderRadius: 3, paddingLeft: 3, paddingRight: 3, marginLeft: 4, }}>
+                          <Text style={{ color: '#fff', fontSize: 11, fontWeight: '600' }}>00</Text>
+                        </View>
+                        <View style={{ backgroundColor: '#f54278', borderRadius: 3, paddingLeft: 4, paddingRight: 3, marginLeft: 4, marginRight: 1 }}>
+                          <Text style={{ color: '#fff', fontSize: 11, fontWeight: '600' }}>00</Text>
+                        </View>
+
                       </View>
 
-                    </View>
 
-                      
                       <Image
-                     style={{height:20, resizeMode: 'contain',}}
-                      size="large"
-                      source={require('../../assets/five.png')}
-                    />
+                        style={{ height: 30, resizeMode: 'contain', }}
+                        size="large"
+                        source={require('../../assets/five.png')}
+                      />
                     </View>
 
-                    <Text style={{ color: '#000', marginTop: 7, fontSize: 10, fontWeight: '900' }}>N 100 / Ticket</Text>
+                    <Text style={{ color: '#000', marginTop: 3, fontSize: 10, fontWeight: '900' }}>N 100 / Ticket</Text>
                   </TouchableOpacity>
 
 
-                  <TouchableOpacity   onPress={()=> Actions.match()}   style={[styles.card, { marginRight: 12 }]}>
+                  <TouchableOpacity onPress={() => Actions.match()} style={[styles.card, { marginRight: 12 }]}>
 
-                    <Text style={{ color: '#000', fontSize: 14, fontWeight: '900', opacity:0.7 }}>Match 4 To win</Text>
-                    <Text style={{ color: '#000', fontSize: 14, fontWeight: '900', opacity:0.7 }}>N 20,000.00</Text>
+                    <Text style={{ color: '#000', fontSize: 14, fontWeight: '900', opacity: 0.7 }}>Match 4 To win</Text>
+                    <Text style={{ color: '#000', fontSize: 14, fontWeight: '900', opacity: 0.7 }}>N 20,000.00</Text>
                     <View style={{ flexDirection: 'row', }}>
 
-                    <View style={{ flexDirection: 'row', }}>
-                    <View style={{ backgroundColor: '#f54278', borderRadius: 3, paddingLeft: 3, paddingRight: 3, }}>
-                        <Text style={{ color: '#fff', fontSize: 11, fontWeight: '600' }}>00</Text>
-                      </View>
-                      <View style={{ backgroundColor: '#f54278', borderRadius: 3, paddingLeft: 3, paddingRight: 3, marginLeft: 4, }}>
-                        <Text style={{ color: '#fff', fontSize: 11, fontWeight: '600' }}>00</Text>
-                      </View>
-                      <View style={{ backgroundColor: '#f54278', borderRadius: 3, paddingLeft: 3, paddingRight: 3, marginLeft: 4, }}>
-                        <Text style={{ color: '#fff', fontSize: 11, fontWeight: '600' }}>00</Text>
-                      </View>
-                      <View style={{ backgroundColor: '#f54278', borderRadius: 3, paddingLeft: 3, paddingRight: 3, marginLeft: 4, marginRight: 1 }}>
-                        <Text style={{ color: '#fff', fontSize: 11, fontWeight: '600' }}>00</Text>
+                      <View style={{ flexDirection: 'row', alignItems:'center'}}>
+                        <View style={{ backgroundColor: '#f54278', alignItems:'center', borderRadius: 3, paddingLeft: 3, paddingRight: 3, }}>
+                          <Text style={{ color: '#fff', fontSize: 11, fontWeight: '600' }}>00</Text>
+                        </View>
+                        <View style={{ backgroundColor: '#f54278', borderRadius: 3, paddingLeft: 3, paddingRight: 3, marginLeft: 4, }}>
+                          <Text style={{ color: '#fff', fontSize: 11, fontWeight: '600' }}>00</Text>
+                        </View>
+                        <View style={{ backgroundColor: '#f54278', borderRadius: 3, paddingLeft: 3, paddingRight: 3, marginLeft: 4, }}>
+                          <Text style={{ color: '#fff', fontSize: 11, fontWeight: '600' }}>00</Text>
+                        </View>
+                        <View style={{ backgroundColor: '#f54278', borderRadius: 3, paddingLeft: 3, paddingRight: 3, marginLeft: 4, marginRight: 1 }}>
+                          <Text style={{ color: '#fff', fontSize: 11, fontWeight: '600' }}>00</Text>
+                        </View>
+
                       </View>
 
-                    </View>
 
-                      
                       <Image
-                     style={{height:23, resizeMode: 'contain',}}
-                      size="large"
-                      source={require('../../assets/mfur.png')}
-                    />
+                        style={{ height: 30, resizeMode: 'contain', }}
+                        size="large"
+                        source={require('../../assets/bfour.png')}
+                      />
                     </View>
 
-                    <Text style={{ color: '#000', marginTop: 7, fontSize: 10, fontWeight: '900' }}>N 100 / Ticket</Text>
+                    <Text style={{ color: '#000', marginTop: 3, fontSize: 10, fontWeight: '900' }}>N 100 / Ticket</Text>
                   </TouchableOpacity>
 
                 </View>
 
 
 
-                <View style={{ flexDirection: 'row', marginTop: 30 }}>
-                  <TouchableOpacity onPress={()=> Actions.rd()} style={[styles.boxCard, {marginLeft:10, backgroundColor:color.secondary_color}]}>
-                  <Image
-                     style={styles.icon}
+                <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                  <TouchableOpacity onPress={() => Actions.rd()} style={[styles.boxCard, { marginLeft: 10, backgroundColor: color.secondary_color }]}>
+                    <Image
+                      style={styles.icon}
                       size="large"
                       source={require('../../assets/result.png')}
                     />
 
-                        <Text style={{ color: '#fff', textAlign:'center', fontSize: 15, fontWeight: '900' }}>Result</Text>
+                    <Text style={{ color: '#fff', textAlign: 'center', fontSize: 15, fontWeight: '900' }}>Result</Text>
                   </TouchableOpacity>
 
-                  <TouchableOpacity onPress={()=> Actions.createW()} style={[styles.boxCard, {marginLeft:10}]}>
-                  <Image
-                     style={styles.icon}
+                  <TouchableOpacity onPress={() => Actions.createW()} style={[styles.boxCard, { marginLeft: 10 }]}>
+                    <Image
+                      style={styles.icon}
                       size="large"
                       source={require('../../assets/wallet.png')}
                     />
 
-                        <Text style={{ color: '#000', textAlign:'center',  fontSize: 15, fontWeight: '900' }}>Wallet</Text>
+                    <Text style={{ color: '#000', textAlign: 'center', fontSize: 15, fontWeight: '900' }}>Wallet</Text>
                   </TouchableOpacity>
 
-                 <TouchableOpacity onPress={()=> Actions.ph()} style={[styles.boxCard, {marginLeft:10}]}>
-                 <Image
-                 style={styles.icon}
+                  <TouchableOpacity onPress={() => Actions.ph()} style={[styles.boxCard, { marginLeft: 10 }]}>
+                    <Image
+                      style={styles.icon}
                       size="large"
                       source={require('../../assets/history.png')}
                     />
 
-                        <Text style={{ color: '#000', textAlign:'center',  fontSize: 15, fontWeight: '900' }}>History</Text>
+                    <Text style={{ color: '#000', textAlign: 'center', fontSize: 15, fontWeight: '900' }}>History</Text>
                   </TouchableOpacity>
 
                 </View>
@@ -243,9 +243,9 @@ export default class Home extends Component {
 
 
 
-                             <TouchableOpacity onPress={()=> Actions.game()} style={{ height: 80, flexDirection: 'row', margin: 20, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: color.primary_color }}>
-                                <Text style={{ color: '#fff', fontSize: 14, fontWeight: '900' }}>VIEW ALL GAMES</Text>
-                            </TouchableOpacity>
+                <TouchableOpacity onPress={() => Actions.game()} style={{ height: 80, flexDirection: 'row', margin: 20, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: color.primary_color }}>
+                  <Text style={{ color: '#fff', fontSize: 14, fontWeight: '900' }}>VIEW ALL GAMES</Text>
+                </TouchableOpacity>
               </View>
             </View>
           </Content>
@@ -278,14 +278,14 @@ const styles = StyleSheet.create({
   backgroundImage: {
     width: Dimensions.get('window').width,
   },
-  icon:{
-    width:50,
-    height:50,
+  icon: {
+    width: 50,
+    height: 50,
     justifyContent: 'center',
     resizeMode: 'contain',
-    margin:15,
-  
-},
+    margin: 15,
+
+  },
   input: {
     height: 45,
     color: color.primary_color,

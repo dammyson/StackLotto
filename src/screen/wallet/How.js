@@ -162,12 +162,12 @@ export default class How extends Component {
 
 
 
-                                <View style={[styles.card]}>
+                                <TouchableOpacity style={[styles.card]} onPress={() =>  Actions.bp()}>
 
                                     <View>
                                         <Text style={{ color: color.primary_color, fontSize: 25, fontWeight: '800' }}>Bank Transfer </Text>
                                     </View>
-                                </View>
+                                </TouchableOpacity>
 
 
                                 <View style={[styles.card]}>

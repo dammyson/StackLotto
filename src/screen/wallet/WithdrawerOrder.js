@@ -56,7 +56,7 @@ export default class WithdrawerOrder extends Component {
   render() {
 
     const placeholder = {
-        label: 'Select a sport...',
+        label: 'Select a account...',
         value: null,
         color:"#000",
       };
@@ -108,7 +108,7 @@ export default class WithdrawerOrder extends Component {
                     />
                   </View>
                   <View>
-                    <Text style={{ color: color.primary_color, fontSize: 12, fontWeight: '400' }}>winning </Text>
+                    <Text style={{ color: color.primary_color, fontSize: 12, fontWeight: '400' }}>Deposit</Text>
                     <Text style={{ color: color.primary_color, marginTop: 10, fontSize: 14, fontWeight: '800' }}>N105,000.00 </Text>
                   </View>
                 </View>
@@ -197,7 +197,7 @@ export default class WithdrawerOrder extends Component {
                <Text style={styles.information}>maximum ammount that can be withdraw is N5000</Text>
               <View style={styles.inputView}>
                 <TextInput
-                  placeholder="Account Number"
+                  placeholder="Enter password"
                   placeholderTextColor={color.primary_color}
                   returnKeyType="next"
                   onSubmitEditing={() => this.passwordInput.focus()}
@@ -248,7 +248,7 @@ export default class WithdrawerOrder extends Component {
 
               </View>
               <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                <Button   onPress={() => [this.setState({ complete_transaction: false }), Actions.createW()] }  style={styles.secondaryButtonContainer} block iconLeft>
+                <Button   onPress={() => [this.setState({ complete_transaction: false }), Actions.transW()] }  style={styles.secondaryButtonContainer} block iconLeft>
                   <Text style={{ color: '#fdfdfd', fontWeight: '400' }}>Back to wallet </Text>
                 </Button>
               </View>

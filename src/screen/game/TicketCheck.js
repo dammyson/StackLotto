@@ -43,7 +43,7 @@ export default class TicketCheck extends Component {
         this.state = {
             items: [],
             phone: '',
-            loading: false,
+            showresult: false,
             type: '',
             condition: false,
             account: '',
@@ -200,10 +200,12 @@ export default class TicketCheck extends Component {
 
 
 
-                            <TouchableOpacity style={{ height: 50, flexDirection: 'row', margin: 20, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: color.secondary_color }}>
+                            <TouchableOpacity onPress={()=> this.setState({ showresult: true })} style={{ height: 50, flexDirection: 'row', margin: 20, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: color.secondary_color }}>
                                 <Text style={{ color: '#fff', fontSize: 15, fontWeight: '600' }}>Check your Ticket ID</Text>
                             </TouchableOpacity>
 
+{ this.state.showresult ? 
+<View>
                             <View style={{ marginLeft: 20, marginBottom:15 }}>
                                 <Text style={{ color: '#fff', fontSize: 15, fontWeight: '500' }}>Ticket Result  </Text>
                                 <Text style={{ color: '#fff', fontSize: 14, fontWeight: '400' }}>3 tickets won of 3  the tickets played  </Text>
@@ -228,7 +230,10 @@ export default class TicketCheck extends Component {
                                 />
 
                             </View>
-
+                            </View>
+                            :
+                            null
+    }
 
                         </View>
                     </View>

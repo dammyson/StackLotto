@@ -14,6 +14,32 @@ import {
   SelectMultipleGroupButton
 } from "react-native-selectmultiple-button";
 
+import RNPickerSelect from 'react-native-picker-select';
+
+
+const sports = [
+    {
+      label: 'Exact order',
+      value: 'football',
+    },
+    {
+      label: 'Any order',
+      value: 'baseball',
+    },
+    {
+      label: 'Any order/ Exact order',
+      value: 'hockey',
+    },
+    {
+      label: 'Front number Play',
+      value: 'baseball',
+    },
+    {
+      label: 'Back number Play',
+      value: 'hockey',
+    },
+  ];
+
 const multipleDataONE = ["0","1", "2", "3", "4", "5","6", "7", "8", "9"];
 const multipleDataTWO = ["0","1", "2", "3", "4", "5","6", "7", "8", "9"];
 
@@ -45,8 +71,9 @@ export default class Match extends Component {
   render() {
 
 
+ 
     const placeholder = {
-      label: 'Select a sport...',
+      label: 'Select game type',
       value: null,
       color: "#000",
     };
@@ -249,7 +276,26 @@ export default class Match extends Component {
 
      {this.renderslelcted()}
 
-<TouchableOpacity onPress={() => this.play()} style={{ height: 50, flexDirection: 'row', margin: 30, alignItems: 'center', justifyContent: 'center', }}>
+     <View style={styles.inputView}>
+              <View style={{ flex:1}}>
+              <RNPickerSelect
+            placeholder={placeholder}
+            items={sports}
+            onValueChange={value => {
+              this.setState({
+                account: value,
+              });
+            }}
+            style={pickerSelectStyles}
+            value={this.state.account}
+            useNativeAndroidPickerStyle={false}
+
+          /></View>
+
+
+              </View>
+
+<TouchableOpacity onPress={() => this.play()} style={{ height: 50, width: Dimensions.get('window').width - 60,  backgroundColor:color.secondary_color, flexDirection: 'row', margin: 30, alignItems: 'center', justifyContent: 'center', }}>
   <Text style={{ color: '#fff', fontSize: 15, marginRight: 15, marginLeft: 15, fontWeight: '600' }}>Play </Text>
 </TouchableOpacity>
   </View>
@@ -267,7 +313,7 @@ export default class Match extends Component {
     );
   }
   play() {
-    Actions.play();
+    Actions.playtwo();
   }
 
   addTicket() {
@@ -445,8 +491,8 @@ const styles = StyleSheet.create({
     height: 40,
     flexDirection: 'row',
     color: color.primary_color,
-    marginLeft: 20,
-    marginRight: 10,
+    marginLeft: 30,
+    marginRight: 30,
     backgroundColor: "#fff",
     fontSize: 14,
     paddingLeft: 10,
@@ -469,6 +515,24 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     margin: 1,
 
+  },
+});
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    color: 'black',
+    
+    paddingRight: 30, // to ensure the text is never behind the icon
+  },
+  inputAndroid: {
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    color: 'black',
+    paddingRight: 30,
+   // to ensure the text is never behind the icon
   },
 });
 

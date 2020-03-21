@@ -83,7 +83,7 @@ export default class CreateWithdrawer extends Component {
                     />
                   </View>
                   <View>
-                    <Text style={{ color: color.primary_color, fontSize: 12, fontWeight: '400' }}>winning </Text>
+                    <Text style={{ color: color.primary_color, fontSize: 12, fontWeight: '400' }}>Deposit </Text>
                     <Text style={{ color: color.primary_color, marginTop: 10, fontSize: 14, fontWeight: '800' }}>N105,000.00 </Text>
                   </View>
                 </View>
@@ -116,14 +116,14 @@ export default class CreateWithdrawer extends Component {
                 </Button>
 
 
-                <Button onPress={()=> Actions.transW()}  style={styles.secondaryButtonContainer} block iconLeft>
+                <Button onPress={()=> Actions.orderW()}  style={styles.secondaryButtonContainer} block iconLeft>
 
-                  <Text  style={{ color: '#fff', fontSize: 14, fontWeight: '500' }}>WIRHDRAW </Text>
+                  <Text  style={{ color: '#fff', fontSize: 14, fontWeight: '500' }}>WITHDRAW </Text>
                 </Button>
               </View>
 
 
-                <Text style={styles.informationHead}>Withdraw</Text>
+    <Text style={styles.informationHead}>{''}</Text>
 
               <View style={styles.inputView}>
                 <TextInput
@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
   },
   informationHead: {
     marginLeft: 12,
-    color: color.primary_color,
+    color: '#fff',
     marginTop: 13,
     fontSize: 13,
     fontWeight: '400'

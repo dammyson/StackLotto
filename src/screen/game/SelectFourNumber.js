@@ -217,7 +217,7 @@ export default class SelectFourNumber extends Component {
     );
   }
   play() {
-    Actions.play();
+    Actions.playfour();
   }
 
   addTicket() {

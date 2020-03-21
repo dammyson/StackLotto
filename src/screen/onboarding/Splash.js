@@ -9,7 +9,7 @@ export default class Splash extends Component {
     async componentDidMount() {
         setTimeout(() => {
        //  this.initPage();
-       Actions.matchtwo();
+       Actions.welcome();
           }, 3000);
     }
 

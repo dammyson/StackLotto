@@ -43,6 +43,11 @@ import MatchThree from '../../screen/game/MatchThree';
 import MatchTwo from '../../screen/game/MatchTwo';
 import Verify from '../../screen/user/Verify';
 import Logout from '../../screen/user/Logout';
+import ConfirmTwo from '../../screen/game/ConfirmTwo';
+import ConfirmThree from '../../screen/game/ConfirmThree';
+import ConfirmFour from '../../screen/game/ConfirmFour';
+import ConfirmBFour from '../../screen/game/ConfirmBFour';
+import ConfirmFive from '../../screen/game/ConfirmFive';
 
 
 
@@ -86,6 +91,11 @@ export default class Main extends Component {
              <Scene key="matchtwo" component={MatchTwo} hideNavBar />
              <Scene key="selectFive" component={SelectFiveNumber} hideNavBar />
              <Scene key="selectFour" component={SelectFourNumber} hideNavBar />
+             <Scene key="playtwo" component={ConfirmTwo} hideNavBar />
+             <Scene key="playthree" component={ConfirmThree} hideNavBar />
+             <Scene key="playfour" component={ConfirmFour} hideNavBar />
+             <Scene key="playbfour" component={ConfirmBFour} hideNavBar />
+             <Scene key="playfive" component={ConfirmFive} hideNavBar />
           </Scene>
         </Router>
       </Root>

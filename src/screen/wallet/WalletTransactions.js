@@ -125,7 +125,7 @@ export default class WalletTransactions extends Component {
                                         />
                                     </View>
                                     <View>
-                                        <Text style={{ color: color.primary_color, fontSize: 12, fontWeight: '400' }}>winning </Text>
+                                        <Text style={{ color: color.primary_color, fontSize: 12, fontWeight: '400' }}>Deposit </Text>
                                         <Text style={{ color: color.primary_color, marginTop: 10, fontSize: 14, fontWeight: '800' }}>N105,000.00 </Text>
                                     </View>
                                 </View>
@@ -165,7 +165,7 @@ export default class WalletTransactions extends Component {
                             </View>
 
 
-                            <Text style={styles.informationHead}>Recent Transactions</Text>
+                            <Text style={styles.informationHead}>Recent Transactions History</Text>
 
 
                             {

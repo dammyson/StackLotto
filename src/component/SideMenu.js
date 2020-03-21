@@ -47,7 +47,7 @@ export default class SideMenu extends Component {
                  </View>
                 <Text style={styles.rowText}>Home </Text>
                </TouchableOpacity>
-               <TouchableOpacity style={styles.row}  onPress={()=> Actions.account()}>
+               <TouchableOpacity style={styles.row}  onPress={()=> Actions.tc()}>
               <View style={{ marginRight:20,}}>
               <Image
                style={styles.icon}
@@ -75,7 +75,7 @@ export default class SideMenu extends Component {
                source={require('../assets/hist.png')} 
                /> 
                  </View>
-                <Text style={styles.rowText}>History </Text>
+                <Text style={styles.rowText}>Play History </Text>
                </TouchableOpacity>
 
 

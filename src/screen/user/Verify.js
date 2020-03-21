@@ -144,7 +144,7 @@ export default class Verify extends Component {
               <View style={{margin:30, marginTop: 19, flexDirection:'row' ,   alignItems: 'center', justifyContent: 'center', padding:20,}}>
               
               <TouchableOpacity  onPress={() =>  Actions.login()}>
-              <Text style={{ color: color.primary_colo, fontSize:14, fontWeight: '600' }}>{"RESEND "}  </Text> 
+              <Text style={{ color: color.primary_colo, fontSize:15, fontWeight: '900' }}>{"RESEND "}  </Text> 
               </TouchableOpacity>
               </View>
 
@@ -233,7 +233,7 @@ underlineStyleBase: {
     width: 30,
     height: 45,
     borderWidth: 0,
-    borderBottomWidth: 2,
+    borderBottomWidth: 4,
     borderColor: "black",
     color:'black'
 },

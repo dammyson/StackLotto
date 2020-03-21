@@ -115,14 +115,51 @@ export default class Notification extends Component {
 
                             <View style={{ marginTop: 15 }}>
 
-                                <FlatList
-                                    style={{ paddingBottom: 5 }}
-                                    data={sports}
-                                    renderItem={this.renderItem}
-                                    keyExtractor={item => item.id}
-                                    ItemSeparatorComponent={this.renderSeparator}
-                                    ListHeaderComponent={this.renderHeader}
-                                />
+                            <TouchableOpacity style={styles.oneRow}
+                underlayColor="red">
+                <View style={{ flex: 1 }}>
+                    <Text style={{ color: "#fff", fontSize: 13, fontWeight: '500' }}> WelcOme to stacklotto Match 3 draw winning, Number.</Text>
+                    <Text style={{ color: "#fff", fontSize: 13, fontWeight: '900' }}>Game type: Match 3  </Text>
+                    <Text style={{ color: "#fff", fontSize: 13, fontWeight: '900' }}>Draw date: March 3 </Text>
+                    <Text style={{ color: "#fff", fontSize: 13, fontWeight: '900' }}>Fri Jul 20 2018 09:19:00  </Text>
+                    <Text style={{ color: "#fff", fontSize: 13, fontWeight: '900' }}>Drawing: 0,1, 1, 1   </Text>
+                </View>
+            </TouchableOpacity>
+
+
+
+            <TouchableOpacity style={styles.oneRow}
+                underlayColor="red">
+                <View style={{ flex: 1 }}>
+                    <Text style={{ color: "#fff", fontSize: 13, fontWeight: '500' }}>Congratulations your ticket number  <Text style={{ color: "#fff", fontSize: 13, fontWeight: '900' }}>XD563HFKFKFJG  </Text> have just won 35.000.000 Jackpot. kindly View your winning wallet to withdraw or place more tickets .</Text>
+
+                </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.oneRow}
+                underlayColor="red">
+                <View style={{ flex: 1 }}>
+                    <Text style={{ color: "#fff", fontSize: 13, fontWeight: '500' }}>Your games with ticket numbers  <Text style={{ color: "#fff", fontSize: 13, fontWeight: '900' }}>XD563HFKFKFJG, XD563HFKFKFJG,XD563HFKFKFJG </Text>  has been successfully 
+placed..</Text>
+
+                </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.oneRow}
+                underlayColor="red">
+                <View style={{ flex: 1 }}>
+                    <Text style={{ color: "#fff", fontSize: 13, fontWeight: '500' }}>Your account has been funded succesfully with N75,000</Text>
+
+                </View>
+            </TouchableOpacity>
+
+
+            <TouchableOpacity style={styles.oneRow}
+                underlayColor="red">
+                <View style={{ flex: 1 }}>
+                    <Text style={{ color: "#fff", fontSize: 13, fontWeight: '500' }}>Congratulations Your account has  succesfully created. Kindly visit your profile page to complete your information and start winning</Text>
+
+                </View>
+            </TouchableOpacity>
 
                             </View>
 
@@ -143,19 +180,7 @@ export default class Notification extends Component {
         Actions.product();
     }
 
-    renderItem = ({ item, }) => {
-        return (
-            <TouchableOpacity style={styles.oneRow}
-                underlayColor="red">
-                <View style={{ flex: 1 }}>
-                    <Text style={{ color: "#fff", fontSize: 12, fontWeight: '500' }}>This is logo placeholder png 3. Here you will get all types of PNG images with transparent background. We always upload Highr Definition PNG Pictures. We </Text>
-                    <Text style={{ color: "#fff", fontSize: 12, fontWeight: '600' }}>Fri Jul 20 2018 09:19:00  </Text>
-                </View>
-            </TouchableOpacity>
-
-        )
-
-    }
+   
 
 }
 const styles = StyleSheet.create({

@@ -217,7 +217,7 @@ export default class SelectFiveNumber extends Component {
     );
   }
   play() {
-    Actions.play();
+    Actions.playfive();
   }
 
   addTicket() {

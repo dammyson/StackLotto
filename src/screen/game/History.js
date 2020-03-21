@@ -16,24 +16,8 @@ import RNPickerSelect from 'react-native-picker-select';
 
 const sports = [
     {
-        label: 'Football',
-        value: 'football',
-    },
-    {
-        label: 'Baseball Baseball Baseball Baseball',
-        value: 'baseball',
-    },
-    {
-        label: 'Hockey',
-        value: 'hockey',
-    },
-    {
-        label: 'Baseball Baseball Baseball Baseball',
-        value: 'baseball',
-    },
-    {
-        label: 'Hockey',
-        value: 'hockey',
+        label: 'Match 3',
+        value: 'Matchth',
     },
 ];
 
@@ -73,7 +57,7 @@ export default class History extends Component {
     render() {
 
         const placeholder = {
-            label: 'Match 3',
+            label: 'Match 5',
             value: null,
             color: "#000",
         };
@@ -125,9 +109,7 @@ export default class History extends Component {
                                             placeholder={placeholder}
                                             items={sports}
                                             onValueChange={value => {
-                                                this.setState({
-                                                    account: value,
-                                                });
+                                                this.sell(value);
                                             }}
                                             style={pickerSelectStyles}
                                             value={this.state.account}
@@ -212,8 +194,11 @@ export default class History extends Component {
 
         );
     }
-    itemClicked(item) {
-        Actions.product();
+    sell(item) {
+        if( item == 'Matchth' ){
+            Actions.rd();
+        }
+       
     }
 
 

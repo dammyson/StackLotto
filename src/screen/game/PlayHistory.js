@@ -113,7 +113,7 @@ export default class PlayHistory extends Component {
                     <View style={styles.backgroundImage}>
                         <View style={{ flex: 1 }}>
                             <View style={{ flexDirection: 'row', margin: 20 }}>
-                                <Text style={{ color: '#fff', fontSize: 18, fontWeight: '400', }}>Select the game type and date to view result </Text>
+                                <Text style={{ color: '#fff', fontSize: 18, fontWeight: '400', }}>Select the game type and date to view play history </Text>
 
                             </View>
 

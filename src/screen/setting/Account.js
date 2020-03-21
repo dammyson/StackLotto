@@ -271,7 +271,7 @@ export default class Account extends Component {
                     />
               </TouchableOpacity>
                 </View>
-                <Text style={styles.information}>Comfirm Password *</Text>
+                <Text style={styles.information}>Confirm Password *</Text>
                 <View style={ styles.inputView}>
                 <TextInput
                     placeholder="Confirm Password"
