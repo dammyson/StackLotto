@@ -126,11 +126,12 @@ export default class Home extends Component {
 
                   <View style={{ flex: 1 }}>
                     <TouchableOpacity onPress={() => Actions.sg()} style={{ height: 50, flexDirection: 'row', marginTop: 10, marginBottom: 10, margin: 10, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: color.secondary_color }}>
-                      <Text style={{ color: '#fff', fontSize: 13, fontWeight: '600' }}>Play Now </Text>
+                      <Text style={{ color: '#fff', fontSize: 12, fontWeight: '600' }}>Play Now </Text>
                       <Icon
                         name="play"
                         type='antdesign'
-                        color="#fff" />
+                        color="#fff" 
+                        style={20}/>
                     </TouchableOpacity>
                   </View>
 
@@ -160,7 +161,7 @@ export default class Home extends Component {
 
 
                       <Image
-                        style={{ height: 30, resizeMode: 'contain', }}
+                        style={{ height: 25, resizeMode: 'contain', }}
                         size="large"
                         source={require('../../assets/five.png')}
                       />
@@ -218,7 +219,7 @@ export default class Home extends Component {
                     <Text style={{ color: '#fff', textAlign: 'center', fontSize: 15, fontWeight: '900' }}>Result</Text>
                   </TouchableOpacity>
 
-                  <TouchableOpacity onPress={() => Actions.createW()} style={[styles.boxCard, { marginLeft: 10 }]}>
+                  <TouchableOpacity onPress={() => Actions.transW()} style={[styles.boxCard, { marginLeft: 10 }]}>
                     <Image
                       style={styles.icon}
                       size="large"
@@ -244,7 +245,7 @@ export default class Home extends Component {
 
 
                 <TouchableOpacity onPress={() => Actions.game()} style={{ height: 80, flexDirection: 'row', margin: 20, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: color.primary_color }}>
-                  <Text style={{ color: '#fff', fontSize: 14, fontWeight: '900' }}>VIEW ALL GAMES</Text>
+                  <Text style={{ color: '#fff', fontSize: 14, fontWeight: '900' }}>VIEW ALL LOTTERIES</Text>
                 </TouchableOpacity>
               </View>
             </View>

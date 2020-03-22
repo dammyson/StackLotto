@@ -27,15 +27,15 @@ const sports = [
       value: 'baseball',
     },
     {
-      label: 'Any order/ Exact order',
+      label: 'Exact order/ Any order',
       value: 'hockey',
     },
     {
-      label: 'Front number Play',
+      label: '2 Front number Play',
       value: 'baseball',
     },
     {
-      label: 'Back number Play',
+      label: '2 Back number Play',
       value: 'hockey',
     },
   ];
@@ -77,7 +77,7 @@ export default class Match extends Component {
 
   
     const placeholder = {
-      label: 'Select game type',
+      label: 'Select Play type',
       value: null,
       color: "#000",
     };

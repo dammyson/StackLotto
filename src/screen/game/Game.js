@@ -16,21 +16,21 @@ import RNPickerSelect from 'react-native-picker-select';
 
 const slides = [
     {
-        title: 'N 3,700,000 Jackpot!',
+        title: 'N3,700,000 Jackpot!',
         text: 'Select 6 number from 1 - 49',
         img: require('../../assets/six.png'),
         go: 1,
         price:'N 200 / Ticket',
     },
     {
-        title: 'N 350,000 Jackpot!',
+        title: 'N350,000 Jackpot!',
         text: 'Select 5 number from 1 - 42 ',
         img: require('../../assets/five.png'),
         go: 2,
         price:"N 100 / Ticket"
     },
     {
-        title: 'N 30,000 Jackpot!',
+        title: 'N30,000 Jackpot!',
         text: 'Select 4 number from 1 - 25 ',
         img: require('../../assets/four.png'),
         go: 3,
@@ -139,7 +139,7 @@ export default class Game extends Component {
 
         return (
             <Container style={{ backgroundColor: color.primary_color }}>
-                <Navbar left={left}   right={right}  title='Games' bg='#fff' />
+                <Navbar left={left}   right={right}  title='LOTTERIES' bg='#fff' />
                 <Content>
                     <View style={styles.backgroundImage}>
                         <View style={{ flex: 1 }}>

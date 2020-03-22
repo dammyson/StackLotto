@@ -6,6 +6,7 @@ import { Actions } from 'react-native-router-flux';
 import URL from '../../component/server'
 import { PulseIndicator } from 'react-native-indicators';
 import Navbar from '../../component/Navbar';
+import Modal, { ModalContent } from 'react-native-modals';
 
 import color from '../../component/color'
 import { Card, Icon, SocialIcon } from 'react-native-elements'
@@ -22,7 +23,8 @@ export default class ConfirmTwo extends Component {
     this.state = {
       multipleSelectedData: [],
       multipleSelectedDataLimited: [],
-      allSelectedTickets: [["6", "9", ],["6", "9",], ["6", "9"]]
+      allSelectedTickets: [["6", "9", ],["6", "9",], ["6", "9"]],
+      complete_transaction:false
     };
   }
 
@@ -82,7 +84,7 @@ export default class ConfirmTwo extends Component {
 
     return (
       <Container style={{ backgroundColor: color.primary_color }}>
-        <Navbar right={right} left={left} title='Confirm' bg='#fff' />
+        <Navbar right={right} left={left} title='Confirm and play' bg='#fff' />
         <Content>
           <View style={styles.backgroundImage}>
 
@@ -122,7 +124,7 @@ export default class ConfirmTwo extends Component {
     <Text style={{ color: '#000', fontSize: 13, fontWeight: '600' }}>Cancle </Text>
   </TouchableOpacity>
 
-  <TouchableOpacity style={{ height: 40, flexDirection: 'row', margin: 20, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius:5, backgroundColor: color.secondary_color }}>
+  <TouchableOpacity onPress={() => this.setState({ complete_transaction: true })}  style={{ height: 40, flexDirection: 'row', margin: 20, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius:5, backgroundColor: color.secondary_color }}>
     <Text style={{ color: '#fff', fontSize: 13, fontWeight: '600' }}>Play </Text>
   </TouchableOpacity>
 
@@ -133,6 +135,35 @@ export default class ConfirmTwo extends Component {
             </View>
 
           </View>
+          <Modal
+          visible={this.state.complete_transaction}
+        >
+          <ModalContent style={styles.modal}>
+            <View style={{ alignItems: 'center', paddingTop: 1, paddingBottom: 10 }}>
+
+              <View style={{ alignItems: 'center', paddingTop: 1, paddingBottom: 10 }}>
+              
+              
+                  <Icon
+                    name="checkcircleo"
+                    size={40}
+                    type='antdesign'
+                    color={color.secondary_color}
+                  />
+                <Text style={{ fontSize: 17, color:color.primary_color, textAlign: 'left', paddingBottom: 10, marginTop: 25, }}>Ticket Placed Successfully </Text>
+                 <Text style={{ fontSize: 13, color:color.primary_color, textAlign: 'center', paddingBottom: 10, marginTop: 25, }}>Yoour games with tickets numbers XD563HFKFKFJG, have been succesffully placed</Text>
+              </View>
+              <View style={{ alignItems: 'center', paddingTop: 1, paddingBottom: 10, }}>
+
+              </View>
+              <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                <Button   onPress={() => [this.setState({ complete_transaction: false }), Actions.game()] }  style={styles.secondaryButtonContainer} block iconLeft>
+                  <Text style={{ color: '#fdfdfd', fontWeight: '400' }}>Back to Lotteries </Text>
+                </Button>
+              </View>
+            </View>
+          </ModalContent>
+        </Modal>
         </Content>
       </Container>
 
@@ -311,6 +342,30 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     margin: 5,
 
+  },
+  modal: {
+    width: Dimensions.get('window').width - 60,
+
+  },
+  modalbuttonContainer: {
+    backgroundColor: color.slide_color_dark,
+    marginLeft: 10,
+    marginRight: 10,
+    borderRadius: 15,
+    marginTop: 15,
+    marginBottom: 30,
+    flex: 1
+  },
+  modalTansButtonContainer: {
+    borderColor: color.button_blue,
+    borderWidth: 1,
+    marginLeft: 10,
+    marginRight: 10,
+    borderRadius: 15,
+    marginTop: 15,
+    marginBottom: 30,
+    backgroundColor: 'transparent',
+    flex: 1
   },
 });
 

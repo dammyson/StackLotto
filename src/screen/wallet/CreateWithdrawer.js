@@ -123,7 +123,7 @@ export default class CreateWithdrawer extends Component {
               </View>
 
 
-    <Text style={styles.informationHead}>{''}</Text>
+    <Text style={styles.informationHead}>{'Withdraw'}</Text>
 
               <View style={styles.inputView}>
                 <TextInput

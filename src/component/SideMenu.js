@@ -58,7 +58,7 @@ export default class SideMenu extends Component {
                </TouchableOpacity>
 
 
-                <TouchableOpacity style={styles.row}  onPress={()=>   Actions.createW()}>
+                <TouchableOpacity style={styles.row}  onPress={()=>   Actions.transW()}>
               <View style={{ marginRight:20,}}>
               <Image
                style={styles.icon}

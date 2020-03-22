@@ -27,7 +27,7 @@ const sports = [
       value: 'baseball',
     },
     {
-      label: 'Any order/ Exact order',
+      label: 'Exact order / Any order',
       value: 'hockey',
     },
     {
@@ -38,6 +38,7 @@ const sports = [
       label: 'Back number Play',
       value: 'hockey',
     },
+    
   ];
 
 const multipleDataONE = ["0","1", "2", "3", "4", "5","6", "7", "8", "9"];
@@ -73,7 +74,7 @@ export default class Match extends Component {
 
  
     const placeholder = {
-      label: 'Select game type',
+      label: 'Select Play type',
       value: null,
       color: "#000",
     };

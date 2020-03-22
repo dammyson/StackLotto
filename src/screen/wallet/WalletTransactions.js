@@ -16,23 +16,26 @@ import RNPickerSelect from 'react-native-picker-select';
 
 const sports = [
     {
-        label: 'Football',
+        label: 'N3,700,000 Jackpot!',
         value: 'football',
     },
     {
-        label: 'Baseball Baseball Baseball Baseball',
+        label: 'N350,000 Jackpot!',
         value: 'baseball',
     },
     {
-        label: 'Hockey',
+        label: 'N30,000 Jackpot',
         value: 'hockey',
     },
     {
-        label: 'Baseball Baseball Baseball Baseball',
+        label: 'Match 4',
         value: 'baseball',
     },
     {
-        label: 'Hockey',
+        label: 'Match 3',
+        value: 'hockey',
+    }, {
+        label: 'Match 2',
         value: 'hockey',
     },
 ];
@@ -152,15 +155,15 @@ export default class WalletTransactions extends Component {
 
                             <View style={{ flexDirection: 'row', marginTop: 30 }}>
 
-                                <Button style={[styles.secondaryButtonContainer, { backgroundColor: "#fff" }]} block iconLeft>
+                                <Button onPress={()=> Actions.how()}  style={[styles.secondaryButtonContainer, { backgroundColor: "#fff" }]} block iconLeft>
 
                                     <Text style={{ color: '#000', fontSize: 14, fontWeight: '500' }}>FUND WALLET </Text>
                                 </Button>
 
 
-                                <Button style={styles.secondaryButtonContainer} block iconLeft>
+                                <Button onPress={()=> Actions.createW()}  style={styles.secondaryButtonContainer} block iconLeft>
 
-                                    <Text style={{ color: '#fff', fontSize: 14, fontWeight: '500' }}>WIRHDRAW </Text>
+                                    <Text style={{ color: '#fff', fontSize: 14, fontWeight: '500' }}>WITHDRAW </Text>
                                 </Button>
                             </View>
 

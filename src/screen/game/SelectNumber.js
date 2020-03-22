@@ -125,7 +125,7 @@ export default class SelectNumber extends Component {
                     key={interest}
                     buttonViewStyle={styles.buttonViewStyle}
                     textStyle={{
-                      fontSize: 15,
+                      fontSize: 13,
                       margin: 20,
                       color: '#000',
                     }}
@@ -155,7 +155,7 @@ export default class SelectNumber extends Component {
                       key={interest}
                       buttonViewStyle={styles.buttonStepTwoViewStyle}
                       textStyle={{
-                        fontSize: 15,
+                        fontSize: 13,
                         marginRight: 10,
                         color: '#000',
                       }}
@@ -270,7 +270,7 @@ export default class SelectNumber extends Component {
                   key={interest}
                   buttonViewStyle={styles.buttonStepTwoViewStyle}
                   textStyle={{
-                    fontSize: 14,
+                    fontSize: 13,
                     marginRight: 10,
                     color: '#000',
                   }}
