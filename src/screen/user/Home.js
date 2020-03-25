@@ -209,7 +209,7 @@ export default class Home extends Component {
 
 
                 <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                  <TouchableOpacity onPress={() => Actions.rd()} style={[styles.boxCard, { marginLeft: 10, backgroundColor: color.secondary_color }]}>
+                  <TouchableOpacity onPress={() => Actions.r()} style={[styles.boxCard, { marginLeft: 10, backgroundColor: color.secondary_color }]}>
                     <Image
                       style={styles.icon}
                       size="large"
@@ -229,7 +229,7 @@ export default class Home extends Component {
                     <Text style={{ color: '#000', textAlign: 'center', fontSize: 15, fontWeight: '900' }}>Wallet</Text>
                   </TouchableOpacity>
 
-                  <TouchableOpacity onPress={() => Actions.ph()} style={[styles.boxCard, { marginLeft: 10 }]}>
+                  <TouchableOpacity onPress={() => Actions.h()} style={[styles.boxCard, { marginLeft: 10 }]}>
                     <Image
                       style={styles.icon}
                       size="large"
@@ -240,10 +240,6 @@ export default class Home extends Component {
                   </TouchableOpacity>
 
                 </View>
-
-
-
-
                 <TouchableOpacity onPress={() => Actions.game()} style={{ height: 80, flexDirection: 'row', margin: 20, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: color.primary_color }}>
                   <Text style={{ color: '#fff', fontSize: 14, fontWeight: '900' }}>VIEW ALL LOTTERIES</Text>
                 </TouchableOpacity>

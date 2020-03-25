@@ -14,7 +14,6 @@ export default class Splash extends Component {
     }
 
     initPage = () => {
-     
         AsyncStorage.getItem('step').then((value) => {
           console.log(value)
           if(value=='one'){
@@ -66,6 +65,7 @@ const styles = StyleSheet.create({
         height: Dimensions.get('window').height,
     },
     logo: {
+      marginBottom:100,
         width: 250,
         height: 110,
         justifyContent: 'center',

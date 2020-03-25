@@ -54,9 +54,18 @@ export default class SideMenu extends Component {
                source={require('../assets/resul.png')} 
                /> 
                  </View>
-                <Text style={styles.rowText}>Result </Text>
+                <Text style={styles.rowText}>Check Your Ticket </Text>
                </TouchableOpacity>
 
+               <TouchableOpacity style={styles.row}  onPress={()=> Actions.r()}>
+              <View style={{ marginRight:20,}}>
+              <Image
+               style={styles.icon}
+               source={require('../assets/resul.png')} 
+               /> 
+                 </View>
+                <Text style={styles.rowText}>Result </Text>
+               </TouchableOpacity>
 
                 <TouchableOpacity style={styles.row}  onPress={()=>   Actions.transW()}>
               <View style={{ marginRight:20,}}>
@@ -110,8 +119,6 @@ export default class SideMenu extends Component {
                 <Text style={styles.rowText}>Support </Text>
                </TouchableOpacity>
 
-
-
                   <TouchableOpacity style={styles.row}  onPress={()=> Actions.account()}>
               <View style={{ marginRight:20,}}>
               <Image
@@ -122,6 +129,15 @@ export default class SideMenu extends Component {
                 <Text style={styles.rowText}>Account </Text>
                </TouchableOpacity>
 
+               <TouchableOpacity style={styles.row}  onPress={()=> Actions.sup()}>
+              <View style={{ marginRight:20,}}>
+              <Image
+              style={styles.icon}
+               source={require('../assets/sup.png')} 
+               /> 
+                 </View>
+                <Text style={styles.rowText}>About this App </Text>
+               </TouchableOpacity>
 
 
 

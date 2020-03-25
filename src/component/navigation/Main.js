@@ -32,7 +32,7 @@ import SelectNumber from '../../screen/game/SelectNumber';
 import Confirm from '../../screen/game/Confirm';
 import BankPayment from '../../screen/wallet/BankPayment';
 import TicketCheck from '../../screen/game/TicketCheck';
-import PlayHistory from '../../screen/game/PlayHistory';
+import Result from '../../screen/game/Result';
 import History3 from '../../screen/game/History';
 import ResultDetails from '../../screen/game/ResultDetails';
 import Game from '../../screen/game/Game';
@@ -82,7 +82,7 @@ export default class Main extends Component {
              <Scene key="play" component={Confirm} hideNavBar />
              <Scene key="bp" component={BankPayment} hideNavBar />
              <Scene key="tc" component={TicketCheck} hideNavBar />
-             <Scene key="ph" component={PlayHistory} hideNavBar />
+             <Scene key="r" component={Result} hideNavBar />
              <Scene key="h" component={History3} hideNavBar />
              <Scene key="rd" component={ResultDetails} hideNavBar />
              <Scene key="game" component={Game} hideNavBar />

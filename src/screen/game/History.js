@@ -16,7 +16,27 @@ import RNPickerSelect from 'react-native-picker-select';
 
 const sports = [
     {
+        label: 'Stacklotto 6/49',
+        value: 'Matchth',
+    },
+    {
+        label: 'Lucky 5',
+        value: 'Matchth',
+    },
+    {
+        label: 'Stacklotto 4/25',
+        value: 'Matchth',
+    },
+    {
+        label: 'Match 4',
+        value: 'Matchth',
+    },
+    {
         label: 'Match 3',
+        value: 'Matchth',
+    },
+    {
+        label: 'Match 2',
         value: 'Matchth',
     },
 ];
@@ -36,6 +56,7 @@ export default class History extends Component {
             startdate: "2019-05-29",
             enddate: "2019-05-29",
             todate: "2019-06-11",
+            result: false
         };
     }
 
@@ -92,100 +113,118 @@ export default class History extends Component {
 
         return (
             <Container style={{ backgroundColor: color.primary_color }}>
-                <Navbar left={left} title='History' bg='transparent'  tbg='#fff'/>
+                <Navbar left={left} title='Play History' bg='transparent' tbg='#fff' />
                 <Content>
                     <View style={styles.backgroundImage}>
                         <View style={{ flex: 1 }}>
                             <View style={{ flexDirection: 'row', margin: 20 }}>
-                                <Text style={{ color: "#fff", fontSize: 14, fontWeight: '400',}}>Select the game type and date to view result </Text>
+                                <Text style={{ color: "#fff", fontSize: 14, fontWeight: '400', }}>Select the lottery type and date to view play history </Text>
 
                             </View>
 
-                            <View style={{ marginTop: 10, marginBottom: 15, flexDirection: 'row', }}>
+                            <View style={styles.bigCard}>
+                                <View style={{ marginTop: 20 }} >
+                                    <Text style={{ color: '#000', fontSize: 12, fontWeight:'500', marginLeft: 15 }}>Filter History</Text>
+                                </View>
 
-                                <View style={styles.inputView}>
-                                    <View style={{ flex: 1 }}>
-                                        <RNPickerSelect
-                                            placeholder={placeholder}
-                                            items={sports}
-                                            onValueChange={value => {
-                                                this.sell(value);
-                                            }}
-                                            style={pickerSelectStyles}
-                                            value={this.state.account}
-                                            useNativeAndroidPickerStyle={false}
+                                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
+                                    <View style={{ flex: 1, }}>
+                                        <Text style={{ color: '#000', fontSize: 12, marginLeft: 15 }}>Start Date </Text>
+                                        <View style={styles.inputView}>
+                                            <TextInput
+                                                placeholder="27/02/2002"
+                                                placeholderTextColor={color.primary_color}
+                                                returnKeyType="next"
+                                                onSubmitEditing={() => this.passwordInput.focus()}
+                                                keyboardType='email-address'
+                                                autoCapitalize="none"
+                                                autoCorrect={false}
+                                                inlineImageLeft='ios-call'
+                                                style={{ flex: 1 }}
+                                                onChangeText={text => this.setState({ phone: text })}
+                                            />
 
-                                        /></View>
+
+                                        </View>
+                                    </View>
+
+                                    <View style={{ flex: 1, }}>
+                                        <Text style={{ color: '#000', fontSize: 12, marginLeft: 15 }}>End Date </Text>
+                                        <View style={styles.inputView}>
+                                            <TextInput
+                                                placeholder="27/02/2002"
+                                                placeholderTextColor={color.primary_color}
+                                                returnKeyType="next"
+                                                onSubmitEditing={() => this.passwordInput.focus()}
+                                                keyboardType='email-address'
+                                                autoCapitalize="none"
+                                                autoCorrect={false}
+                                                inlineImageLeft='ios-call'
+                                                style={{ flex: 1 }}
+                                                onChangeText={text => this.setState({ phone: text })}
+                                            />
+
+
+                                        </View>
+                                    </View>
+                                </View>
+
+                                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
+
+                                    <View style={styles.inputView}>
+                                        <View style={{ flex: 1 }}>
+                                            <RNPickerSelect
+                                                placeholder={placeholder}
+                                                placeholderTextColor={'#000'}
+                                                items={sports}
+                                                onValueChange={value => {
+                                                    this.setState({
+                                                        account: value,
+                                                    });
+                                                }}
+                                                style={pickerSelectStyles}
+                                                value={this.state.account}
+                                                useNativeAndroidPickerStyle={false}
+
+                                            /></View>
+
+                                    </View>
+
+                                    <Button  onPress={() =>  this.setState({ result: true, })} style={styles.secondaryButtonContainer} block iconLeft>
+
+                                        <Text style={{ color: '#fff', fontSize: 14, fontWeight: '500' }}>SHOW </Text>
+                                    </Button>
+                                </View>
+                            </View>
+
+                            {this.state.result ?
+
+                            <View style={{ marginTop: 20, }}>
+                                <View style={{ flexDirection: 'row', marginLeft: 20, marginRight: 20, borderBottomColor: '#fff', borderBottomWidth: 3 }}>
+                                    <Text style={{ color: '#fff', fontSize: 14, fontWeight: '700', flex: 1, }}>Ticket# </Text>
+                                    <Text style={{ color: '#fff', fontSize: 14, fontWeight: '700', flex: 1, }}>Selection </Text>
+                                    <Text style={{ color: '#fff', fontSize: 14, fontWeight: '700', flex: 1, }}>Draw date </Text>
+
+                                </View>
+                                <View style={{ marginTop: 15 }}>
+
+                                    <FlatList
+                                        style={{ paddingBottom: 5 }}
+                                        data={sports}
+                                        renderItem={this.renderItem}
+                                        keyExtractor={item => item.id}
+                                        ItemSeparatorComponent={this.renderSeparator}
+                                        ListHeaderComponent={this.renderHeader}
+                                    />
 
                                 </View>
 
-
-
-                                <View style={styles.inputView}>
-                                    <View style={{ flex: 1 }}>
-                                        <TextInput
-                                            placeholder="01/09/2020"
-                                            placeholderTextColor='#000'
-                                            returnKeyType="next"
-                                            onSubmitEditing={() => this.passwordInput.focus()}
-                                            keyboardType='email-address'
-                                            autoCapitalize="none"
-                                            autoCorrect={false}
-                                            inlineImageLeft='ios-call'
-
-                                            onChangeText={text => this.setState({ password: text })}
-                                        /></View>
-                                    <TouchableOpacity style={{ alignItems: 'center', justifyContent: 'center', marginRight: 20 }}>
-                                        <Icon
-                                            active
-                                            name="calendar"
-                                            type='antdesign'
-                                            color='#5f6066'
-                                        />
-                                    </TouchableOpacity>
-
-                                </View>
-
-
-
                             </View>
+                             :
+                             null
 
 
-
-
-
-
-
-                            <TouchableOpacity style={{ height: 50, flexDirection: 'row', margin: 20, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: color.secondary_color }}>
-                                <Icon
-                                    active
-                                    name="search1"
-                                    type='antdesign'
-                                    color='#fff'
-                                />
-                                <Text style={{ color: '#fff', fontSize: 15, fontWeight: '600' }}>SEARCH</Text>
-                            </TouchableOpacity>
-
-
-                            <View style={{ flexDirection: 'row', marginLeft: 20, marginRight: 20, borderBottomColor: '#fff', borderBottomWidth: 3 }}>
-                                <Text style={{ color: '#fff', fontSize: 14, fontWeight: '700', flex: 1,  }}>Ticket# </Text>
-                                <Text style={{ color: '#fff',fontSize: 14, fontWeight: '700', flex: 1, }}>Selection </Text>
-                                <Text style={{ color: '#fff', fontSize: 14, fontWeight: '700', flex: 1,}}>Draw date </Text>
-
-                            </View>
-                            <View style={{ marginTop: 15 }}>
-
-                                <FlatList
-                                    style={{ paddingBottom: 5 }}
-                                    data={sports}
-                                    renderItem={this.renderItem}
-                                    keyExtractor={item => item.id}
-                                    ItemSeparatorComponent={this.renderSeparator}
-                                    ListHeaderComponent={this.renderHeader}
-                                />
-
-                            </View>
-
+                         }
 
                         </View>
                     </View>
@@ -195,10 +234,10 @@ export default class History extends Component {
         );
     }
     sell(item) {
-        if( item == 'Matchth' ){
+        if (item == 'Matchth') {
             Actions.rd();
         }
-       
+
     }
 
 
@@ -206,7 +245,7 @@ export default class History extends Component {
         return (
             <View style={{ flexDirection: 'row', marginLeft: 20, marginRight: 20, }}>
                 <Text style={{ color: '#fff', fontSize: 14, fontWeight: '400', flex: 1, }}>ABCDEFGV </Text>
-                <Text style={{ color: '#fff', fontSize: 14, fontWeight: '300', flex: 1,  }}> 1, 45, 56, 2, 4, 4 </Text>
+                <Text style={{ color: '#fff', fontSize: 14, fontWeight: '300', flex: 1, }}> 1, 45, 56, 2, 4, 4 </Text>
                 <Text style={{ color: '#fff', fontSize: 14, fontWeight: '300', flex: 1, }}> 01/01/2020 </Text>
 
 
@@ -250,7 +289,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10
     },
     primaryButtonContainer: {
-        height: 45,
+        height: 40,
         backgroundColor: color.primary_color,
         marginLeft: 7,
         marginRight: 12,
@@ -259,7 +298,7 @@ const styles = StyleSheet.create({
 
     },
     secondaryButtonContainer: {
-        height: 45,
+        height: 40,
         backgroundColor: color.secondary_color,
         marginLeft: 12,
         marginRight: 7,
@@ -284,15 +323,16 @@ const styles = StyleSheet.create({
         height: 40,
         flexDirection: 'row',
         color: color.primary_color,
-        marginLeft: 12,
-        marginRight: 12,
+        marginLeft: 15,
+        marginRight: 15,
         backgroundColor: "#fff",
         fontSize: 13,
         marginBottom: 10,
         paddingLeft: 10,
         justifyContent: 'center',
         flex: 1,
-
+        borderWidth: 0.8,
+        borderColor: color.primary_color,
     },
     information: {
         marginLeft: 12,
@@ -345,13 +385,12 @@ const styles = StyleSheet.create({
         backgroundColor: color.white,
         shadowColor: '#000',
         backgroundColor: "#fff",
-
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.5,
         shadowRadius: 1,
         elevation: 1,
-        marginLeft: 15,
-        marginRight: 15,
+        marginLeft: 12,
+        marginRight: 12,
         borderRadius: 1,
         flex: 1,
         paddingBottom: 20

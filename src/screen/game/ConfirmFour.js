@@ -121,7 +121,7 @@ export default class ConfirmFour extends Component {
  <View style={{ flexDirection: 'row', marginBottom: 20, }}>
 
 <TouchableOpacity style={{ height: 40, flexDirection: 'row', margin: 20, flex: 1, alignItems: 'center', justifyContent: 'center',borderRadius:5, backgroundColor: "#fff" }}>
-    <Text style={{ color: '#000', fontSize: 13, fontWeight: '600' }}>Cancle </Text>
+    <Text style={{ color: '#000', fontSize: 13, fontWeight: '600' }}>Cancel </Text>
   </TouchableOpacity>
 
   <TouchableOpacity  onPress={() => this.setState({ complete_transaction: true })}  style={{ height: 40, flexDirection: 'row', margin: 20, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius:5, backgroundColor: color.secondary_color }}>
@@ -146,12 +146,12 @@ export default class ConfirmFour extends Component {
               
                   <Icon
                     name="checkcircleo"
-                    size={40}
+                    size={60}
                     type='antdesign'
                     color={color.secondary_color}
                   />
                 <Text style={{ fontSize: 17, color:color.primary_color, textAlign: 'left', paddingBottom: 10, marginTop: 25, }}>Ticket Placed Successfully </Text>
-                 <Text style={{ fontSize: 13, color:color.primary_color, textAlign: 'center', paddingBottom: 10, marginTop: 25, }}>Yoour games with tickets numbers XD563HFKFKFJG, have been succesffully placed</Text>
+                 <Text style={{ fontSize: 13, color:color.primary_color, textAlign: 'center', paddingBottom: 10, marginTop: 25, }}>Your Lotteries with tickets numbers XD563HFKFKFJG, have been succesffully placed</Text>
               </View>
               <View style={{ alignItems: 'center', paddingTop: 1, paddingBottom: 10, }}>
 

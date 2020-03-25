@@ -16,28 +16,32 @@ import RNPickerSelect from 'react-native-picker-select';
 
 const sports = [
     {
-        label: 'Football',
-        value: 'football',
+        label: 'Stacklotto 6/49',
+        value: 'Matchth',
     },
     {
-        label: 'Baseball Baseball Baseball Baseball',
-        value: 'baseball',
+        label: 'Lucky 5',
+        value: 'Matchth',
     },
     {
-        label: 'Hockey',
-        value: 'hockey',
+        label: 'Stacklotto 4/25',
+        value: 'Matchth',
     },
     {
-        label: 'Baseball Baseball Baseball Baseball',
-        value: 'baseball',
+        label: 'Match 4',
+        value: 'Matchth',
     },
     {
-        label: 'Hockey',
-        value: 'hockey',
+        label: 'Match 3',
+        value: 'Matchth',
+    },
+    {
+        label: 'Match 2',
+        value: 'Matchth',
     },
 ];
 
-export default class PlayHistory extends Component {
+export default class Result extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -52,6 +56,7 @@ export default class PlayHistory extends Component {
             startdate: "2019-05-29",
             enddate: "2019-05-29",
             todate: "2019-06-11",
+            result: false
         };
     }
 
@@ -73,7 +78,7 @@ export default class PlayHistory extends Component {
     render() {
 
         const placeholder = {
-            label: 'Match 3',
+            label: 'Select Lottery',
             value: null,
             color: "#000",
         };
@@ -107,13 +112,13 @@ export default class PlayHistory extends Component {
         }
 
         return (
-            <Container style={{ backgroundColor:  color.primary_color  }}>
-                <Navbar left={left} title='Play History'  bg='transparent'  tbg='#fff' />
+            <Container style={{ backgroundColor: color.primary_color }}>
+                <Navbar left={left} title='Result' bg='transparent' tbg='#fff' />
                 <Content>
                     <View style={styles.backgroundImage}>
                         <View style={{ flex: 1 }}>
                             <View style={{ flexDirection: 'row', margin: 20 }}>
-                                <Text style={{ color: '#fff', fontSize: 18, fontWeight: '400', }}>Select the game type and date to view play history </Text>
+                                <Text style={{ color: '#fff', fontSize: 18, fontWeight: '400', }}>Select the lottery type and date to view result </Text>
 
                             </View>
 
@@ -121,94 +126,96 @@ export default class PlayHistory extends Component {
 
 
                             <View style={{ marginTop: 10, marginBottom: 15, flexDirection: 'row', }}>
-                               
-                            <View style={styles.inputView}>
-        <View style={{ flex: 1 }}>
-            <RNPickerSelect
-                placeholder={placeholder}
-                items={sports}
-                onValueChange={value => {
-                    this.setState({
-                        account: value,
-                    });
-                }}
-                style={pickerSelectStyles}
-                value={this.state.account}
-                useNativeAndroidPickerStyle={false}
 
-            /></View>
-        <TouchableOpacity style={{ alignItems: 'center', justifyContent: 'center', marginRight: 20 }}>
-            <Icon
-                active
-                name="md-arrow-dropdown-circle"
-                type='ionicon'
-                color='#5f6066'
-            />
-        </TouchableOpacity>
+                                <View style={styles.inputView}>
+                                    <View style={{ flex: 1 }}>
+                                        <RNPickerSelect
+                                            placeholder={placeholder}
+                                            placeholderTextColor={'#000'}
+                                            items={sports}
+                                            onValueChange={value => {
+                                                this.setState({
+                                                    account: value,
+                                                });
+                                            }}
+                                            style={pickerSelectStyles}
+                                            value={this.state.account}
+                                            useNativeAndroidPickerStyle={false}
 
-    </View>
+                                        /></View>
+                                   
+
+                                </View>
 
 
-           
-           <View style={styles.inputView}>
-        <View style={{ flex: 1 }}>
-        <TextInput
-                                    placeholder="01/09/2020"
-                                    placeholderTextColor='#000'
-                                    returnKeyType="next"
-                                    onSubmitEditing={() => this.passwordInput.focus()}
-                                    keyboardType='email-address'
-                                    autoCapitalize="none"
-                                    autoCorrect={false}
-                                    inlineImageLeft='ios-call'
-                                  
-                                    onChangeText={text => this.setState({ password: text })}
-                                /></View>
-        <TouchableOpacity style={{ alignItems: 'center', justifyContent: 'center', marginRight: 20 }}>
-            <Icon
-                active
-                name="calendar"
-                type='antdesign'
-                color='#5f6066'
-            />
-        </TouchableOpacity>
 
-    </View>
+                                <View style={styles.inputView}>
+                                    <View style={{ flex: 1 }}>
+                                        <TextInput
+                                            placeholder="01/09/2020"
+                                            placeholderTextColor='#000'
+                                            returnKeyType="next"
+                                            onSubmitEditing={() => this.passwordInput.focus()}
+                                            keyboardType='email-address'
+                                            autoCapitalize="none"
+                                            autoCorrect={false}
+                                            inlineImageLeft='ios-call'
 
-                            
+                                            onChangeText={text => this.setState({ password: text })}
+                                        /></View>
+                                    <TouchableOpacity style={{ alignItems: 'center', justifyContent: 'center', marginRight: 20 }}>
+                                        <Icon
+                                            active
+                                            name="calendar"
+                                            type='antdesign'
+                                            color='#5f6066'
+                                        />
+                                    </TouchableOpacity>
+
+                                </View>
+
+
 
                             </View>
-                           
 
 
 
 
 
 
-                            <TouchableOpacity style={{ height: 50, flexDirection: 'row', margin: 20, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: color.secondary_color }}>
-                            <Icon
-                        active
-                        name="search1"
-                        type='antdesign'
-                        color='#fff'
-                    />
+
+                            <TouchableOpacity onPress={() =>  this.setState({ result: true, })} style={{ height: 50, flexDirection: 'row', margin: 20, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: color.secondary_color }}>
+                                <Icon
+                                    active
+                                    name="search1"
+                                    type='antdesign'
+                                    color='#fff'
+                                />
                                 <Text style={{ color: '#fff', fontSize: 15, fontWeight: '600' }}>SEARCH</Text>
                             </TouchableOpacity>
 
-                         
 
-                            <View style={{ marginTop: 15 }}>
 
-                                <FlatList
-                                    style={{ paddingBottom: 5 }}
-                                    data={sports}
-                                    renderItem={this.renderItem}
-                                    keyExtractor={item => item.id}
-                                    ItemSeparatorComponent={this.renderSeparator}
-                                    ListHeaderComponent={this.renderHeader}
-                                />
+                            {this.state.result ?
 
-                            </View>
+                                <View style={{ marginTop: 15 }}>
+
+                                    <FlatList
+                                        style={{ paddingBottom: 5 }}
+                                        data={sports}
+                                        renderItem={this.renderItem}
+                                        keyExtractor={item => item.id}
+                                        ItemSeparatorComponent={this.renderSeparator}
+                                        ListHeaderComponent={this.renderHeader}
+                                    />
+
+                                </View>
+
+                                :
+                                null
+
+
+                            }
 
 
                         </View>
@@ -225,17 +232,17 @@ export default class PlayHistory extends Component {
 
     renderItem = ({ item, }) => {
         return (
-            <TouchableOpacity style={styles.oneRow}
-            underlayColor="red">
-            <View style={{ flex: 1 }}>
-           
-            <Text style={{ color:'#fff', fontSize: 14, fontWeight: '500',  }}>Fri Jul 20 2018 09:19:00  </Text>
-            <Text style={{ color:"#fff", fontSize: 14, fontWeight: '200' , }}>Selections 5, 3, 7 </Text>
+            <View style={styles.oneRow}
+                underlayColor="red">
+                <View style={{ flex: 1 }}>
+
+                    <Text style={{ color: '#fff', fontSize: 14, fontWeight: '500', }}>Fri Jul 20 2018 09:19:00  </Text>
+                    <Text style={{ color: "#fff", fontSize: 14, fontWeight: '200', }}>Selections 5, 3, 7 </Text>
+                </View>
+                <TouchableOpacity onPress={() => Actions.rd()} style={{ marginLeft: 20 }}>
+                    <Text style={{ color: '#fff', fontSize: 14, fontWeight: '200', }}>View details </Text>
+                </TouchableOpacity>
             </View>
-            <View style={{ marginLeft: 20 }}>
-            <Text style={{ color:'#fff', fontSize: 14, fontWeight: '200' , }}>View details </Text>
-            </View>
-          </TouchableOpacity>
         )
 
     }
@@ -355,13 +362,13 @@ const styles = StyleSheet.create({
     oneRow: {
         borderRadius: 15,
         margin: 12,
-        marginLeft:15,
+        marginLeft: 15,
         justifyContent: 'center',
         alignItems: 'flex-start',
         flexDirection: 'row',
-        borderBottomColor:'#fff',
-        borderBottomWidth:0.5,
-        paddingBottom:4
+        borderBottomColor: '#fff',
+        borderBottomWidth: 0.5,
+        paddingBottom: 4
 
     },
     price: {
@@ -398,7 +405,7 @@ const pickerSelectStyles = StyleSheet.create({
         paddingRight: 30, // to ensure the text is never behind the icon
     },
     inputAndroid: {
-        fontSize: 12,
+        fontSize: 13,
         paddingHorizontal: 10,
         paddingVertical: 8,
         color: 'black',

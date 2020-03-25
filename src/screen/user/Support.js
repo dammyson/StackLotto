@@ -1,6 +1,6 @@
 // React native and others libraries imports
 import React, { Component } from 'react';
-import { Alert, ImageBackground, FlatList, Dimensions, StyleSheet, Image, AsyncStorage, TouchableOpacity } from 'react-native';
+import { Alert, FlatList, Dimensions, StyleSheet, Image, AsyncStorage, TouchableOpacity } from 'react-native';
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, Item, Thumbnail, Grid, Col } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import URL from '../../component/server'
@@ -90,18 +90,15 @@ export default class Support extends Component {
                                <TouchableOpacity style={styles.oneRow}
                 underlayColor="red">
                 <View style={{ marginRight: 15 }}>
-                <Icon
-                        active
-                        name="headphones"
-                        type='font-awesome'
-                        size={50}
-                        color={color.secondary_color}
-                    />
+                <Image
+               style={{height:50, resizeMode: 'contain',}}
+               source={require('../../assets/call.png')} 
+               /> 
                 </View>
                
                 <View style={{ flex: 1 ,  justifyContent: 'center',}}>
                     <Text style={{ color: "#fff", fontSize: 14, fontWeight: '500' }}>Call us on </Text>
-                    <Text style={{ color: "#fff", fontSize: 12, fontWeight: '600' }}> 081000000000000 or 081000000000  </Text>
+                    <Text style={{ color: "#fff", fontSize: 12, fontWeight: '600' }}> 08100030442 or 09050701111  </Text>
                 </View>
             </TouchableOpacity>
 
@@ -113,7 +110,7 @@ export default class Support extends Component {
                         name="whatsapp"
                         type='font-awesome'
                         size={50}
-                        color={color.secondary_color}
+                        color={'#fff'}
                     />
                 </View>
                
@@ -125,35 +122,29 @@ export default class Support extends Component {
             <TouchableOpacity style={styles.oneRow}
                 underlayColor="red">
                 <View style={{ marginRight: 15 }}>
-                <Icon
-                        active
-                        name="telegram"
-                        type='font-awesome'
-                        size={50}
-                        color={color.secondary_color}
-                    />
+                <Image
+               style={{height:50, resizeMode: 'contain',}}
+               source={require('../../assets/tell.png')} 
+               /> 
                 </View>
                
                 <View style={{ flex: 1 ,  justifyContent: 'center',}}>
                     <Text style={{ color: "#fff", fontSize: 14, fontWeight: '500' }}>Chat with us on Telegram</Text>
-                    <Text style={{ color: "#fff", fontSize: 12, fontWeight: '600' }}> Click her to chat </Text>
+                    <Text style={{ color: "#fff", fontSize: 12, fontWeight: '600' }}> Click here to chat </Text>
                 </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.oneRow}
                 underlayColor="red">
                 <View style={{ marginRight: 15 }}>
-                <Icon
-                        active
-                        name="mail"
-                        type='antdesign'
-                        size={50}
-                        color={color.secondary_color}
-                    />
+                <Image
+               style={{height:50, resizeMode: 'contain',}}
+               source={require('../../assets/mail.png')} 
+               /> 
                 </View>
                
                 <View style={{ flex: 1 ,  justifyContent: 'center',}}>
                     <Text style={{ color: "#fff", fontSize: 14, fontWeight: '500' }}>Send us an e-mail at </Text>
-                    <Text style={{ color: "#fff", fontSize: 12, fontWeight: '600' }}> stacklotto@us  </Text>
+                    <Text style={{ color: "#fff", fontSize: 12, fontWeight: '600' }}> support@stacklotto.com  </Text>
                 </View>
             </TouchableOpacity>
 

@@ -1,6 +1,6 @@
 // React native and others libraries imports
 import React, { Component } from 'react';
-import { Alert, ImageBackground, FlatList, Dimensions, StyleSheet, Image, AsyncStorage, TouchableOpacity } from 'react-native';
+import { Alert, TextInput, FlatList, Dimensions, StyleSheet, Image, AsyncStorage, TouchableOpacity } from 'react-native';
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, Item, Thumbnail, Grid, Col } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import URL from '../../component/server'
@@ -51,10 +51,11 @@ export default class WalletTransactions extends Component {
             condition: false,
             account: '',
             complete_transaction: false,
-            showFilter: true,
+            showFilter: false,
             startdate: "2019-05-29",
             enddate: "2019-05-29",
             todate: "2019-06-11",
+            result: false
         };
     }
 
@@ -76,7 +77,7 @@ export default class WalletTransactions extends Component {
     render() {
 
         const placeholder = {
-            label: 'All Transaction',
+            label: 'All Transactions',
             value: null,
             color: "#000",
         };
@@ -111,7 +112,7 @@ export default class WalletTransactions extends Component {
 
         return (
             <Container style={{ backgroundColor: color.primary_color }}>
-                <Navbar left={left} title='History' bg='#fff' tbg='#000' />
+                <Navbar left={left} title='Wallet' bg='#fff' tbg='#000' />
                 <Content>
                     <View style={styles.backgroundImage}>
                         <View style={{ flex: 1 }}>
@@ -155,13 +156,13 @@ export default class WalletTransactions extends Component {
 
                             <View style={{ flexDirection: 'row', marginTop: 30 }}>
 
-                                <Button onPress={()=> Actions.how()}  style={[styles.secondaryButtonContainer, { backgroundColor: "#fff" }]} block iconLeft>
+                                <Button onPress={() => Actions.how()} style={[styles.secondaryButtonContainer, { backgroundColor: "#fff" }]} block iconLeft>
 
                                     <Text style={{ color: '#000', fontSize: 14, fontWeight: '500' }}>FUND WALLET </Text>
                                 </Button>
 
 
-                                <Button onPress={()=> Actions.createW()}  style={styles.secondaryButtonContainer} block iconLeft>
+                                <Button onPress={() => Actions.createW()} style={styles.secondaryButtonContainer} block iconLeft>
 
                                     <Text style={{ color: '#fff', fontSize: 14, fontWeight: '500' }}>WITHDRAW </Text>
                                 </Button>
@@ -183,6 +184,7 @@ export default class WalletTransactions extends Component {
                                             <View style={{ flex: 1 }}>
                                                 <RNPickerSelect
                                                     placeholder={placeholder}
+                                                    placeholderTextColor={'#000'}
                                                     items={sports}
                                                     onValueChange={value => {
                                                         this.setState({
@@ -209,67 +211,49 @@ export default class WalletTransactions extends Component {
                                     </View>
                                     :
                                     <View style={styles.bigCard}>
-                                        <View style={{ marginLeft: 30 }} >
-                                            <Text>Filter Transactions</Text>
+                                        <View style={{ marginTop: 20 }} >
+                                            <Text style={{ color: '#000', fontSize: 12, marginLeft: 15, fontWeight:'500' }}>Filter Transactions</Text>
                                         </View>
 
                                         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-                                            <View style={{ flex: 1, marginLeft: 15 }}>
-                                                <Text style={{ color: '#000', fontSize: 14, fontWeight: '500' }}>End Date </Text>
-                                                <DatePicker
-                                                    style={{ flex: 1 }}
-                                                    date={this.state.startdate}
-                                                    mode="date"
-                                                    dateText
-                                                    placeholder="select date"
-                                                    format="YYYY-MM-DD"
-                                                    minDate={this.state.today}
-                                                    showIcon={false}
-                                                    confirmBtnText="Confirm"
-                                                    cancelBtnText="Cancel"
-                                                    customStyles={{
-                                                        dateText: {
-                                                            color: '#000',
-                                                            fontSize: 14
-                                                        },
-                                                        dateInput: {
-                                                            color: '#010113',
-                                                            borderColor: '#010113',
-                                                            width: 400
-                                                        }
-                                                        // ... You can check the source to find the other keys.
-                                                    }}
-                                                    onDateChange={(date) => { this.setState({ startdate: date }) }}
-                                                />
+                                            <View style={{ flex: 1, }}>
+                                                <Text style={{ color: '#000', fontSize: 12, marginLeft: 15 }}>Start Date </Text>
+                                                <View style={styles.inputView}>
+                                                    <TextInput
+                                                        placeholder="27/02/2002"
+                                                        placeholderTextColor={color.primary_color}
+                                                        returnKeyType="next"
+                                                        onSubmitEditing={() => this.passwordInput.focus()}
+                                                        keyboardType='email-address'
+                                                        autoCapitalize="none"
+                                                        autoCorrect={false}
+                                                        inlineImageLeft='ios-call'
+                                                        style={{ flex: 1 }}
+                                                        onChangeText={text => this.setState({ phone: text })}
+                                                    />
+
+
+                                                </View>
                                             </View>
 
-                                            <View style={{ flex: 1, marginLeft: 15 }}>
-                                                <Text style={{ color: '#000', fontSize: 14, fontWeight: '500' }}>End Date </Text>
-                                                <DatePicker
-                                                    style={{ flex: 1 }}
-                                                    date={this.state.startdate}
-                                                    mode="date"
-                                                    dateText
-                                                    placeholder="select date"
-                                                    format="YYYY-MM-DD"
-                                                    minDate={this.state.today}
-                                                    showIcon={false}
-                                                    confirmBtnText="Confirm"
-                                                    cancelBtnText="Cancel"
-                                                    customStyles={{
-                                                        dateText: {
-                                                            color: '#000',
-                                                            fontSize: 14
-                                                        },
-                                                        dateInput: {
-                                                            color: '#010113',
-                                                            borderColor: '#010113',
-                                                            width: 400
-                                                        }
-                                                        // ... You can check the source to find the other keys.
-                                                    }}
-                                                    onDateChange={(date) => { this.setState({ startdate: date }) }}
-                                                />
+                                            <View style={{ flex: 1, }}>
+                                                <Text style={{ color: '#000', fontSize: 12, marginLeft: 15 }}>End Date </Text>
+                                                <View style={styles.inputView}>
+                                                    <TextInput
+                                                        placeholder="27/02/2002"
+                                                        placeholderTextColor={color.primary_color}
+                                                        returnKeyType="next"
+                                                        onSubmitEditing={() => this.passwordInput.focus()}
+                                                        keyboardType='email-address'
+                                                        autoCapitalize="none"
+                                                        autoCorrect={false}
+                                                        inlineImageLeft='ios-call'
+                                                        style={{ flex: 1 }}
+                                                        onChangeText={text => this.setState({ phone: text })}
+                                                    />
+
+
+                                                </View>
                                             </View>
                                         </View>
 
@@ -279,6 +263,7 @@ export default class WalletTransactions extends Component {
                                                 <View style={{ flex: 1 }}>
                                                     <RNPickerSelect
                                                         placeholder={placeholder}
+                                                        placeholderTextColor={'#000'}
                                                         items={sports}
                                                         onValueChange={value => {
                                                             this.setState({
@@ -290,18 +275,10 @@ export default class WalletTransactions extends Component {
                                                         useNativeAndroidPickerStyle={false}
 
                                                     /></View>
-                                                <TouchableOpacity style={{ alignItems: 'center', justifyContent: 'center', marginRight: 20 }}>
-                                                    <Icon
-                                                        active
-                                                        name="md-arrow-dropdown-circle"
-                                                        type='ionicon'
-                                                        color='#5f6066'
-                                                    />
-                                                </TouchableOpacity>
 
                                             </View>
 
-                                            <Button style={styles.primaryButtonContainer} block iconLeft>
+                                            <Button onPress={() => this.setState({ result: true, })} style={styles.primaryButtonContainer} block iconLeft>
 
                                                 <Text style={{ color: '#fff', fontSize: 14, fontWeight: '500' }}>SHOW </Text>
                                             </Button>
@@ -310,18 +287,25 @@ export default class WalletTransactions extends Component {
 
                             }
 
-                            <View style={{ marginTop: 15 }}>
 
-                                <FlatList
-                                    style={{ paddingBottom: 5 }}
-                                    data={sports}
-                                    renderItem={this.renderItem}
-                                    keyExtractor={item => item.id}
-                                    ItemSeparatorComponent={this.renderSeparator}
-                                    ListHeaderComponent={this.renderHeader}
-                                />
+                            {this.state.result ?
+                                <View style={{ marginTop: 15 }}>
 
-                            </View>
+                                    <FlatList
+                                        style={{ paddingBottom: 5 }}
+                                        data={sports}
+                                        renderItem={this.renderItem}
+                                        keyExtractor={item => item.id}
+                                        ItemSeparatorComponent={this.renderSeparator}
+                                        ListHeaderComponent={this.renderHeader}
+                                    />
+
+                                </View>
+                                :
+                                null
+
+
+                            }
 
 
                         </View>
@@ -391,7 +375,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10
     },
     primaryButtonContainer: {
-        height: 45,
+        height: 40,
         backgroundColor: color.primary_color,
         marginLeft: 7,
         marginRight: 12,
@@ -422,18 +406,18 @@ const styles = StyleSheet.create({
         fontWeight: '900'
     },
     inputView: {
-        height: 45,
+        height: 40,
         flexDirection: 'row',
         color: color.primary_color,
-        marginLeft: 12,
-        marginRight: 12,
+        marginLeft: 15,
+        marginRight: 15,
         backgroundColor: "#fff",
         fontSize: 13,
         marginBottom: 10,
         paddingLeft: 10,
         justifyContent: 'center',
         flex: 1,
-        borderWidth: 1,
+        borderWidth: 0.8,
         borderColor: color.primary_color,
     },
     information: {
@@ -441,6 +425,7 @@ const styles = StyleSheet.create({
         color: '#fff',
         marginTop: 10,
         fontSize: 12,
+        fontWeight: '900'
     },
     informationHead: {
         marginLeft: 12,
@@ -448,7 +433,7 @@ const styles = StyleSheet.create({
         marginTop: 13,
         marginBottom: 13,
         fontSize: 13,
-        fontWeight: '400'
+        fontWeight: '800'
     },
     card: {
         justifyContent: 'center',
@@ -484,11 +469,9 @@ const styles = StyleSheet.create({
         fontWeight: '500',
     },
     bigCard: {
-        justifyContent: 'center',
         backgroundColor: color.white,
         shadowColor: '#000',
         backgroundColor: "#fff",
-        alignItems: 'center',
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.5,
         shadowRadius: 1,
@@ -512,7 +495,7 @@ const pickerSelectStyles = StyleSheet.create({
         paddingRight: 30, // to ensure the text is never behind the icon
     },
     inputAndroid: {
-        fontSize: 12,
+        fontSize: 13,
         paddingHorizontal: 10,
         paddingVertical: 8,
         color: 'black',
