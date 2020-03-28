@@ -127,74 +127,82 @@ export default class History extends Component {
                                     <Text style={{ color: '#000', fontSize: 12, fontWeight:'500', marginLeft: 15 }}>Filter History</Text>
                                 </View>
 
-                                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-                                    <View style={{ flex: 1, }}>
-                                        <Text style={{ color: '#000', fontSize: 12, marginLeft: 15 }}>Start Date </Text>
-                                        <View style={styles.inputView}>
-                                            <TextInput
-                                                placeholder="27/02/2002"
-                                                placeholderTextColor={color.primary_color}
-                                                returnKeyType="next"
-                                                onSubmitEditing={() => this.passwordInput.focus()}
-                                                keyboardType='email-address'
-                                                autoCapitalize="none"
-                                                autoCorrect={false}
-                                                inlineImageLeft='ios-call'
-                                                style={{ flex: 1 }}
-                                                onChangeText={text => this.setState({ phone: text })}
-                                            />
+                              
+                                <View style={{ flexDirection:'row'}}>
+                                 <View style={{ marginTop: 10,  flex:1  }}>
+                                          <View style={{ flex: 1, }}>
+                                                <Text style={{ color: '#000', fontSize: 12, marginLeft: 15 }}>Start Date </Text>
+                                                <View style={styles.inputView}>
+                                                    <TextInput
+                                                        placeholder="27/02/2002"
+                                                        placeholderTextColor={color.primary_color}
+                                                        returnKeyType="next"
+                                                        onSubmitEditing={() => this.passwordInput.focus()}
+                                                        keyboardType='email-address'
+                                                        autoCapitalize="none"
+                                                        autoCorrect={false}
+                                                        inlineImageLeft='ios-call'
+                                                        style={{ flex: 1 }}
+                                                        onChangeText={text => this.setState({ phone: text })}
+                                                    />
 
 
+                                                </View>
+                                            </View>
+                                            <View style={styles.inputView}>
+                                                <View style={{ flex: 1 }}>
+                                                    <RNPickerSelect
+                                                        placeholder={placeholder}
+                                                        placeholderTextColor={'#000'}
+                                                        items={sports}
+                                                        onValueChange={value => {
+                                                            this.setState({
+                                                                account: value,
+                                                            });
+                                                        }}
+                                                        style={pickerSelectStyles}
+                                                        value={this.state.account}
+                                                        useNativeAndroidPickerStyle={false}
+
+                                                    /></View>
+
+                                            </View>
+
+                                          
                                         </View>
-                                    </View>
+                                        <View style={{  marginTop: 10, flex:1 }}>
+                                           
 
-                                    <View style={{ flex: 1, }}>
-                                        <Text style={{ color: '#000', fontSize: 12, marginLeft: 15 }}>End Date </Text>
-                                        <View style={styles.inputView}>
-                                            <TextInput
-                                                placeholder="27/02/2002"
-                                                placeholderTextColor={color.primary_color}
-                                                returnKeyType="next"
-                                                onSubmitEditing={() => this.passwordInput.focus()}
-                                                keyboardType='email-address'
-                                                autoCapitalize="none"
-                                                autoCorrect={false}
-                                                inlineImageLeft='ios-call'
-                                                style={{ flex: 1 }}
-                                                onChangeText={text => this.setState({ phone: text })}
-                                            />
+                                            <View style={{ flex: 1, }}>
+                                                <Text style={{ color: '#000', fontSize: 12, marginLeft: 15 }}>End Date </Text>
+                                                <View style={styles.inputView}>
+                                                    <TextInput
+                                                        placeholder="27/02/2002"
+                                                        placeholderTextColor={color.primary_color}
+                                                        returnKeyType="next"
+                                                        onSubmitEditing={() => this.passwordInput.focus()}
+                                                        keyboardType='email-address'
+                                                        autoCapitalize="none"
+                                                        autoCorrect={false}
+                                                        inlineImageLeft='ios-call'
+                                                        style={{ flex: 1 }}
+                                                        onChangeText={text => this.setState({ phone: text })}
+                                                    />
 
 
+                                                </View>
+                                            </View>
+
+                                            <View style={[styles.inputView,{borderColor:'#fff', paddingLeft:0}]}>
+                                            <TouchableOpacity onPress={() => this.setState({ result: true, })} style={styles.primaryButtonContainer} block iconLeft>
+
+                                            <Text style={{ color: '#fff', fontSize: 14, fontWeight: '500' }}>SHOW </Text>
+                                            </TouchableOpacity>
+                                            </View>
                                         </View>
-                                    </View>
-                                </View>
 
-                                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-
-                                    <View style={styles.inputView}>
-                                        <View style={{ flex: 1 }}>
-                                            <RNPickerSelect
-                                                placeholder={placeholder}
-                                                placeholderTextColor={'#000'}
-                                                items={sports}
-                                                onValueChange={value => {
-                                                    this.setState({
-                                                        account: value,
-                                                    });
-                                                }}
-                                                style={pickerSelectStyles}
-                                                value={this.state.account}
-                                                useNativeAndroidPickerStyle={false}
-
-                                            /></View>
-
-                                    </View>
-
-                                    <Button  onPress={() =>  this.setState({ result: true, })} style={styles.secondaryButtonContainer} block iconLeft>
-
-                                        <Text style={{ color: '#fff', fontSize: 14, fontWeight: '500' }}>SHOW </Text>
-                                    </Button>
-                                </View>
+                                       
+                                        </View>
                             </View>
 
                             {this.state.result ?
@@ -290,9 +298,9 @@ const styles = StyleSheet.create({
     },
     primaryButtonContainer: {
         height: 40,
-        backgroundColor: color.primary_color,
-        marginLeft: 7,
-        marginRight: 12,
+        justifyContent: 'center',
+        alignItems:'center',
+        backgroundColor: color.secondary_color,
         borderRadius: 5,
         flex: 1,
 

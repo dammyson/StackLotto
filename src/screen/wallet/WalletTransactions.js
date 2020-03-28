@@ -215,8 +215,10 @@ export default class WalletTransactions extends Component {
                                             <Text style={{ color: '#000', fontSize: 12, marginLeft: 15, fontWeight:'500' }}>Filter Transactions</Text>
                                         </View>
 
-                                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-                                            <View style={{ flex: 1, }}>
+
+                                 <View style={{ flexDirection:'row'}}>
+                                 <View style={{ marginTop: 10,  flex:1  }}>
+                                          <View style={{ flex: 1, }}>
                                                 <Text style={{ color: '#000', fontSize: 12, marginLeft: 15 }}>Start Date </Text>
                                                 <View style={styles.inputView}>
                                                     <TextInput
@@ -235,6 +237,29 @@ export default class WalletTransactions extends Component {
 
                                                 </View>
                                             </View>
+                                            <View style={styles.inputView}>
+                                                <View style={{ flex: 1 }}>
+                                                    <RNPickerSelect
+                                                        placeholder={placeholder}
+                                                        placeholderTextColor={'#000'}
+                                                        items={sports}
+                                                        onValueChange={value => {
+                                                            this.setState({
+                                                                account: value,
+                                                            });
+                                                        }}
+                                                        style={pickerSelectStyles}
+                                                        value={this.state.account}
+                                                        useNativeAndroidPickerStyle={false}
+
+                                                    /></View>
+
+                                            </View>
+
+                                          
+                                        </View>
+                                        <View style={{  marginTop: 10, flex:1 }}>
+                                           
 
                                             <View style={{ flex: 1, }}>
                                                 <Text style={{ color: '#000', fontSize: 12, marginLeft: 15 }}>End Date </Text>
@@ -255,33 +280,16 @@ export default class WalletTransactions extends Component {
 
                                                 </View>
                                             </View>
+
+                                            <View style={[styles.inputView,{borderColor:'#fff', paddingLeft:0}]}>
+                                            <TouchableOpacity onPress={() => this.setState({ result: true, })} style={styles.primaryButtonContainer} block iconLeft>
+
+                                            <Text style={{ color: '#fff', fontSize: 14, fontWeight: '500' }}>SHOW </Text>
+                                            </TouchableOpacity>
+                                            </View>
                                         </View>
 
-                                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-
-                                            <View style={styles.inputView}>
-                                                <View style={{ flex: 1 }}>
-                                                    <RNPickerSelect
-                                                        placeholder={placeholder}
-                                                        placeholderTextColor={'#000'}
-                                                        items={sports}
-                                                        onValueChange={value => {
-                                                            this.setState({
-                                                                account: value,
-                                                            });
-                                                        }}
-                                                        style={pickerSelectStyles}
-                                                        value={this.state.account}
-                                                        useNativeAndroidPickerStyle={false}
-
-                                                    /></View>
-
-                                            </View>
-
-                                            <Button onPress={() => this.setState({ result: true, })} style={styles.primaryButtonContainer} block iconLeft>
-
-                                                <Text style={{ color: '#fff', fontSize: 14, fontWeight: '500' }}>SHOW </Text>
-                                            </Button>
+                                       
                                         </View>
                                     </View>
 
@@ -364,7 +372,7 @@ const styles = StyleSheet.create({
 
     },
     input: {
-        height: 45,
+        height: 40,
         color: color.primary_color,
         marginLeft: 30,
         marginRight: 30,
@@ -372,13 +380,14 @@ const styles = StyleSheet.create({
         fontSize: 14,
         marginTop: 10,
         marginBottom: 10,
-        paddingLeft: 10
+        paddingLeft: 10,
+       
     },
     primaryButtonContainer: {
         height: 40,
+        justifyContent: 'center',
+        alignItems:'center',
         backgroundColor: color.primary_color,
-        marginLeft: 7,
-        marginRight: 12,
         borderRadius: 5,
         flex: 1,
 
@@ -415,7 +424,7 @@ const styles = StyleSheet.create({
         fontSize: 13,
         marginBottom: 10,
         paddingLeft: 10,
-        justifyContent: 'center',
+       
         flex: 1,
         borderWidth: 0.8,
         borderColor: color.primary_color,
@@ -469,6 +478,7 @@ const styles = StyleSheet.create({
         fontWeight: '500',
     },
     bigCard: {
+       
         backgroundColor: color.white,
         shadowColor: '#000',
         backgroundColor: "#fff",

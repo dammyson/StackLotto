@@ -148,7 +148,7 @@ export default class BankPayment extends Component {
                             </View>
 
 
-                               <Text style={styles.informationHead}>Transfer the ammount you wish to fund using your banc USSD or mobile banking</Text>
+                               <Text style={styles.informationHead}>Transfer the amount you wish to fund using your banc USSD or mobile banking</Text>
                                <Text style={styles.informationHead}>Your Stacklotton deposit wallet will be funded immidiately</Text>
 
 
