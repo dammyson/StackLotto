@@ -4,7 +4,7 @@ import { Alert, ImageBackground, TextInput, Dimensions, StyleSheet, Image, Async
 import { Container, Content, View, Text,Button, Left, Right, Body, Title, List, Item, Thumbnail, Grid, Col } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import URL from '../../component/server'
-import { PulseIndicator } from 'react-native-indicators';
+import { RippleLoader } from 'react-native-indicator';
 
 import color from '../../component/color'
 import { Card, Icon, SocialIcon } from 'react-native-elements'
@@ -16,10 +16,14 @@ export default class Login extends Component {
     super(props);
     this.state = {
       items: [],
+      email: '',
+      first_name: '',
+      last_name: '',
       phone: '',
+      password: '',
+      password2: '',
       loading: false,
-      type: '',
-      condition: false
+      agree: false
     };
   }
 
@@ -34,29 +38,36 @@ export default class Login extends Component {
 
   registrationRequest() {
 
-    const { phone, type } = this.state
+    const { phone,email, last_name, first_name, password,agree,  password2} = this.state
 
-    if (phone == "") {
-      Alert.alert('Validation failed', 'Phone field cannot be empty', [{ text: 'Okay' }])
+    if (phone == "" || email == "" || last_name == "" || first_name == "" || password == "" || password2 == "") {
+      Alert.alert('Validation failed', 'one or more fields are empty', [{ text: 'Okay' }])
       return
     } else {
-      if (phone.length == 15 || phone.length == 11) {
+    }
+    if (!agree) {
+      Alert.alert('Validation failed', 'Please agree to our terms and conditons', [{ text: 'Okay' }])
+      return
+    } else {
+     
 
-      } else {
-        Alert.alert('Validation failed', 'Phone number is invalid', [{ text: 'Okay' }])
-      }
 
     }
+  
     this.setState({ loading: true })
-    var phonenumber = 0 + phone.substr(phone.length - 10);
-    const formData = new FormData();
-    formData.append('phone', phonenumber);
-    formData.append('user_type', type)
-    this.setState({ loading: true })
-    fetch(URL.url + '/register', {
+    fetch(URL.url + 'profile/register', {
       method: 'POST', headers: {
         Accept: 'application/json',
-      }, body: formData,
+        'Content-Type': 'application/json',
+      }, body: JSON.stringify({
+        email: email,
+        first_name: first_name,
+        last_name: last_name,
+        phone: phone,
+        age: 23,
+        password: password,
+        password2: password2,
+      }),
     })
       .then(this.processResponse)
       .then(res => {
@@ -99,8 +110,9 @@ export default class Login extends Component {
         >
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <View style={styles.welcome}>
-              <PulseIndicator color={color.slide_color_dark} size={70} />
+              <RippleLoader color={color.slide_color_dark} size={50} />
             </View>
+            <Text style={{ color: color.slide_color_dark }}>login in... </Text>
           </View>
         </View>
       );
@@ -127,7 +139,7 @@ export default class Login extends Component {
                     placeholder="Enter Phone number"
                     placeholderTextColor={color.primary_color}
                     returnKeyType="next"
-                    onSubmitEditing={() => this.passwordInput.focus()}
+                    onSubmitEditing={() => this.first_name.focus()}
                     keyboardType='email-address'
                     autoCapitalize="none"
                     autoCorrect={false}
@@ -141,16 +153,34 @@ export default class Login extends Component {
                   
                 <View style={ styles.inputView}>
                 <TextInput
-                    placeholder="Full Name"
+                    placeholder="First Name"
                     placeholderTextColor={color.primary_color}
                     returnKeyType="next"
-                    onSubmitEditing={() => this.passwordInput.focus()}
+                    onSubmitEditing={() => this.last_name.focus()}
                     keyboardType='email-address'
                     autoCapitalize="none"
                     autoCorrect={false}
                     inlineImageLeft='ios-call'
                     style={{flex:1}}
-                    onChangeText={text => this.setState({ phone: text })}
+                    ref={(input) => this.first_name = input}
+                    onChangeText={text => this.setState({ first_name: text })}
+                  />
+
+                   
+                </View>
+                <View style={ styles.inputView}>
+                <TextInput
+                    placeholder="Last Name"
+                    placeholderTextColor={color.primary_color}
+                    returnKeyType="next"
+                    onSubmitEditing={() => this.email.focus()}
+                    keyboardType='email-address'
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    inlineImageLeft='ios-call'
+                    style={{flex:1}}
+                    ref={(input) => this.last_name = input}
+                    onChangeText={text => this.setState({ last_name: text })}
                   />
 
                    
@@ -160,12 +190,13 @@ export default class Login extends Component {
                     placeholder="Email"
                     placeholderTextColor={color.primary_color}
                     returnKeyType="next"
-                    onSubmitEditing={() => this.passwordInput.focus()}
+                    onSubmitEditing={() => this.password.focus()}
                     keyboardType='email-address'
                     autoCapitalize="none"
                     autoCorrect={false}
                     inlineImageLeft='ios-call'
                     style={{flex:1}}
+                    ref={(input) => this.email = input}
                     onChangeText={text => this.setState({ email: text })}
                   />
 
@@ -177,12 +208,13 @@ export default class Login extends Component {
                     placeholder="Password"
                     placeholderTextColor={color.primary_color}
                     returnKeyType="next"
-                    onSubmitEditing={() => this.passwordInput.focus()}
+                    onSubmitEditing={() => this.password2.focus()}
                     keyboardType='email-address'
                     autoCapitalize="none"
                     autoCorrect={false}
                     inlineImageLeft='ios-call'
                     style={{flex:1}}
+                    ref={(input) => this.password = input}
                     onChangeText={text => this.setState({ password: text })}
                   />
 
@@ -200,12 +232,13 @@ export default class Login extends Component {
                     placeholder="Confirm Password"
                     placeholderTextColor={color.primary_color}
                     returnKeyType="next"
-                    onSubmitEditing={() => this.passwordInput.focus()}
+                    onSubmitEditing={() => this.registrationRequest()}
                     keyboardType='email-address'
                     autoCapitalize="none"
                     autoCorrect={false}
                     inlineImageLeft='ios-call'
                     style={{flex:1}}
+                    ref={(input) => this.password2 = input}
                     onChangeText={text => this.setState({ c_password: text })}
                   />
 
@@ -220,26 +253,37 @@ export default class Login extends Component {
                 </View>
 
               <View style={{marginTop: 9,  marginBottom: 9,flexDirection:'row' , marginLeft:45,   alignItems: 'center',}}>
-              <View style={[{
-                        height: 22,
-                        width: 22,
-                        borderWidth: 1.5,
-                        borderColor: '#000',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        marginRight:10
-                    }]}>
-                    {this.state.condition ?
-                        <View style={{
-                            height: 10,
-                            width: 10,
-                            backgroundColor: '#000',
-                        }} />
+              { !this.state.agree ?
+              <TouchableOpacity onPress={() => this.setState({ agree: true })} style={[{
+                height: 18,
+                width: 18,
+                borderWidth: 1,
+                borderColor: '#000',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginRight: 3
+            }]}>
+               
+                </TouchableOpacity>
+                :
+                <TouchableOpacity onPress={() => this.setState({  agree: false})} style={[{
+                  height: 18,
+                  width: 18,
+                  borderWidth: 1,
+                  borderColor: '#000',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: 3
+              }]}>
+                <View style={{
+                          height: 12,
+                          width: 12,
+                          backgroundColor: '#000',
+                      }} />
+                </TouchableOpacity>
 
-                    :
-                        null
-                    }
-                    </View>
+            }
+
               <Text style={{ color: color.primary_colo, fontSize:14, fontWeight: '200' }}>I agreed to </Text> 
               <TouchableOpacity>
               <Text style={{ color: color.primary_colo,  fontSize:14,fontWeight: '400' }}>Terms & Conditions  </Text> 

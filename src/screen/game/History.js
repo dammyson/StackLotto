@@ -131,7 +131,7 @@ export default class History extends Component {
                                 <View style={{ flexDirection:'row'}}>
                                  <View style={{ marginTop: 10,  flex:1  }}>
                                           <View style={{ flex: 1, }}>
-                                                <Text style={{ color: '#000', fontSize: 12, marginLeft: 15 }}>Start Date </Text>
+                                                <Text style={{ color: '#000', fontSize: 12, fontWeight:'700', marginLeft: 15 }}>Start Date </Text>
                                                 <View style={styles.inputView}>
                                                     <TextInput
                                                         placeholder="27/02/2002"
@@ -174,7 +174,7 @@ export default class History extends Component {
                                            
 
                                             <View style={{ flex: 1, }}>
-                                                <Text style={{ color: '#000', fontSize: 12, marginLeft: 15 }}>End Date </Text>
+                                                <Text style={{ color: '#000', fontWeight:'700', fontSize: 12, marginLeft: 15 }}>End Date </Text>
                                                 <View style={styles.inputView}>
                                                     <TextInput
                                                         placeholder="27/02/2002"

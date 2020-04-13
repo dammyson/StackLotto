@@ -1,6 +1,5 @@
 module.exports = {
-  url: "http://paychange-dev.northeurope.cloudapp.azure.com/",
-  urltwo: "http://paychange-dev.northeurope.cloudapp.azure.com:90/",
+  url: "http://stacklotto.clearcode.com.ng/api/",
   bgcolor: "#01215B",
   homelinkcolor: "#F15B2D",
   

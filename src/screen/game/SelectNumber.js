@@ -1,7 +1,7 @@
 // React native and others libraries imports
 import React, { Component } from 'react';
 import { Alert, ImageBackground, TextInput, Dimensions, StyleSheet, Image, AsyncStorage, TouchableOpacity } from 'react-native';
-import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, Item, Thumbnail, Grid, Col } from 'native-base';
+import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, Item, Thumbnail, Grid, Col, Header } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import URL from '../../component/server'
 import { PulseIndicator } from 'react-native-indicators';
@@ -45,28 +45,6 @@ export default class SelectNumber extends Component {
       color: "#000",
     };
 
-    var left = (
-      <Left style={{ flex: 1 }}>
-        <Button transparent onPress={() => Actions.pop()}>
-          <Icon
-            active
-            name="arrowleft"
-            type='antdesign'
-            color={color.primary_color}
-          />
-        </Button>
-      </Left>
-    );
-
-    var right = (
-      <Right style={{ flex: 1 }}>
-      <View>
-      <Text style={{ color: '#000', fontSize: 12, fontWeight: '600' }}>My Balance</Text>
-        <Text style={{ color: '#000', fontSize: 12, fontWeight: '600' }}>N 45,000.00 </Text>
-      </View>
-       
-      </Right>
-    );
 
 
     if (this.state.loading) {
@@ -85,7 +63,38 @@ export default class SelectNumber extends Component {
 
     return (
       <Container style={{ backgroundColor: color.primary_color }}>
-        <Navbar right={right} left={left} title='6/49' bg='#fff' />
+
+        <Header
+          style={{ backgroundColor: '#fff' }}
+          androidStatusBarColor={color.white}
+          noShadow={true}
+        >
+          <Left style={{ flex: 1 }}>
+            <Button transparent onPress={() => Actions.pop()}>
+              <Icon
+                active
+                name="arrowleft"
+                type='antdesign'
+                color={color.primary_color}
+              />
+            </Button>
+          </Left>
+          <Body style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'flex-start', }}>
+            <Image
+               style={{ width: 120,height: 50,resizeMode: 'contain'}}
+               source={require('../../assets/six.png')} 
+               />  
+          </Body>
+          <Right style={{ flex: 1 }}>
+            <View>
+              <Text style={{ color: '#000', fontSize: 12, fontWeight: '600' }}>My Balance</Text>
+              <Text style={{ color: '#000', fontSize: 12, fontWeight: '600' }}>N 45,000.00 </Text>
+            </View>
+
+          </Right>
+        </Header>
+
+
         <Content>
           <View style={styles.backgroundImage}>
 
@@ -110,7 +119,7 @@ export default class SelectNumber extends Component {
                   onChangeText={text => this.setState({ password: text })}
                 />
 
-                <TouchableOpacity style={{ height: 40, flexDirection: 'row', marginRight: 10, flex: 2, alignItems: 'center', justifyContent: 'center', backgroundColor: color.secondary_color }}>
+                <TouchableOpacity style={{ height: 40, flexDirection: 'row', marginRight: 10, flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: color.secondary_color }}>
                   <Text style={{ color: '#fff', fontSize: 15, fontWeight: '600' }}>Quick Play </Text>
                 </TouchableOpacity>
 
@@ -118,36 +127,36 @@ export default class SelectNumber extends Component {
 
 
 
-<View style={{ alignItems: 'center', justifyContent: 'center', }}>
-              <View style={styles.newmultipleContainer}>
-                {multipleData.map(interest => (
-                  <SelectMultipleButton
-                    key={interest}
-                    buttonViewStyle={styles.buttonViewStyle}
-                    textStyle={{
-                      fontSize: 13,
-                      margin: 20,
-                      color: '#000',
-                    }}
-                    highLightStyle={{
-                      borderColor: "white",
-                      backgroundColor: "white",
-                      textColor: "#000",
-                      fontWeight: '900',
-                      borderTintColor: color.primary_color,
-                      backgroundTintColor: "#ee005e",
-                      textTintColor: "#fff"
-                    }}
-                    value={interest}
-                    selected={this.state.multipleSelectedData.includes(interest)}
-                    singleTap={valueTap =>
-                      this._singleTapMultipleSelectedButtons(interest)
-                    }
-                  />
-                ))}
-              </View>
+              <View style={{ alignItems: 'center', justifyContent: 'center', }}>
+                <View style={styles.newmultipleContainer}>
+                  {multipleData.map(interest => (
+                    <SelectMultipleButton
+                      key={interest}
+                      buttonViewStyle={styles.buttonViewStyle}
+                      textStyle={{
+                        fontSize: 13,
+                        margin: 20,
+                        color: '#000',
+                      }}
+                      highLightStyle={{
+                        borderColor: "white",
+                        backgroundColor: "white",
+                        textColor: "#000",
+                        fontWeight: '900',
+                        borderTintColor: color.primary_color,
+                        backgroundTintColor: "#ee005e",
+                        textTintColor: "#fff"
+                      }}
+                      value={interest}
+                      selected={this.state.multipleSelectedData.includes(interest)}
+                      singleTap={valueTap =>
+                        this._singleTapMultipleSelectedButtons(interest)
+                      }
+                    />
+                  ))}
+                </View>
 
-</View>
+              </View>
               <View style={{ flexDirection: 'row', marginBottom: 20, marginTop: 40, }}>
                 <View style={{ flexWrap: "wrap", flexDirection: "row", marginLeft: 20, justifyContent: "center", }}>
                   {this.state.multipleSelectedData.map(interest => (
@@ -202,7 +211,7 @@ export default class SelectNumber extends Component {
               {this.renderslelcted()}
 
 
-              <TouchableOpacity onPress={() => this.play()} style={{ height: 50, flexDirection: 'row', margin: 30, alignItems: 'center', justifyContent: 'center', backgroundColor:color.secondary_color} }>
+              <TouchableOpacity onPress={() => this.play()} style={{ height: 50, flexDirection: 'row', margin: 30, alignItems: 'center', justifyContent: 'center', backgroundColor: color.secondary_color }}>
                 <Text style={{ color: '#fff', fontSize: 15, marginRight: 15, marginLeft: 15, fontWeight: '600' }}>Play </Text>
               </TouchableOpacity>
 
@@ -218,7 +227,7 @@ export default class SelectNumber extends Component {
     );
   }
   play() {
-   Actions.play();
+    Actions.play();
   }
 
   addTicket() {
@@ -290,7 +299,7 @@ export default class SelectNumber extends Component {
               ))}
             </View>
 
-            <TouchableOpacity onPress={() =>  this.deleteFromSelected(i)} style={{ height: 45, width: 45, flexDirection: 'row', marginRight: 10, marginLeft: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff' }}>
+            <TouchableOpacity onPress={() => this.deleteFromSelected(i)} style={{ height: 45, width: 45, flexDirection: 'row', marginRight: 10, marginLeft: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff' }}>
               <Icon
                 active
                 name="close"
@@ -309,12 +318,12 @@ export default class SelectNumber extends Component {
   }
 
 
-  deleteFromSelected(index){
-   
+  deleteFromSelected(index) {
+
     const allSelectedTickets = this.state.allSelectedTickets;
     allSelectedTickets.splice(index, 1);
     this.setState({ allSelectedTickets });
-  
+
   }
 
 }
@@ -376,12 +385,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     color: color.primary_color,
     marginLeft: 20,
-    marginRight: 10,
+    marginRight: 20,
     backgroundColor: "#fff",
     fontSize: 14,
     paddingLeft: 10,
     justifyContent: 'center',
-    flex: 3
+    flex: 1
 
   },
   buttonStepTwoViewStyle: {
@@ -405,7 +414,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     flexDirection: "row",
     justifyContent: "center",
-    width:340
+    width: 340
   },
 });
 

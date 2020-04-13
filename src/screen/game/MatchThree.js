@@ -1,7 +1,7 @@
 // React native and others libraries imports
 import React, { Component } from 'react';
 import { Alert, ImageBackground, TextInput, Dimensions, StyleSheet, Image, AsyncStorage, TouchableOpacity } from 'react-native';
-import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, Item, Thumbnail, Grid, Col } from 'native-base';
+import { Container, Content, View, Text, Button, Left, Right, Body, Header, List, Item, Thumbnail, Grid, Col } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import URL from '../../component/server'
 import { PulseIndicator } from 'react-native-indicators';
@@ -122,7 +122,38 @@ export default class Match extends Component {
 
     return (
       <Container style={{ backgroundColor: color.primary_color }}>
-        <Navbar right={right} left={left} title='Match 3' bg='#fff' />
+       <Header
+          style={{ backgroundColor: '#fff' }}
+          androidStatusBarColor={color.white}
+          noShadow={true}
+        >
+          <Left style={{ flex: 1 }}>
+            <Button transparent onPress={() => Actions.pop()}>
+              <Icon
+                active
+                name="arrowleft"
+                type='antdesign'
+                color={color.primary_color}
+              />
+            </Button>
+          </Left>
+          <Body style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'flex-start', }}>
+          <View style={{ flexDirection:'row', justifyContent: 'center', alignItems:'center' }}>
+              <Text style={{ color: '#000', fontSize: 18, fontWeight: '600' }}>Match</Text>
+            <Image
+               style={{ width: 40,height: 40,resizeMode: 'contain', marginLeft:10}}
+               source={require('../../assets/bthree.png')} 
+               /> 
+                </View>
+          </Body>
+          <Right style={{ flex: 1 }}>
+            <View>
+              <Text style={{ color: '#000', fontSize: 12, fontWeight: '600' }}>My Balance</Text>
+              <Text style={{ color: '#000', fontSize: 12, fontWeight: '600' }}>N 45,000.00 </Text>
+            </View>
+
+          </Right>
+        </Header>
         <Content>
           <View style={styles.backgroundImage}>
 
@@ -134,6 +165,7 @@ export default class Match extends Component {
               </View>
 
               <View style={{ flexDirection: 'row', marginBottom: 20, }}>
+              <View style={styles.inputView}>
                 <TextInput
                   placeholder="Enter number of play"
                   placeholderTextColor={color.primary_color}
@@ -143,11 +175,13 @@ export default class Match extends Component {
                   autoCapitalize="none"
                   autoCorrect={false}
                   inlineImageLeft='ios-call'
-                  style={styles.inputView}
+                  style={{flex:1}}
                   onChangeText={text => this.setState({ password: text })}
                 />
+                
+              </View>
 
-                <TouchableOpacity style={{ height: 40, flexDirection: 'row', marginRight: 10, flex: 2, alignItems: 'center', justifyContent: 'center', backgroundColor: color.secondary_color }}>
+                <TouchableOpacity style={{ height: 40, flexDirection: 'row', marginRight: 10, flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: color.secondary_color }}>
                   <Text style={{ color: '#fff', fontSize: 15, fontWeight: '600' }}>Quick Play </Text>
                 </TouchableOpacity>
 
@@ -550,7 +584,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingLeft: 10,
     justifyContent: 'center',
-    flex: 3
+    alignItems: 'center',
+    flex: 1
 
   },
   buttonStepTwoViewStyle: {

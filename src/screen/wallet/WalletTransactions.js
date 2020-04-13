@@ -219,7 +219,7 @@ export default class WalletTransactions extends Component {
                                  <View style={{ flexDirection:'row'}}>
                                  <View style={{ marginTop: 10,  flex:1  }}>
                                           <View style={{ flex: 1, }}>
-                                                <Text style={{ color: '#000', fontSize: 12, marginLeft: 15 }}>Start Date </Text>
+                                                <Text style={{ color: '#000',  fontWeight:'700', fontSize: 12, marginLeft: 15 }}>Start Date </Text>
                                                 <View style={styles.inputView}>
                                                     <TextInput
                                                         placeholder="27/02/2002"
@@ -262,7 +262,7 @@ export default class WalletTransactions extends Component {
                                            
 
                                             <View style={{ flex: 1, }}>
-                                                <Text style={{ color: '#000', fontSize: 12, marginLeft: 15 }}>End Date </Text>
+                                                <Text style={{ color: '#000', fontWeight:'700',  fontSize: 12, marginLeft: 15 }}>End Date </Text>
                                                 <View style={styles.inputView}>
                                                     <TextInput
                                                         placeholder="27/02/2002"
@@ -509,7 +509,8 @@ const pickerSelectStyles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 8,
         color: 'black',
-        paddingRight: 30,
+        paddingRight: 20,
+        paddingRight: 10,
         // to ensure the text is never behind the icon
     },
 });

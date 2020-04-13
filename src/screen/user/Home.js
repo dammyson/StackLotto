@@ -24,19 +24,19 @@ export default class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user_id: '',
-      session_id: '',
+      auth: '',
+      profile: '',
+      balance: '',
     };
   }
 
 
   componentWillMount() {
-    AsyncStorage.getItem('user_id').then((value) => {
-      this.setState({ 'user_id': value.toString() })
+    AsyncStorage.getItem('balance').then((value) => {
+      this.setState({ 'balance': value.toString() })
+      console.warn(value)
     })
-    AsyncStorage.getItem('session_id').then((value) => {
-      this.setState({ 'session_id': value.toString() })
-    })
+   
   }
 
 
@@ -55,7 +55,7 @@ export default class Home extends Component {
       <Right style={{ flex: 1, flexDirection: 'row' }}>
         <View style={{ marginLeft: 10 }}>
           <Text style={{ color: '#000', fontSize: 10, fontWeight: '400' }}>My Balance</Text>
-          <Text style={{ color: '#000', fontSize: 10, fontWeight: '400' }}>N 45,000.00 </Text>
+          <Text style={{ color: '#000', fontSize: 10, fontWeight: '400' }}>N {this.state.balance} </Text>
         </View>
         <Icon
           active

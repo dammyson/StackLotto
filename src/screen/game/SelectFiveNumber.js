@@ -1,7 +1,7 @@
 // React native and others libraries imports
 import React, { Component } from 'react';
 import { Alert, ImageBackground, TextInput, Dimensions, StyleSheet, Image, AsyncStorage, TouchableOpacity } from 'react-native';
-import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, Item, Thumbnail, Grid, Col } from 'native-base';
+import { Container, Content, View, Text, Button, Left, Right, Body, Header, List, Item, Thumbnail, Grid, Col } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import URL from '../../component/server'
 import { PulseIndicator } from 'react-native-indicators';
@@ -44,28 +44,6 @@ export default class SelectFiveNumber extends Component {
       color: "#000",
     };
 
-    var left = (
-      <Left style={{ flex: 1 }}>
-        <Button transparent onPress={() => Actions.pop()}>
-          <Icon
-            active
-            name="arrowleft"
-            type='antdesign'
-            color={color.primary_color}
-          />
-        </Button>
-      </Left>
-    );
-
-    var right = (
-      <Right style={{ flex: 1 }}>
-      <View>
-      <Text style={{ color: '#000', fontSize: 12, fontWeight: '600' }}>My Balance</Text>
-        <Text style={{ color: '#000', fontSize: 12, fontWeight: '600' }}>N 45,000.00 </Text>
-      </View>
-       
-      </Right>
-    );
 
 
     if (this.state.loading) {
@@ -84,7 +62,35 @@ export default class SelectFiveNumber extends Component {
 
     return (
       <Container style={{ backgroundColor: color.primary_color }}>
-        <Navbar right={right} left={left} title='Lucky 5' bg='#fff' />
+       <Header
+          style={{ backgroundColor: '#fff' }}
+          androidStatusBarColor={color.white}
+          noShadow={true}
+        >
+          <Left style={{ flex: 1 }}>
+            <Button transparent onPress={() => Actions.pop()}>
+              <Icon
+                active
+                name="arrowleft"
+                type='antdesign'
+                color={color.primary_color}
+              />
+            </Button>
+          </Left>
+          <Body style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'flex-start', }}>
+            <Image
+               style={{ width: 120,height: 50,resizeMode: 'contain'}}
+               source={require('../../assets/five.png')} 
+               />  
+          </Body>
+          <Right style={{ flex: 1 }}>
+            <View>
+              <Text style={{ color: '#000', fontSize: 12, fontWeight: '600' }}>My Balance</Text>
+              <Text style={{ color: '#000', fontSize: 12, fontWeight: '600' }}>N 45,000.00 </Text>
+            </View>
+
+          </Right>
+        </Header>
         <Content>
           <View style={styles.backgroundImage}>
 
@@ -109,7 +115,7 @@ export default class SelectFiveNumber extends Component {
                   onChangeText={text => this.setState({ password: text })}
                 />
 
-                <TouchableOpacity style={{ height: 40, flexDirection: 'row', marginRight: 10, flex: 2, alignItems: 'center', justifyContent: 'center', backgroundColor: color.secondary_color }}>
+                <TouchableOpacity style={{ height: 40, flexDirection: 'row', marginRight: 10, flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: color.secondary_color }}>
                   <Text style={{ color: '#fff', fontSize: 15, fontWeight: '600' }}>Quick Play </Text>
                 </TouchableOpacity>
 
@@ -375,12 +381,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     color: color.primary_color,
     marginLeft: 20,
-    marginRight: 10,
+    marginRight: 20,
     backgroundColor: "#fff",
     fontSize: 14,
     paddingLeft: 10,
     justifyContent: 'center',
-    flex: 3
+    flex: 1
 
   },
   buttonStepTwoViewStyle: {
