@@ -1,12 +1,12 @@
 // React native and others libraries imports
 import React, { Component } from 'react';
 import { Alert, ImageBackground, TextInput, Dimensions, StyleSheet, Image, AsyncStorage, TouchableOpacity } from 'react-native';
-import { Container, Content, View, Text,Button, Left, Right, Body, Title, List, Item, Thumbnail, Grid, Col } from 'native-base';
+import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, Item, Thumbnail, Grid, Col } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import URL from '../../component/server'
-import { PulseIndicator } from 'react-native-indicators';
+import { RippleLoader } from 'react-native-indicator';
 import Navbar from '../../component/Navbar';
-
+import PasswordTextBox  from './../../component/PasswordTextBox';
 import color from '../../component/color'
 import { Card, Icon, SocialIcon } from 'react-native-elements'
 
@@ -17,61 +17,63 @@ export default class Account extends Component {
     super(props);
     this.state = {
       items: [],
-      phone: '',
+      data: '',
       loading: false,
-      type: '',
-      condition: false
+      old_password: '',
+      password: '',
+      c_password: '',
+
     };
   }
 
 
   componentDidMount() {
-    AsyncStorage.getItem('type').then((value) => {
-      value == '' ? this.setState({ type: "null" }) : this.setState({ type: value })
+    AsyncStorage.getItem('data').then((value) => {
+      if (value == '') { } else {
+        this.setState({ data: JSON.parse(value) })
+      }
     })
-
 
   }
 
-  registrationRequest() {
+  updatePasswordRequest() {
 
-    const { phone, type } = this.state
-
-    if (phone == "") {
-      Alert.alert('Validation failed', 'Phone field cannot be empty', [{ text: 'Okay' }])
+    const { data, old_password, password, c_password } = this.state
+    if (old_password == "" || password == "") {
+      Alert.alert('Validation failed', 'Password field (s) cannot be empty', [{ text: 'Okay' }])
+      return
+    }
+    if (password != c_password) {
+      Alert.alert('Validation failed', 'password  and confirm password must be same', [{ text: 'Okay' }])
       return
     } else {
-      if (phone.length == 15 || phone.length == 11) {
-
-      } else {
-        Alert.alert('Validation failed', 'Phone number is invalid', [{ text: 'Okay' }])
-      }
 
     }
     this.setState({ loading: true })
-    var phonenumber = 0 + phone.substr(phone.length - 10);
-    const formData = new FormData();
-    formData.append('phone', phonenumber);
-    formData.append('user_type', type)
-    this.setState({ loading: true })
-    fetch(URL.url + '/register', {
+    fetch(URL.url + 'profile/change/password/' + data.id + '/', {
       method: 'POST', headers: {
         Accept: 'application/json',
-      }, body: formData,
+        'Content-Type': 'application/json',
+      }, body: JSON.stringify({
+        old_password: old_password,
+        new_password: password,
+        new_password2: c_password,
+      }),
     })
       .then(this.processResponse)
       .then(res => {
         this.setState({ loading: false })
         const { statusCode, data } = res;
-        if (statusCode === 201) {
-          AsyncStorage.setItem('auth', data.data.token.toString());
-          AsyncStorage.setItem('step', 'one');
-          Actions.addpin();
-        } else if (statusCode === 422) {
-          Alert.alert('Validation failed', 'Phone number already exits', [{ text: 'Okay' }])
+        console.warn(statusCode, data)
+        this.setState({ loading: false })
+        if (statusCode == 200) {
+          Alert.alert('Successful', 'Password changed successfully', [{ text: 'Okay' }])
+        } else if (statusCode == 400) {
+          Alert.alert('Operarion failed', 'Make sure the new password is defferent from the old one', [{ text: 'Okay' }])
         } else {
-          Alert.alert('Operarion failed', 'Please check your phone number and retry', [{ text: 'Okay' }])
+          Alert.alert('Operarion failed', '', [{ text: 'Okay' }])
         }
+
       })
       .catch((error) => {
         console.log("Api call error");
@@ -80,8 +82,8 @@ export default class Account extends Component {
         this.setState({ loading: false })
       });
 
-
   }
+
   processResponse(response) {
     const statusCode = response.status;
     const data = response.json();
@@ -93,28 +95,29 @@ export default class Account extends Component {
   render() {
 
     var left = (
-        <Left style={{ flex: 1 }}>
-           <Button transparent onPress={() => Actions.pop()}>
-            <Icon
-              active
-              name="arrowleft"
-              type='antdesign'
-              color='#FFF'
-            />
-          </Button>
-        </Left>
-      );
+      <Left style={{ flex: 1 }}>
+        <Button transparent onPress={() => Actions.pop()}>
+          <Icon
+            active
+            name="arrowleft"
+            type='antdesign'
+            color='#FFF'
+          />
+        </Button>
+      </Left>
+    );
 
 
     if (this.state.loading) {
       return (
         <View
-          style={styles.backgroundImage}
+          style={[styles.backgroundImage, { height: Dimensions.get('window').height, }]}
         >
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <View style={styles.welcome}>
-              <PulseIndicator color={color.slide_color_dark} size={70} />
+              <RippleLoader color={color.slide_color_dark} size={50} />
             </View>
+            <Text style={{ color: color.slide_color_dark }}>Proccessing... </Text>
           </View>
         </View>
       );
@@ -122,190 +125,135 @@ export default class Account extends Component {
 
     return (
       <Container style={{ backgroundColor: color.primary_color }}>
-        <Navbar left={left} title='My Account' bg='transparent'  tbg='#fff' />
-      <Content>
-            <View style={styles.backgroundImage}>
-             
+        <Navbar left={left} title='My Account' bg='transparent' tbg='#fff' />
+        <Content>
+          <View style={styles.backgroundImage}>
 
-              <View style={{flex:1}}>
+
+            <View style={{ flex: 1 }}>
               <Text style={styles.information}> Name *</Text>
-              <View style={ styles.inputView}>
+              <View style={styles.inputView}>
                 <TextInput
-                    placeholder="Enter Phone number"
-                    placeholderTextColor={color.primary_color}
-                    returnKeyType="next"
-                    onSubmitEditing={() => this.passwordInput.focus()}
-                    keyboardType='email-address'
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    inlineImageLeft='ios-call'
-                    style={{flex:1}}
-                    onChangeText={text => this.setState({ phone: text })}
-                  />   
-                </View>
-                  
-                <Text style={styles.information}> Sex *</Text>
-                <View style={ styles.inputView}>
-                <TextInput
-                    placeholder="Full Name"
-                    placeholderTextColor={color.primary_color}
-                    returnKeyType="next"
-                    onSubmitEditing={() => this.passwordInput.focus()}
-                    keyboardType='email-address'
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    inlineImageLeft='ios-call'
-                    style={{flex:1}}
-                    onChangeText={text => this.setState({ phone: text })}
-                  />
-  
-                </View>
-
-                   <Text style={styles.information}>Email *</Text>
-                <View style={ styles.inputView}>
-                <TextInput
-                    placeholder="Email"
-                    placeholderTextColor={color.primary_color}
-                    returnKeyType="next"
-                    onSubmitEditing={() => this.passwordInput.focus()}
-                    keyboardType='email-address'
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    inlineImageLeft='ios-call'
-                    style={{flex:1}}
-                    onChangeText={text => this.setState({ email: text })}
-                  />
-
-                  
-                </View>
-
-                 <Text style={styles.information}>Phone Number</Text>
-                <View style={ styles.inputView}>
-                <TextInput
-                    placeholder="Email"
-                    placeholderTextColor={color.primary_color}
-                    returnKeyType="next"
-                    onSubmitEditing={() => this.passwordInput.focus()}
-                    keyboardType='email-address'
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    inlineImageLeft='ios-call'
-                    style={{flex:1}}
-                    onChangeText={text => this.setState({ email: text })}
-                  />
-
-                  
-                </View>
-                <Text style={styles.information}>Date of birth *</Text>
-                <View style={ styles.inputView}>
-                <TextInput
-                    placeholder="Email"
-                    placeholderTextColor={color.primary_color}
-                    returnKeyType="next"
-                    onSubmitEditing={() => this.passwordInput.focus()}
-                    keyboardType='email-address'
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    inlineImageLeft='ios-call'
-                    style={{flex:1}}
-                    onChangeText={text => this.setState({ email: text })}
-                  />
-  <TouchableOpacity  style={{ alignItems: 'center', justifyContent: 'center', marginRight:20}}>
-                   <Icon
-                        active
-                        name="calendar"
-                        type='antdesign'
-                        color='#5f6066'
-                    />
-              </TouchableOpacity>
-                  
-                </View>
-
-  <Text style={styles.informationHead}>Change password</Text>
-                 <Text style={styles.information}>Old Password *</Text>
-                <View style={ styles.inputView}>
-                <TextInput
-                    placeholder="Old Password"
-                    placeholderTextColor={color.primary_color}
-                    returnKeyType="next"
-                    onSubmitEditing={() => this.passwordInput.focus()}
-                    keyboardType='email-address'
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    inlineImageLeft='ios-call'
-                    style={{flex:1}}
-                    onChangeText={text => this.setState({ password: text })}
-                  />
-
-                   <TouchableOpacity  style={{ alignItems: 'center', justifyContent: 'center', marginRight:20}}>
-                   <Icon
-                        active
-                        name="ios-eye"
-                        type='ionicon'
-                        color='#5f6066'
-                    />
-              </TouchableOpacity>
-                </View>
-
-                <Text style={styles.information}>Password *</Text>
-                <View style={ styles.inputView}>
-                <TextInput
-                    placeholder="Password"
-                    placeholderTextColor={color.primary_color}
-                    returnKeyType="next"
-                    onSubmitEditing={() => this.passwordInput.focus()}
-                    keyboardType='email-address'
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    inlineImageLeft='ios-call'
-                    style={{flex:1}}
-                    onChangeText={text => this.setState({ password: text })}
-                  />
-
-                   <TouchableOpacity  style={{ alignItems: 'center', justifyContent: 'center', marginRight:20}}>
-                   <Icon
-                        active
-                        name="ios-eye"
-                        type='ionicon'
-                        color='#5f6066'
-                    />
-              </TouchableOpacity>
-                </View>
-                <Text style={styles.information}>Confirm Password *</Text>
-                <View style={ styles.inputView}>
-                <TextInput
-                    placeholder="Confirm Password"
-                    placeholderTextColor={color.primary_color}
-                    returnKeyType="next"
-                    onSubmitEditing={() => this.passwordInput.focus()}
-                    keyboardType='email-address'
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    inlineImageLeft='ios-call'
-                    style={{flex:1}}
-                    onChangeText={text => this.setState({ c_password: text })}
-                  />
-
-                   <TouchableOpacity  style={{ alignItems: 'center', justifyContent: 'center', marginRight:20}}>
-                   <Icon
-                        active
-                        name="ios-eye"
-                        type='ionicon'
-                        color='#5f6066'
-                    />
-              </TouchableOpacity>
-                </View>
+                  placeholder="Enter Phone number"
+                  placeholderTextColor={color.primary_color}
+                  returnKeyType="next"
+                  onSubmitEditing={() => this.passwordInput.focus()}
+                  keyboardType='email-address'
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  inlineImageLeft='ios-call'
+                  style={{ flex: 1 }}
+                  onChangeText={text => this.setState({ phone: text })}
+                />
               </View>
 
-  <Button onPress={() =>  Actions.logina()} style={styles.buttonContainer} block iconLeft>
-               
-               <Text style={{ color: '#fff', fontSize:14, fontWeight: '400' }}>Update Account </Text>
-             </Button>
+              <Text style={styles.information}> Sex *</Text>
+              <View style={styles.inputView}>
+                <TextInput
+                  placeholder="Full Name"
+                  placeholderTextColor={color.primary_color}
+                  returnKeyType="next"
+                  onSubmitEditing={() => this.passwordInput.focus()}
+                  keyboardType='email-address'
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  inlineImageLeft='ios-call'
+                  style={{ flex: 1 }}
+                  onChangeText={text => this.setState({ phone: text })}
+                />
+
+              </View>
+
+              <Text style={styles.information}>Email *</Text>
+              <View style={styles.inputView}>
+                <TextInput
+                  placeholder="Email"
+                  placeholderTextColor={color.primary_color}
+                  returnKeyType="next"
+                  onSubmitEditing={() => this.passwordInput.focus()}
+                  keyboardType='email-address'
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  inlineImageLeft='ios-call'
+                  style={{ flex: 1 }}
+                  onChangeText={text => this.setState({ email: text })}
+                />
+
+
+              </View>
+
+              <Text style={styles.information}>Phone Number</Text>
+              <View style={styles.inputView}>
+                <TextInput
+                  placeholder="Email"
+                  placeholderTextColor={color.primary_color}
+                  returnKeyType="next"
+                  onSubmitEditing={() => this.passwordInput.focus()}
+                  keyboardType='email-address'
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  inlineImageLeft='ios-call'
+                  style={{ flex: 1 }}
+                  onChangeText={text => this.setState({ email: text })}
+                />
+
+
+              </View>
+              <Text style={styles.information}>Date of birth *</Text>
+              <View style={styles.inputView}>
+                <TextInput
+                  placeholder="Email"
+                  placeholderTextColor={color.primary_color}
+                  returnKeyType="next"
+                  onSubmitEditing={() => this.passwordInput.focus()}
+                  keyboardType='email-address'
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  inlineImageLeft='ios-call'
+                  style={{ flex: 1 }}
+                  onChangeText={text => this.setState({ email: text })}
+                />
+                <TouchableOpacity style={{ alignItems: 'center', justifyContent: 'center', marginRight: 20 }}>
+                  <Icon
+                    active
+                    name="calendar"
+                    type='antdesign'
+                    color='#5f6066'
+                  />
+                </TouchableOpacity>
+
+              </View>
+
+              <Text style={styles.informationHead}>Change password</Text>
+              <Text style={styles.information}>Old Password *</Text>
+              <PasswordTextBox icon="lock" label="Password" onChange={(v) => this.setState({ old_password: v })} />
              
 
+              <Text style={styles.information}>Password *</Text>
+              <PasswordTextBox icon="lock" label="Password" onChange={(v) => this.setState({ password: v })} />
+              <Text style={styles.information}>Confirm Password *</Text>
+                <PasswordTextBox icon="lock" label="Confirm Password" onChange={(v) => this.setState({ c_password: v })} />
+             
+            
+             
             </View>
-              </Content>
-              </Container>
+
+
+
+
+
+          
+
+
+            <Button onPress={() => this.updatePasswordRequest()} style={styles.buttonContainer} block iconLeft>
+
+              <Text style={{ color: '#fff', fontSize: 14, fontWeight: '400' }}>Update Account </Text>
+            </Button>
+
+
+          </View>
+        </Content>
+      </Container>
 
     );
   }
@@ -315,11 +263,6 @@ export default class Account extends Component {
 
 }
 const styles = StyleSheet.create({
-  welcome: {
-    height: 90,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -333,7 +276,8 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     width: Dimensions.get('window').width,
-  
+
+
   },
   input: {
     height: 45,
@@ -341,13 +285,13 @@ const styles = StyleSheet.create({
     marginLeft: 30,
     marginRight: 30,
     backgroundColor: "#fff",
-    fontSize:14,
+    fontSize: 14,
     marginTop: 10,
     marginBottom: 10,
-    paddingLeft:10
+    paddingLeft: 10
   },
   buttonContainer: {
-    backgroundColor: color.primary_color,
+    backgroundColor: color.secondary_color,
     marginLeft: 30,
     marginRight: 30,
     borderRadius: 5,
@@ -369,29 +313,29 @@ const styles = StyleSheet.create({
   },
   inputView: {
     height: 45,
-    flexDirection:'row',
+    flexDirection: 'row',
     color: color.primary_color,
     marginLeft: 30,
     marginRight: 30,
     backgroundColor: "#fff",
-    fontSize:13,
+    fontSize: 13,
     marginTop: 10,
     marginBottom: 10,
-    paddingLeft:10,
+    paddingLeft: 10,
     justifyContent: 'center',
   },
-  information:{
+  information: {
     marginLeft: 30,
     color: '#fff',
     marginTop: 10,
-    fontSize:12,
+    fontSize: 12,
   },
-  informationHead:{
+  informationHead: {
     marginLeft: 30,
     color: '#fff',
     marginTop: 10,
-    fontSize:13,
-    fontWeight:'400'
+    fontSize: 13,
+    fontWeight: '400'
   }
 });
 

@@ -8,8 +8,8 @@ export default class Splash extends Component {
 
     async componentDidMount() {
         setTimeout(() => {
-       //  this.initPage();
-      Actions.welcome();
+       // this.initPage();
+    Actions.account();
           }, 3000);
     }
 
@@ -17,11 +17,11 @@ export default class Splash extends Component {
         AsyncStorage.getItem('step').then((value) => {
           console.log(value)
           if(value=='one'){
-            Actions.addpin();
+            Actions.home({type: 'replace'});
           }else if(value==null){
-            Actions.intro();
+            Actions.welcome({type: 'replace'});
           }else if(value=="two"){
-            Actions.home();
+            Actions.home({type: 'replace'});
           }
           else{
             Actions.intro();

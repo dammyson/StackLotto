@@ -4,12 +4,12 @@
 
 // React native and others libraries imports
 import React, { Component } from 'react';
-import { Alert, TextInput, Text, FlatList, View, Dimensions, StyleSheet, Image, AsyncStorage, TouchableOpacity, ScrollView } from 'react-native';
-import { Container, Content, Button, Left, Right, CardItem, cardBody, ScrollableTab } from 'native-base';
+import { Alert, TextInput, Text, FlatList, View, Dimensions, StyleSheet, Image, AsyncStorage,InteractionManager, TouchableOpacity, ScrollView } from 'react-native';
+import { Container, Content, Button, Left, Right, CardItem, Toast, cardBody, ScrollableTab } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import color from '../../component/color'
 import { Avatar, Icon, SocialIcon } from 'react-native-elements'
-
+import URL from '../../component/server'
 // Our custom files and classes import
 
 
@@ -27,18 +27,62 @@ export default class Home extends Component {
       auth: '',
       profile: '',
       balance: '',
+      data:''
     };
   }
 
-
-  componentWillMount() {
+  componentDidMount() {
+   
+    AsyncStorage.getItem('data').then((value) => {
+      if (value == '') { } else {
+        this.setState({ data: JSON.parse(value) })
+      }
+    })
     AsyncStorage.getItem('balance').then((value) => {
       this.setState({ 'balance': value.toString() })
-      console.warn(value)
+      this.getBalance();
     })
-   
+
   }
 
+  currencyFormat(n) {
+    return n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+  }
+
+  getBalance() {
+    const { data } = this.state
+    this.setState({ loading: true })
+
+  
+
+    fetch(URL.url + 'profile/balance/'+ data.id + '/', {
+      method: 'GET', headers: {
+        Accept: 'application/json',
+      }, 
+    })
+    .then(this.processResponse)
+    .then(res => {
+     const { statusCode, data } = res;
+     if (statusCode == 200) {
+      AsyncStorage.setItem('balance', this.currencyFormat(data.balance));
+      this.setState({ complete_transaction: true , balance: this.currencyFormat(data.balance) })  
+      }
+      }).catch((error) => {
+        console.warn(error);
+        console.warn(error.message);
+      });
+  }
+
+
+
+  processResponse(response) {
+    const statusCode = response.status;
+    const data = response.json();
+    return Promise.all([statusCode, data]).then(res => ({
+      statusCode: res[0],
+      data: res[1]
+    }));
+  }
 
   render() {
     var left = (

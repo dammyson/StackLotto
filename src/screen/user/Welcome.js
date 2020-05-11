@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Alert, Image, TextInput, Dimensions, StyleSheet, AsyncStorage, TouchableOpacity } from 'react-native';
 import { Container, Content, View, Text, Icon, Button, } from 'native-base';
 import { Actions } from 'react-native-router-flux';
+import { StackActions } from '@react-navigation/native';
 
 
 import color from '../../component/color'
@@ -20,6 +21,15 @@ export default class Welcome extends Component {
   componentWillMount() {
 
   }
+
+
+  replaceScreen = (screen) => {
+    this.props.navigation.dispatch({
+      type: 'ReplaceCurrentScreen',
+      routeName: screen,
+      params: { },
+    });
+  };
 
   render() {
 
@@ -42,7 +52,9 @@ export default class Welcome extends Component {
                
                   <Text style={{ color: '#fff', fontWeight: '200' }}>Login </Text>
                 </Button>
-                <Button onPress={() =>  Actions.reg()} style={styles.transButtonContainer} block iconLeft>
+                <Button onPress={() =>
+                   Actions.login()
+                  } style={styles.transButtonContainer} block iconLeft>
                 
                   <Text style={{ color: '#fff', fontWeight: '200' }}>Create Account</Text>
                 </Button>

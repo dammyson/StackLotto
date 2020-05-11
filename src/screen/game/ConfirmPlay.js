@@ -4,7 +4,7 @@ import { Alert, ImageBackground, TextInput, Dimensions, StyleSheet, Image, Async
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, Item, Thumbnail, Grid, Col } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import URL from '../../component/server'
-import { PulseIndicator } from 'react-native-indicators';
+import { RippleLoader } from 'react-native-indicator';
 import Navbar from '../../component/Navbar';
 import Modal, { ModalContent } from 'react-native-modals';
 
@@ -16,33 +16,94 @@ import {
 } from "react-native-selectmultiple-button";
 
 
-export default class ConfirmTwo extends Component {
+export default class ConfirmPlay extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       multipleSelectedData: [],
       multipleSelectedDataLimited: [],
-      allSelectedTickets: [["6", "9", ],["6", "9",], ["6", "9"]],
-      complete_transaction:false
+      allSelectedTickets: [],
+      complete_transaction: false,
+      data: '',
+      loading: false,
+      balance: '',
+      gamesDetails: {},
     };
   }
+
 
 
   componentDidMount() {
-
+    this.setState({ allSelectedTickets: this.props.allSelectedTickets, gamesDetails: this.props.gamesDetails });
+    AsyncStorage.getItem('data').then((value) => {
+      if (value == '') { } else {
+        this.setState({ data: JSON.parse(value) })
+      }
+      console.warn(value)
+    })
+    AsyncStorage.getItem('balance').then((value) => {
+      this.setState({ 'balance': value.toString() })
+      console.warn(value)
+    })
 
   }
 
+  currencyFormat(n) {
+    return n.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+  }
+  saveTicketRequest() {
+
+    const { allSelectedTickets, data, gamesDetails } = this.state
+    const game_id = gamesDetails.type;
+    this.setState({ loading: true })
+    fetch(URL.url + 'profile/save/tickets/' + game_id + '/' + data.id + '/', {
+      method: 'POST', headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      }, body: JSON.stringify({
+        tickets: allSelectedTickets,
+        exact_order: gamesDetails.exact_order
+      }),
+    })
+      .then(this.processResponse)
+      .then(res => {
+        this.setState({ loading: false })
+        const { statusCode, data } = res;
+        console.warn(statusCode, data)
+        this.setState({ loading: false })
+        if (statusCode == 200) {
+          AsyncStorage.setItem('balance', this.currencyFormat(data.balance));
+          this.setState({ complete_transaction: true, balance: this.currencyFormat(data.balance) })
+        } else if (statusCode == 400) {
+          Alert.alert('Operarion failed', 'Make sure the new password is defferent from the old one', [{ text: 'Okay' }])
+        } else {
+          Alert.alert('Operarion failed', '', [{ text: 'Okay' }])
+        }
+
+      })
+      .catch((error) => {
+        console.log("Api call error");
+        console.warn(error);
+        alert(error.message);
+        this.setState({ loading: false })
+      });
+
+  }
+
+  processResponse(response) {
+    const statusCode = response.status;
+    const data = response.json();
+    return Promise.all([statusCode, data]).then(res => ({
+      statusCode: res[0],
+      data: res[1]
+    }));
+  }
+
+
 
   render() {
-
-
-    const placeholder = {
-      label: 'Select a sport...',
-      value: null,
-      color: "#000",
-    };
+    const { data, allSelectedTickets, gamesDetails, balance } = this.state
 
     var left = (
       <Left style={{ flex: 1 }}>
@@ -59,24 +120,26 @@ export default class ConfirmTwo extends Component {
 
     var right = (
       <Right style={{ flex: 1 }}>
-      <View>
-      <Text style={{ color: '#000', fontSize: 12, fontWeight: '600' }}>My Balance</Text>
-        <Text style={{ color: '#000', fontSize: 12, fontWeight: '600' }}>N 45,000.00 </Text>
-      </View>
-       
+        <View>
+          <Text style={{ color: '#000', fontSize: 12, fontWeight: '600' }}>My Balance</Text>
+          <Text style={{ color: '#000', fontSize: 12, fontWeight: '600' }}>N {balance}  </Text>
+        </View>
+
       </Right>
     );
+
 
 
     if (this.state.loading) {
       return (
         <View
-          style={styles.backgroundImage}
+          style={[styles.backgroundImage, { height: Dimensions.get('window').height, }]}
         >
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <View style={styles.welcome}>
-              <PulseIndicator color={color.slide_color_dark} size={70} />
+              <RippleLoader color={color.slide_color_dark} size={50} />
             </View>
+            <Text style={{ color: color.slide_color_dark }}>processing ... </Text>
           </View>
         </View>
       );
@@ -91,79 +154,82 @@ export default class ConfirmTwo extends Component {
 
             <View style={{ flex: 1 }}>
 
-              <View style={{ marginBottom: 20, marginTop: 20,}}>
+              <View style={{ marginBottom: 20, marginTop: 20, }}>
                 <Text style={{ fontSize: 15, fontWeight: '900', textAlign: 'left', marginLeft: 20, color: '#fff' }}>Draw date: 2020-01-01 16:00:00</Text>
-                <Text style={{ fontSize: 15, fontWeight: '900',textAlign: 'left', marginLeft: 20, color: '#fff' }}>Play Type: N/A</Text>
-                <Text style={{ fontSize: 15, fontWeight: '900',textAlign: 'left', marginLeft: 20, color: '#fff' }}>Tickets @N200/Tickets</Text>
+                <Text style={{ fontSize: 15, fontWeight: '900', textAlign: 'left', marginLeft: 20, color: '#fff' }}>Play Type: N/A</Text>
+                <Text style={{ fontSize: 15, fontWeight: '900', textAlign: 'left', marginLeft: 20, color: '#fff' }}>Tickets @N{gamesDetails.ticket}/Tickets</Text>
               </View>
 
-             
+
 
 
               {this.renderslelcted()}
 
- <View style={{ backgroundColor: '#fff', margin: 20,  paddingTop:15, paddingBottom:15, borderRadius:5, }}>
- <Text style={{ fontSize: 14, fontWeight: '400', textAlign: 'left', marginLeft: 10, color: '#000' }}>Name:    Dayo Awojobi</Text>
- <Text style={{ fontSize: 14, fontWeight: '400', textAlign: 'left', marginLeft: 10, color: '#000' }}>phone:   08123456789</Text>
- 
- </View>
+              <View style={{ backgroundColor: '#fff', margin: 20, paddingTop: 15, paddingBottom: 15, borderRadius: 5, }}>
+                <Text style={{ fontSize: 14, fontWeight: '400', textAlign: 'left', marginLeft: 10, color: '#000' }}>Name: {data.first_name} {data.last_name}</Text>
+                <Text style={{ fontSize: 14, fontWeight: '400', textAlign: 'left', marginLeft: 10, color: '#000' }}>phone:  {data.phone} </Text>
+
+              </View>
 
 
 
-  <View style={{ backgroundColor: '#fff', margin: 20,  paddingTop:20, paddingBottom:20, borderRadius:5, }}>
- <Text style={{ fontSize: 14, fontWeight: '400', textAlign: 'left', marginLeft: 10, color: '#000' }}>Play 3 Tickets @ N600   </Text>
- <Text style={{ fontSize: 14, fontWeight: '400', textAlign: 'left', marginLeft: 10, color: '#000' }}>Available balance N49,000.00</Text>
- 
- </View>
+              <View style={{ backgroundColor: '#fff', margin: 20, paddingTop: 20, paddingBottom: 20, borderRadius: 5, }}>
+                <Text style={{ fontSize: 14, fontWeight: '400', textAlign: 'left', marginLeft: 10, color: '#000' }}>Play {allSelectedTickets.length} Tickets @ N{allSelectedTickets.length * gamesDetails.ticket}   </Text>
+                <Text style={{ fontSize: 14, fontWeight: '400', textAlign: 'left', marginLeft: 10, color: '#000' }}>Available balance N{balance} </Text>
+
+              </View>
 
 
 
- <View style={{ flexDirection: 'row', marginBottom: 20, }}>
+              <View style={{ flexDirection: 'row', marginBottom: 20, }}>
 
-<TouchableOpacity style={{ height: 40, flexDirection: 'row', margin: 20, flex: 1, alignItems: 'center', justifyContent: 'center',borderRadius:5, backgroundColor: "#fff" }}>
-    <Text style={{ color: '#000', fontSize: 13, fontWeight: '600' }}>Cancel </Text>
-  </TouchableOpacity>
+                <TouchableOpacity onPress={() => Actions.pop()} style={{ height: 40, flexDirection: 'row', margin: 20, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: "#fff" }}>
+                  <Text style={{ color: '#000', fontSize: 13, fontWeight: '600' }}>Cancel </Text>
+                </TouchableOpacity>
 
-  <TouchableOpacity onPress={() => this.setState({ complete_transaction: true })}  style={{ height: 40, flexDirection: 'row', margin: 20, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius:5, backgroundColor: color.secondary_color }}>
-    <Text style={{ color: '#fff', fontSize: 13, fontWeight: '600' }}>Play </Text>
-  </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.saveTicketRequest()} style={{ height: 40, flexDirection: 'row', margin: 20, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: color.secondary_color }}>
+                  <Text style={{ color: '#fff', fontSize: 13, fontWeight: '600' }}>Confirm Play </Text>
+                </TouchableOpacity>
 
-</View>
+              </View>
 
 
 
             </View>
 
           </View>
-          <Modal
-          visible={this.state.complete_transaction}
-        >
-          <ModalContent style={styles.modal}>
-            <View style={{ alignItems: 'center', paddingTop: 1, paddingBottom: 10 }}>
 
+          <Modal
+            visible={this.state.complete_transaction}
+          >
+            <ModalContent style={styles.modal}>
               <View style={{ alignItems: 'center', paddingTop: 1, paddingBottom: 10 }}>
-              
-              
+
+                <View style={{ alignItems: 'center', paddingTop: 1, paddingBottom: 10 }}>
+
+
                   <Icon
-                    name="checkcircleo"
+                    name="checkcircle"
                     size={60}
                     type='antdesign'
                     color={color.secondary_color}
                   />
-                <Text style={{ fontSize: 17, color:color.primary_color, textAlign: 'left', paddingBottom: 10, marginTop: 25, }}>Ticket Placed Successfully </Text>
-                 <Text style={{ fontSize: 13, color:color.primary_color, textAlign: 'center', paddingBottom: 10, marginTop: 25, }}>Your Lotteries with tickets numbers XD563HFKFKFJG, have been succesffully placed</Text>
-              </View>
-              <View style={{ alignItems: 'center', paddingTop: 1, paddingBottom: 10, }}>
+                  <Text style={{ fontSize: 17, color: color.primary_color, textAlign: 'left', paddingBottom: 10, marginTop: 25, }}>Ticket Placed Successfully </Text>
+                  <Text style={{ fontSize: 13, color: color.primary_color, textAlign: 'center', paddingBottom: 10, marginTop: 25, }}>Your lottery have been successfully placed</Text>
+                </View>
+                <View style={{ alignItems: 'center', paddingTop: 1, paddingBottom: 10, }}>
 
+                </View>
+                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                  <Button onPress={() => [this.setState({ complete_transaction: false }), setTimeout(() => {
+                    Actions.game();
+                  }, 500)]} style={styles.secondaryButtonContainer} block iconLeft>
+                    <Text style={{ color: '#fdfdfd', fontWeight: '400' }}>Back to Lotteries </Text>
+                  </Button>
+                </View>
               </View>
-              <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                <Button   onPress={() => [this.setState({ complete_transaction: false }), Actions.game()] }  style={styles.secondaryButtonContainer} block iconLeft>
-                  <Text style={{ color: '#fdfdfd', fontWeight: '400' }}>Back to Lotteries </Text>
-                </Button>
-              </View>
-            </View>
-          </ModalContent>
-        </Modal>
+            </ModalContent>
+          </Modal>
         </Content>
       </Container>
 
@@ -252,20 +318,20 @@ export default class ConfirmTwo extends Component {
   }
 
 
-  deleteFromSelected(index){
-   
+  deleteFromSelected(index) {
+
     const allSelectedTickets = this.state.allSelectedTickets;
     allSelectedTickets.splice(index, 1);
     this.setState({ allSelectedTickets });
-  
+
   }
 
 }
 const styles = StyleSheet.create({
   welcome: {
-    height: 90,
-    alignItems: 'center',
-    justifyContent: 'center',
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
   },
   container: {
     flex: 1,

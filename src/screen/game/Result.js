@@ -96,7 +96,6 @@ export default class Result extends Component {
             </Left>
         );
 
-
         if (this.state.loading) {
             return (
                 <View
@@ -119,14 +118,8 @@ export default class Result extends Component {
                         <View style={{ flex: 1 }}>
                             <View style={{ flexDirection: 'row', margin: 20 }}>
                                 <Text style={{ color: '#fff', fontSize: 18, fontWeight: '400', }}>Select the lottery type and date to view result </Text>
-
                             </View>
-
-
-
-
                             <View style={{ marginTop: 10, marginBottom: 15, flexDirection: 'row', }}>
-
                                 <View style={styles.inputView}>
                                     <View style={{ flex: 1 }}>
                                         <RNPickerSelect
@@ -143,12 +136,7 @@ export default class Result extends Component {
                                             useNativeAndroidPickerStyle={false}
 
                                         /></View>
-                                   
-
                                 </View>
-
-
-
                                 <View style={styles.inputView}>
                                     <View style={{ flex: 1 }}>
                                         <TextInput
@@ -171,19 +159,8 @@ export default class Result extends Component {
                                             color='#5f6066'
                                         />
                                     </TouchableOpacity>
-
                                 </View>
-
-
-
                             </View>
-
-
-
-
-
-
-
                             <TouchableOpacity onPress={() =>  this.setState({ result: true, })} style={{ height: 50, flexDirection: 'row', margin: 20, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: color.secondary_color }}>
                                 <Icon
                                     active
@@ -193,13 +170,8 @@ export default class Result extends Component {
                                 />
                                 <Text style={{ color: '#fff', fontSize: 15, fontWeight: '600' }}>SEARCH</Text>
                             </TouchableOpacity>
-
-
-
                             {this.state.result ?
-
                                 <View style={{ marginTop: 15 }}>
-
                                     <FlatList
                                         style={{ paddingBottom: 5 }}
                                         data={sports}
@@ -208,13 +180,9 @@ export default class Result extends Component {
                                         ItemSeparatorComponent={this.renderSeparator}
                                         ListHeaderComponent={this.renderHeader}
                                     />
-
                                 </View>
-
                                 :
                                 null
-
-
                             }
 
 

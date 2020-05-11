@@ -7,8 +7,7 @@
 import React, { Component } from 'react';
 import { BackHandler } from 'react-native';
 import { Root } from 'native-base';
-import { Scene, Router, Actions } from 'react-native-router-flux';
-
+import { Scene, Router,Reducer,getInitialState, Actions } from 'react-native-router-flux';
 
 
 
@@ -16,7 +15,6 @@ import Splash from '../../screen/onboarding/Splash';
 import Welcome from '../../screen/user/Welcome';
 import Login from '../../screen/user/Login';
 import Register from '../../screen/user/Register';
-import Otp from '../../screen/user/Otp';
 import Account from '../../screen/setting/Account';
 import ForgetPassword from '../../screen/user/ForgetPassword';
 import ChangePassword from '../../screen/user/ChangePassword';
@@ -29,7 +27,6 @@ import Notifications from '../../screen/user/Notification';
 import Support from '../../screen/user/Support';
 
 import SelectNumber from '../../screen/game/SelectNumber';
-import Confirm from '../../screen/game/Confirm';
 import BankPayment from '../../screen/wallet/BankPayment';
 import TicketCheck from '../../screen/game/TicketCheck';
 import Result from '../../screen/game/Result';
@@ -43,24 +40,38 @@ import MatchThree from '../../screen/game/MatchThree';
 import MatchTwo from '../../screen/game/MatchTwo';
 import Verify from '../../screen/user/Verify';
 import Logout from '../../screen/user/Logout';
-import ConfirmTwo from '../../screen/game/ConfirmTwo';
-import ConfirmThree from '../../screen/game/ConfirmThree';
-import ConfirmFour from '../../screen/game/ConfirmFour';
-import ConfirmBFour from '../../screen/game/ConfirmBFour';
-import ConfirmFive from '../../screen/game/ConfirmFive';
 
+import ConfirmPlay from '../../screen/game/ConfirmPlay';
 
 
 
 export default class Main extends Component {
-  componentWillMount = () => {
-    BackHandler.addEventListener('hardwareBackPress', () => Actions.pop());
-  };
+  componentDidMount() {
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
+  }
+
+  componentWillUnmount() {
+    this.backHandler.remove()
+  }
+
+  handleBackPress = () => {
+    switch (Actions.currentScene) {
+      case 'home':
+        BackHandler.exitApp()
+        break
+
+      default: Actions.pop()
+    }
+
+    return true
+  }
 
   render() {
+   
     return(
       <Root>
-        <Router>
+        <Router 
+        >
           <Scene key="root">
             <Scene initial key="splash" component={Splash} hideNavBar />
             <Scene key="welcome" component={Welcome} hideNavBar />
@@ -74,12 +85,11 @@ export default class Main extends Component {
              <Scene key="createW" component={CreateWithdrawer} hideNavBar />
              <Scene key="orderW" component={WithdrawerOrder} hideNavBar />
              <Scene key="transW" component={WalletTransactions} hideNavBar />
-             <Scene key="home" component={Home} hideNavBar />
+             <Scene key="home" component={Home} hideNavBar onBack={()=>{ this.showToast() }} back={true} />
              <Scene key="how" component={How} hideNavBar />
              <Scene key="noti" component={Notifications} hideNavBar />
              <Scene key="sup" component={Support} hideNavBar />
-             <Scene key="sg" component={SelectNumber} hideNavBar />
-             <Scene key="play" component={Confirm} hideNavBar />
+             <Scene key="sg" component={SelectNumber} hideNavBar  onBack={()=>{this.showToast()}} back={true} />
              <Scene key="bp" component={BankPayment} hideNavBar />
              <Scene key="tc" component={TicketCheck} hideNavBar />
              <Scene key="r" component={Result} hideNavBar />
@@ -91,11 +101,7 @@ export default class Main extends Component {
              <Scene key="matchtwo" component={MatchTwo} hideNavBar />
              <Scene key="selectFive" component={SelectFiveNumber} hideNavBar />
              <Scene key="selectFour" component={SelectFourNumber} hideNavBar />
-             <Scene key="playtwo" component={ConfirmTwo} hideNavBar />
-             <Scene key="playthree" component={ConfirmThree} hideNavBar />
-             <Scene key="playfour" component={ConfirmFour} hideNavBar />
-             <Scene key="playbfour" component={ConfirmBFour} hideNavBar />
-             <Scene key="playfive" component={ConfirmFive} hideNavBar />
+             <Scene key="confirmplay" component={ConfirmPlay} hideNavBar />
           </Scene>
         </Router>
       </Root>

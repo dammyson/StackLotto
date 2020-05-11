@@ -1,12 +1,12 @@
 // React native and others libraries imports
 import React, { Component } from 'react';
-import { Alert, ImageBackground, TextInput, Dimensions, StyleSheet, Image, AsyncStorage, TouchableOpacity } from 'react-native';
-import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, Item, Thumbnail, Grid, Col, Header } from 'native-base';
+import { Alert, ImageBackground, TextInput, Dimensions, StyleSheet, Image, InteractionManager, AsyncStorage, TouchableOpacity } from 'react-native';
+import { Container, Content, View, Text, Button, Left, Right, Body, Toast, List, Item, Thumbnail, Grid, Col, Header } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import URL from '../../component/server'
-import { PulseIndicator } from 'react-native-indicators';
+import { RippleLoader } from 'react-native-indicator';
 import Navbar from '../../component/Navbar';
-
+import _ from "lodash";
 import color from '../../component/color'
 import { Card, Icon, SocialIcon } from 'react-native-elements'
 import {
@@ -14,6 +14,7 @@ import {
   SelectMultipleGroupButton
 } from "react-native-selectmultiple-button";
 
+const TEXT_INPUT_REF = 'urlInput';
 const multipleData = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
   "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49",];
 const selectData = ["6", "9", "10", "14", "41", "49"];
@@ -21,24 +22,83 @@ const selectData = ["6", "9", "10", "14", "41", "49"];
 export default class SelectNumber extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       multipleSelectedData: [],
       multipleSelectedDataLimited: [],
-      allSelectedTickets: []
+      allSelectedTickets: [],
+      data: '',
+      loading: false,
+      balance: '',
+      number_quick:0
     };
   }
 
 
   componentDidMount() {
+    AsyncStorage.getItem('data').then((value) => {
+      if (value == '') { } else {
+        this.setState({ data: JSON.parse(value) })
+      }
+    })
+
+    AsyncStorage.getItem('balance').then((value) => {
+      this.setState({ 'balance': value.toString() })
+      console.warn(value)
+    })
 
 
   }
 
 
+  getRandomNumbers(min, max){
+    let step1 = max - min + 1;
+    let step2 = Math.random() * step1;
+    let result = Math.floor(step2) + min;
+    return result;
+  }
+
+
+  createArrayOfNumber(start, end){
+      let myArray =[];
+      for(let i = start; i <= end ; i++){
+        myArray.push(i);
+      }
+      return myArray;
+  }
+
+
+  generateNumber(){
+    this.refs[TEXT_INPUT_REF].blur();
+        let GameArray=[];
+        for(let i = 0; i < this.state.number_quick; i++){
+          GameArray.push(this.getnumbers(6))
+        }
+        var instant_array = []
+        instant_array = this.state.allSelectedTickets
+       var total = instant_array.concat(GameArray);
+        this.setState({ allSelectedTickets: total })  
+        this.setState({ number_quick: "" })
+  }
+
+  getnumbers(num){
+
+    let array = this.createArrayOfNumber(1, 49)
+    let generated =[];
+    for(let i = 0; i < num; i++){
+      let randomIndex = this.getRandomNumbers(0, array.length - 1);
+      let randomNumber = array[randomIndex];
+      generated.push(randomNumber)
+      array.splice(randomIndex, 1);
+    }
+    return generated;
+
+  }
+ 
+
+
   render() {
 
-
+    const { data, balance } = this.state
     const placeholder = {
       label: 'Select a sport...',
       value: null,
@@ -47,15 +107,17 @@ export default class SelectNumber extends Component {
 
 
 
+   
     if (this.state.loading) {
       return (
         <View
-          style={styles.backgroundImage}
+          style={[styles.backgroundImage, { height: Dimensions.get('window').height, }]}
         >
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <View style={styles.welcome}>
-              <PulseIndicator color={color.slide_color_dark} size={70} />
+              <RippleLoader color={color.slide_color_dark} size={50} />
             </View>
+            <Text style={{ color: color.slide_color_dark }}>Proccessing... </Text>
           </View>
         </View>
       );
@@ -88,7 +150,7 @@ export default class SelectNumber extends Component {
           <Right style={{ flex: 1 }}>
             <View>
               <Text style={{ color: '#000', fontSize: 12, fontWeight: '600' }}>My Balance</Text>
-              <Text style={{ color: '#000', fontSize: 12, fontWeight: '600' }}>N 45,000.00 </Text>
+              <Text style={{ color: '#000', fontSize: 12, fontWeight: '600' }}>N {balance}  </Text>
             </View>
 
           </Right>
@@ -107,19 +169,22 @@ export default class SelectNumber extends Component {
 
               <View style={{ flexDirection: 'row', marginBottom: 20, }}>
                 <TextInput
+                 ref={TEXT_INPUT_REF}
                   placeholder="Enter number of play"
                   placeholderTextColor={color.primary_color}
                   returnKeyType="next"
                   onSubmitEditing={() => this.passwordInput.focus()}
-                  keyboardType='email-address'
+                  keyboardType='numeric'
                   autoCapitalize="none"
                   autoCorrect={false}
                   inlineImageLeft='ios-call'
                   style={styles.inputView}
-                  onChangeText={text => this.setState({ password: text })}
+                  maxLength={2}
+                  defaultValue={this.state.number_quick}
+                  onChangeText={text => this.setState({  number_quick: text })}
                 />
 
-                <TouchableOpacity style={{ height: 40, flexDirection: 'row', marginRight: 10, flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: color.secondary_color }}>
+                <TouchableOpacity  onPress={()=> this.generateNumber()} style={{ height: 40, flexDirection: 'row', marginRight: 10, flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: color.secondary_color }}>
                   <Text style={{ color: '#fff', fontSize: 15, fontWeight: '600' }}>Quick Play </Text>
                 </TouchableOpacity>
 
@@ -157,7 +222,7 @@ export default class SelectNumber extends Component {
                 </View>
 
               </View>
-              <View style={{ flexDirection: 'row', marginBottom: 20, marginTop: 40, }}>
+              <View style={{ flexDirection: 'row', marginBottom: 20, marginTop: 40,justifyContent: "center",  }}>
                 <View style={{ flexWrap: "wrap", flexDirection: "row", marginLeft: 20, justifyContent: "center", }}>
                   {this.state.multipleSelectedData.map(interest => (
                     <SelectMultipleButton
@@ -227,7 +292,12 @@ export default class SelectNumber extends Component {
     );
   }
   play() {
-    Actions.play();
+    if(this.state.allSelectedTickets.length < 1){
+      Alert.alert('Operarion failed', 'You must play atleast one game', [{ text: 'Okay' }])
+      return
+    }
+    const gamesDetails = { ticket: 200, type: 6, exact_order: false, }
+    Actions.confirmplay({allSelectedTickets: this.state.allSelectedTickets, gamesDetails: gamesDetails});
   }
 
   addTicket() {
@@ -247,19 +317,35 @@ export default class SelectNumber extends Component {
   _singleTapMultipleSelectedButtons(interest) {
 
     if (this.state.multipleSelectedData.includes(interest)) {
-
+      _.remove(this.state.multipleSelectedData, ele => {
+        return ele === interest;
+    });
     } else {
-      this.state.multipleSelectedData.push(interest);
+      if (this.state.multipleSelectedData.length < 6) {
+        this.state.multipleSelectedData.push(interest);
+      }
     }
+
     if (this.state.multipleSelectedData.length < 7) {
       this.setState({
         multipleSelectedData: this.state.multipleSelectedData
       });
+      console.warn(this.state.multipleSelectedData);
     } else {
       Alert.alert('Information', '6 is the maximum you can select', [{ text: 'Okay' }])
     }
 
 
+  }
+
+  showToast(){
+    Toast.show({
+      text: 'Please wait whatt !',
+      position: 'bottom',
+      type: 'error',
+      buttonText: 'Dismiss',
+      duration: 2500
+  });
   }
 
   renderslelcted() {
@@ -269,7 +355,7 @@ export default class SelectNumber extends Component {
       cat.push(
 
 
-        <View style={{ alignItems: 'center', justifyContent: "center", }}>
+        <View style={{ alignItems: 'center', justifyContent: "center",}}>
 
 
           <View style={{ flexDirection: 'row', marginBottom: 10, marginTop: 10, }}>
@@ -319,9 +405,9 @@ export default class SelectNumber extends Component {
 
 
   deleteFromSelected(index) {
-
+      console.warn(index);
     const allSelectedTickets = this.state.allSelectedTickets;
-    allSelectedTickets.splice(index, 1);
+    allSelectedTickets.splice(index - 1, 1);
     this.setState({ allSelectedTickets });
 
   }

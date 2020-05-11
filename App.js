@@ -7,7 +7,7 @@
 */
 
 import React, {Component, AppRegistry} from 'react';
-import Main from './src/component/navigation/Main';
+import Main from './src/component/navigation/MainBK';
 
 export default class App extends Component{
  

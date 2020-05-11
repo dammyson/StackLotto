@@ -4,7 +4,8 @@ import { Alert, ImageBackground, TextInput, Dimensions, StyleSheet, Image, Async
 import { Container, Content, View, Text, Button, Left, Right, Body, Header, List, Item, Thumbnail, Grid, Col } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import URL from '../../component/server'
-import { PulseIndicator } from 'react-native-indicators';
+import _ from "lodash";
+
 import Navbar from '../../component/Navbar';
 
 import color from '../../component/color'
@@ -13,7 +14,7 @@ import {
   SelectMultipleButton,
   SelectMultipleGroupButton
 } from "react-native-selectmultiple-button";
-
+const TEXT_INPUT_REF = 'urlInput';
 const multipleData = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
   "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42",];
 
@@ -24,19 +25,81 @@ export default class SelectFiveNumber extends Component {
     this.state = {
       multipleSelectedData: [],
       multipleSelectedDataLimited: [],
-      allSelectedTickets: []
+      allSelectedTickets: [],
+      data: '',
+      loading: false,
+      balance: '',
+      number_quick:0
     };
   }
 
 
-  componentDidMount() {
 
+  componentDidMount() {
+    AsyncStorage.getItem('data').then((value) => {
+      if (value == '') { } else {
+        this.setState({ data: JSON.parse(value) })
+      }
+    })
+
+    AsyncStorage.getItem('balance').then((value) => {
+      this.setState({ 'balance': value.toString() })
+      console.warn(value)
+    })
 
   }
 
+  getRandomNumbers(min, max){
+    let step1 = max - min + 1;
+    let step2 = Math.random() * step1;
+    let result = Math.floor(step2) + min;
+    return result;
+  }
+
+
+  createArrayOfNumber(start, end){
+      let myArray =[];
+      for(let i = start; i <= end ; i++){
+        myArray.push(i);
+      }
+      return myArray;
+  }
+
+
+  generateNumber(){
+    this.refs[TEXT_INPUT_REF].blur();
+        let GameArray=[];
+        for(let i = 0; i < this.state.number_quick; i++){
+          GameArray.push(this.getnumbers(5))
+        }
+        var instant_array = []
+        instant_array = this.state.allSelectedTickets
+       var total = instant_array.concat(GameArray);
+        this.setState({ allSelectedTickets: total })  
+        this.setState({ number_quick: "" })
+    
+  }
+
+  getnumbers(num){
+
+    let array = this.createArrayOfNumber(1, 42)
+    let generated =[];
+    for(let i = 0; i < num; i++){
+      let randomIndex = this.getRandomNumbers(0, array.length - 1);
+      let randomNumber = array[randomIndex];
+      generated.push(randomNumber)
+      array.splice(randomIndex, 1);
+    }
+    return generated;
+
+  }
+ 
+
+ 
+ 
 
   render() {
-
+    const { data, balance } = this.state
 
     const placeholder = {
       label: 'Select a sport...',
@@ -46,19 +109,7 @@ export default class SelectFiveNumber extends Component {
 
 
 
-    if (this.state.loading) {
-      return (
-        <View
-          style={styles.backgroundImage}
-        >
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <View style={styles.welcome}>
-              <PulseIndicator color={color.slide_color_dark} size={70} />
-            </View>
-          </View>
-        </View>
-      );
-    }
+
 
     return (
       <Container style={{ backgroundColor: color.primary_color }}>
@@ -86,7 +137,7 @@ export default class SelectFiveNumber extends Component {
           <Right style={{ flex: 1 }}>
             <View>
               <Text style={{ color: '#000', fontSize: 12, fontWeight: '600' }}>My Balance</Text>
-              <Text style={{ color: '#000', fontSize: 12, fontWeight: '600' }}>N 45,000.00 </Text>
+              <Text style={{ color: '#000', fontSize: 12, fontWeight: '600' }}>N {balance}  </Text>
             </View>
 
           </Right>
@@ -103,19 +154,22 @@ export default class SelectFiveNumber extends Component {
 
               <View style={{ flexDirection: 'row', marginBottom: 20, }}>
                 <TextInput
+                  ref={TEXT_INPUT_REF}
                   placeholder="Enter number of play"
                   placeholderTextColor={color.primary_color}
                   returnKeyType="next"
                   onSubmitEditing={() => this.passwordInput.focus()}
-                  keyboardType='email-address'
+                  keyboardType='numeric'
                   autoCapitalize="none"
                   autoCorrect={false}
                   inlineImageLeft='ios-call'
                   style={styles.inputView}
-                  onChangeText={text => this.setState({ password: text })}
+                  maxLength={2}
+                  onChangeText={text => this.setState({ number_quick: text })}
+                  defaultValue={this.state.number_quick}
                 />
 
-                <TouchableOpacity style={{ height: 40, flexDirection: 'row', marginRight: 10, flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: color.secondary_color }}>
+                <TouchableOpacity  onPress={()=> this.generateNumber()}  style={{ height: 40, flexDirection: 'row', marginRight: 10, flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: color.secondary_color }}>
                   <Text style={{ color: '#fff', fontSize: 15, fontWeight: '600' }}>Quick Play </Text>
                 </TouchableOpacity>
 
@@ -223,9 +277,13 @@ export default class SelectFiveNumber extends Component {
     );
   }
   play() {
-    Actions.playfive();
+    if(this.state.allSelectedTickets.length < 1){
+      Alert.alert('Operarion failed', 'You must play atleast one game', [{ text: 'Okay' }])
+      return
+    }
+    const gamesDetails = { ticket: 100, type: 1, exact_order: false, }
+    Actions.confirmplay({allSelectedTickets: this.state.allSelectedTickets, gamesDetails: gamesDetails});
   }
-
   addTicket() {
     if (this.state.multipleSelectedData.length == 5) {
 
@@ -243,14 +301,20 @@ export default class SelectFiveNumber extends Component {
   _singleTapMultipleSelectedButtons(interest) {
 
     if (this.state.multipleSelectedData.includes(interest)) {
-
+      _.remove(this.state.multipleSelectedData, ele => {
+        return ele === interest;
+    });
     } else {
-      this.state.multipleSelectedData.push(interest);
+      if (this.state.multipleSelectedData.length < 5) {
+        this.state.multipleSelectedData.push(interest);
+      }
     }
+
     if (this.state.multipleSelectedData.length < 6) {
       this.setState({
         multipleSelectedData: this.state.multipleSelectedData
       });
+      console.warn(this.state.multipleSelectedData);
     } else {
       Alert.alert('Information', '5 is the maximum you can select', [{ text: 'Okay' }])
     }
@@ -314,13 +378,13 @@ export default class SelectFiveNumber extends Component {
   }
 
 
-  deleteFromSelected(index){
-   
-    const allSelectedTickets = this.state.allSelectedTickets;
-    allSelectedTickets.splice(index, 1);
-    this.setState({ allSelectedTickets });
-  
-  }
+  deleteFromSelected(index) {
+    console.warn(index);
+  const allSelectedTickets = this.state.allSelectedTickets;
+  allSelectedTickets.splice(index - 1, 1);
+  this.setState({ allSelectedTickets });
+
+}
 
 }
 const styles = StyleSheet.create({

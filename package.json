@@ -22,7 +22,8 @@
     "react-native-picker-select": "^6.5.0",
     "react-native-router-flux": "^4.0.6",
     "react-native-selectmultiple-button": "^0.1.105",
-    "react-native-vector-icons": "^6.6.0"
+    "react-native-vector-icons": "^6.6.0",
+    "react-navigation": "^3.9.1"
   },
   "devDependencies": {
     "@babel/core": "7.8.4",

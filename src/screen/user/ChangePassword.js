@@ -4,9 +4,9 @@ import { Alert, ImageBackground, TextInput, Dimensions, StyleSheet, Image, Async
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, Item, Thumbnail, Grid, Col } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import URL from '../../component/server'
-import { PulseIndicator } from 'react-native-indicators';
+import { RippleLoader } from 'react-native-indicator';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
-
+import PasswordTextBox  from './../../component/PasswordTextBox';
 import color from '../../component/color'
 
 
@@ -18,58 +18,70 @@ export default class ChangePassword extends Component {
       items: [],
       phone: '',
       loading: false,
-      type: '',
+      id: '',
+      password: '',
+      c_password: '',
+      code:''
     };
   }
 
 
   componentDidMount() {
-    AsyncStorage.getItem('type').then((value) => {
-      value == '' ? this.setState({ type: "null" }) : this.setState({ type: value })
-    })
-
-
+   // this.setState({ id: this.props.id})
+    this.setState({ id: 27})
   }
 
-  registrationRequest() {
+ 
+  changePasswordRequest() {
 
-    const { phone, type } = this.state
+    const { id, code, password, c_password } = this.state
 
-    if (phone == "") {
-      Alert.alert('Validation failed', 'Phone field cannot be empty', [{ text: 'Okay' }])
+    if (code == "" || password == "") {
+      Alert.alert('Validation failed', 'Password field (s) cannot be empty', [{ text: 'Okay' }])
+      return
+    }
+
+    if (password != c_password) {
+      Alert.alert('Validation failed', 'password  and confirm password must be same', [{ text: 'Okay' }])
       return
     } else {
-      if (phone.length == 15 || phone.length == 11) {
-
-      } else {
-        Alert.alert('Validation failed', 'Phone number is invalid', [{ text: 'Okay' }])
-      }
 
     }
+
     this.setState({ loading: true })
-    var phonenumber = 0 + phone.substr(phone.length - 10);
-    const formData = new FormData();
-    formData.append('phone', phonenumber);
-    formData.append('user_type', type)
-    this.setState({ loading: true })
-    fetch(URL.url + '/register', {
+    fetch(URL.url + 'profile/reset/password/' + id + '/', {
       method: 'POST', headers: {
         Accept: 'application/json',
-      }, body: formData,
+        'Content-Type': 'application/json',
+      }, body: JSON.stringify({
+        code: code,
+        password: password,
+        password2: c_password,
+      }),
     })
       .then(this.processResponse)
       .then(res => {
         this.setState({ loading: false })
         const { statusCode, data } = res;
-        if (statusCode === 201) {
-          AsyncStorage.setItem('auth', data.data.token.toString());
-          AsyncStorage.setItem('step', 'one');
-          Actions.addpin();
-        } else if (statusCode === 422) {
-          Alert.alert('Validation failed', 'Phone number already exits', [{ text: 'Okay' }])
+        console.warn(statusCode, data)
+        this.setState({ loading: false })
+        if (statusCode == 200) {
+          Alert.alert(
+            'Alert',
+             data.message,
+            [
+              {text: 'Cancel', onPress: () => console.log('Cancel Pressed!')},
+              {text: 'OK', onPress: () => Actions.login()},
+            ],
+            { cancelable: false }
+          )
+        
+        } else if (statusCode == 400) {
+          Alert.alert('Operarion failed', 'Make sure  the code is a valid code', [{ text: 'Okay' }])
         } else {
-          Alert.alert('Operarion failed', 'Please check your phone number and retry', [{ text: 'Okay' }])
+          Alert.alert('Operarion failed', '', [{ text: 'Okay' }])
         }
+
       })
       .catch((error) => {
         console.log("Api call error");
@@ -78,8 +90,8 @@ export default class ChangePassword extends Component {
         this.setState({ loading: false })
       });
 
-
   }
+
   processResponse(response) {
     const statusCode = response.status;
     const data = response.json();
@@ -88,39 +100,47 @@ export default class ChangePassword extends Component {
       data: res[1]
     }));
   }
+
+
+
+
   render() {
 
 
     if (this.state.loading) {
       return (
         <View
-          style={styles.backgroundImage}
+          style={[styles.backgroundImage, { height: Dimensions.get('window').height, }]}
         >
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <View style={styles.welcome}>
-              <PulseIndicator color={color.slide_color_dark} size={70} />
+              <RippleLoader color={color.slide_color_dark} size={50} />
             </View>
+            <Text style={{ color: color.slide_color_dark }}>Proccessing... </Text>
           </View>
         </View>
       );
     }
 
     return (
+      <Container style={{ backgroundColor: 'transparent' }}>
+     
+      <Content>
             <View style={styles.backgroundImage}>
              
 
               <View>
 
 
-              <View style={{margin:30, marginTop: 45}}>
+              <View style={{margin:30, marginTop: 25}}>
               <Text style={styles.title}>{"New \nPassword"} </Text>
               <Text style={styles.information}>We just need your phone number to send you password reset code</Text>
 
               </View>
-              
+
               <View style={ styles.inputView}>
                 <TextInput
-                    placeholder="Password"
+                    placeholder="Code"
                     placeholderTextColor={color.primary_color}
                     returnKeyType="next"
                     onSubmitEditing={() => this.passwordInput.focus()}
@@ -129,43 +149,21 @@ export default class ChangePassword extends Component {
                     autoCorrect={false}
                     inlineImageLeft='ios-call'
                     style={{flex:1}}
-                    onChangeText={text => this.setState({ password: text })}
+                    onChangeText={text => this.setState({ code: text })}
                   />
 
-                   <TouchableOpacity  style={{ alignItems: 'center', justifyContent: 'center', marginRight:20}}>
-                   <Icon
-                        active
-                        name="ios-eye"
-                        type='ionicon'
-                        color='#5f6066'
-                    />
-              </TouchableOpacity>
-                </View>
-                <View style={ styles.inputView}>
-                <TextInput
-                    placeholder="Confirm Password"
-                    placeholderTextColor={color.primary_color}
-                    returnKeyType="next"
-                    onSubmitEditing={() => this.passwordInput.focus()}
-                    keyboardType='email-address'
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    inlineImageLeft='ios-call'
-                    style={{flex:1}}
-                    onChangeText={text => this.setState({ c_password: text })}
-                  />
 
-                   <TouchableOpacity  style={{ alignItems: 'center', justifyContent: 'center', marginRight:20}}>
-                   <Icon
-                        active
-                        name="ios-eye"
-                        type='ionicon'
-                        color='#5f6066'
-                    />
-              </TouchableOpacity>
                 </View>
+
+
+
+
+                <PasswordTextBox icon="lock" label="Password" onChange={(v) => this.setState({ password: v })} />
+                <PasswordTextBox icon="lock" label="Confirm Password" onChange={(v) => this.setState({ c_password: v })} />
+
               
-              <Button onPress={() =>  Actions.logina()} style={styles.buttonContainer} block iconLeft>
+              
+              <Button onPress={() =>  this.changePasswordRequest()} style={styles.buttonContainer} block iconLeft>
                
                <Text style={{ color: '#fff', fontSize:14, fontWeight: '400' }}>Reset Password </Text>
              </Button>
@@ -183,6 +181,8 @@ export default class ChangePassword extends Component {
 
 
             </View>
+            </Content>
+      </Container>
 
     );
   }

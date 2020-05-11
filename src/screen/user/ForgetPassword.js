@@ -4,7 +4,7 @@ import { Alert, ImageBackground, TextInput, Dimensions, StyleSheet, Image, Async
 import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, Item, Thumbnail, Grid, Col } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import URL from '../../component/server'
-import { PulseIndicator } from 'react-native-indicators';
+import { RippleLoader } from 'react-native-indicator';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
 
 import color from '../../component/color'
@@ -18,7 +18,7 @@ export default class ForgetPassword extends Component {
       items: [],
       phone: '',
       loading: false,
-      type: '',
+    
     };
   }
 
@@ -31,7 +31,7 @@ export default class ForgetPassword extends Component {
 
   }
 
-  registrationRequest() {
+  forgetPasswordRequest() {
 
     const { phone, type } = this.state
 
@@ -46,27 +46,37 @@ export default class ForgetPassword extends Component {
       }
 
     }
+
     this.setState({ loading: true })
     var phonenumber = 0 + phone.substr(phone.length - 10);
-    const formData = new FormData();
-    formData.append('phone', phonenumber);
-    formData.append('user_type', type)
-    this.setState({ loading: true })
-    fetch(URL.url + '/register', {
+
+    console.warn(phonenumber);
+   
+    fetch(URL.url + 'profile/forget/password/', {
       method: 'POST', headers: {
         Accept: 'application/json',
-      }, body: formData,
+        'Content-Type': 'application/json',
+      }, body: JSON.stringify({
+        phone: phonenumber,
+      }),
     })
       .then(this.processResponse)
       .then(res => {
         this.setState({ loading: false })
         const { statusCode, data } = res;
-        if (statusCode === 201) {
-          AsyncStorage.setItem('auth', data.data.token.toString());
-          AsyncStorage.setItem('step', 'one');
-          Actions.addpin();
-        } else if (statusCode === 422) {
-          Alert.alert('Validation failed', 'Phone number already exits', [{ text: 'Okay' }])
+          console.warn(statusCode, data)
+
+        if (statusCode === 200) {
+          Alert.alert(
+            'Alert',
+             data.message,
+            [
+              {text: 'Cancel', onPress: () => console.log('Cancel Pressed!')},
+              {text: 'OK', onPress: () => Actions.changepass({id: data.profile_id })},
+            ],
+            { cancelable: false }
+          )
+        
         } else {
           Alert.alert('Operarion failed', 'Please check your phone number and retry', [{ text: 'Okay' }])
         }
@@ -77,7 +87,6 @@ export default class ForgetPassword extends Component {
         alert(error.message);
         this.setState({ loading: false })
       });
-
 
   }
   processResponse(response) {
@@ -98,12 +107,14 @@ export default class ForgetPassword extends Component {
         >
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <View style={styles.welcome}>
-              <PulseIndicator color={color.slide_color_dark} size={70} />
+            <RippleLoader color={color.slide_color_dark} size={50} />
             </View>
+            <Text style={{ color: color.slide_color_dark }}>login in... </Text>
           </View>
         </View>
       );
     }
+
 
     return (
             <View style={styles.backgroundImage}>
@@ -123,7 +134,7 @@ export default class ForgetPassword extends Component {
                     placeholder="Phone number"
                     placeholderTextColor={color.primary_color}
                     returnKeyType="next"
-                    onSubmitEditing={() => this.passwordInput.focus()}
+                    onSubmitEditing={() => this.forgetPasswordRequest()}
                     keyboardType='email-address'
                     autoCapitalize="none"
                     autoCorrect={false}
@@ -135,7 +146,7 @@ export default class ForgetPassword extends Component {
                   
                 </View>
               
-              <Button onPress={() =>  Actions.changepass()} style={styles.buttonContainer} block iconLeft>
+              <Button onPress={() =>  this.forgetPasswordRequest()} style={styles.buttonContainer} block iconLeft>
                
                <Text style={{ color: '#fff', fontSize:14, fontWeight: '400' }}>Reset Password </Text>
              </Button>

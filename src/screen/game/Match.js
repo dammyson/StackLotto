@@ -42,7 +42,7 @@ const sports = [
       value: 'hockey',
     },
   ];
-
+  const TEXT_INPUT_REF = 'urlInput';
 const multipleDataONE = ["0","1", "2", "3", "4", "5","6", "7", "8", "9"];
 const multipleDataTWO = ["0","1", "2", "3", "4", "5","6", "7", "8", "9"];
 const multipleDataTHREE = ["0","1", "2", "3", "4", "5","6", "7", "8", "9"];
@@ -61,32 +61,81 @@ export default class Match extends Component {
       multipleSelectedDataFOUR: [],
       multipleSelectedDataLimited: [],
       allSelectedTickets: [],
-      SELONE:'',
-      SELTWO:'',
-      SELTHREE:'',
-      SELFOUR:'',
-
+      data: '',
+      loading: false,
+      balance: '',
+      number_quick:0
     };
   }
 
 
   componentDidMount() {
+    AsyncStorage.getItem('data').then((value) => {
+      if (value == '') { } else {
+        this.setState({ data: JSON.parse(value) })
+      }
+    })
+
+    AsyncStorage.getItem('balance').then((value) => {
+      this.setState({ 'balance': value.toString() })
+      console.warn(value)
+    })
 
 
   }
 
+  getRandomNumbers(min, max){
+    let step1 = max - min + 1;
+    let step2 = Math.random() * step1;
+    let result = Math.floor(step2) + min;
+    return result;
+  }
+
+
+  createArrayOfNumber(start, end){
+      let myArray =[];
+      for(let i = start; i <= end ; i++){
+        myArray.push(i);
+      }
+      return myArray;
+  }
+
+  generateNumber(){
+    this.refs[TEXT_INPUT_REF].blur();
+        let GameArray=[];
+        for(let i = 0; i < this.state.number_quick; i++){
+          GameArray.push(this.getnumbers(4))
+        }
+        var instant_array = []
+        instant_array = this.state.allSelectedTickets
+       var total = instant_array.concat(GameArray);
+        this.setState({ allSelectedTickets: total })  
+        this.setState({ number_quick: "" })
+  }
+
+  getnumbers(num){
+
+    let array = this.createArrayOfNumber(0, 9)
+    let generated =[];
+    for(let i = 0; i < num; i++){
+      let randomIndex = this.getRandomNumbers(0, array.length - 1);
+      let randomNumber = array[randomIndex];
+      generated.push(randomNumber)
+    }
+    return generated;
+
+  }
+
+
 
   render() {
 
-
+    const { data, balance } = this.state
     const placeholder = {
       label: 'Select Play type',
       value: null,
       color: "#000",
     };
-
- 
-
 
     if (this.state.loading) {
       return (
@@ -131,7 +180,7 @@ export default class Match extends Component {
           <Right style={{ flex: 1 }}>
             <View>
               <Text style={{ color: '#000', fontSize: 12, fontWeight: '600' }}>My Balance</Text>
-              <Text style={{ color: '#000', fontSize: 12, fontWeight: '600' }}>N 45,000.00 </Text>
+              <Text style={{ color: '#000', fontSize: 12, fontWeight: '600' }}>N{balance}  </Text>
             </View>
 
           </Right>
@@ -150,19 +199,21 @@ export default class Match extends Component {
 
               <View style={styles.inputView}>
                 <TextInput
+                  ref={TEXT_INPUT_REF}
                   placeholder="Enter number of play"
                   placeholderTextColor={color.primary_color}
                   returnKeyType="next"
                   onSubmitEditing={() => this.passwordInput.focus()}
-                  keyboardType='email-address'
+                  keyboardType='numeric'
                   autoCapitalize="none"
                   autoCorrect={false}
                   inlineImageLeft='ios-call'
                   style={{flex:1}}
-                  onChangeText={text => this.setState({ password: text })}
+                  defaultValue={this.state.number_quick}
+                  onChangeText={text => this.setState({  number_quick: text })}
                 />
               </View>
-                <TouchableOpacity style={{ height: 40, flexDirection: 'row', marginRight: 10, flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: color.secondary_color }}>
+                <TouchableOpacity   onPress={()=> this.generateNumber()}  style={{ height: 40, flexDirection: 'row', marginRight: 10, flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: color.secondary_color }}>
                   <Text style={{ color: '#fff', fontSize: 15, fontWeight: '600' }}>Quick Play </Text>
                 </TouchableOpacity>
 
@@ -194,7 +245,7 @@ export default class Match extends Component {
                         value={interest}
                         selected={this.state.multipleSelectedDataONE.includes(interest)}
                         singleTap={valueTap =>
-                          this._singleTapMultipleSelectedButtons(interest, 1)
+                          this._singleTapMultipleSelectedButtons(interest, 0)
                         }
 
                       />
@@ -225,7 +276,7 @@ export default class Match extends Component {
                         selected={this.state.multipleSelectedDataTWO.includes(interest)}
                         value={interest}
                         singleTap={valueTap =>
-                          this._singleTapMultipleSelectedButtons(interest, 2)
+                          this._singleTapMultipleSelectedButtons(interest, 1)
                         }
 
                       />
@@ -257,7 +308,7 @@ export default class Match extends Component {
                         selected={this.state.multipleSelectedDataTHREE.includes(interest)}
                         value={interest}
                         singleTap={valueTap =>
-                          this._singleTapMultipleSelectedButtons(interest, 3) 
+                          this._singleTapMultipleSelectedButtons(interest, 2) 
                         }
 
                       />
@@ -289,7 +340,7 @@ export default class Match extends Component {
                         value={interest}
                         selected={this.state.multipleSelectedDataFOUR.includes(interest)}
                         singleTap={valueTap =>
-                          this._singleTapMultipleSelectedButtons(interest, 4)
+                          this._singleTapMultipleSelectedButtons(interest, 3)
                         }
 
                       />
@@ -306,33 +357,13 @@ export default class Match extends Component {
 </View>
 
               <View style={{ flexDirection: 'row', marginBottom: 20, marginTop: 40,  alignItems: 'center', justifyContent: 'center', }}>
-                <View style={{ flexWrap: "wrap", flexDirection: "row", marginLeft: 20, justifyContent: "center", }}>
-                  {this.state.multipleSelectedData.map(interest => (
-                    <SelectMultipleButton
-                      key={interest}
-                      buttonViewStyle={styles.buttonStepTwoViewStyle}
-                      textStyle={{
-                        fontSize: 15,
-                        marginRight: 10,
-                        color: '#000',
-                      }}
-                      highLightStyle={{
-                        borderColor: "#ee005e",
-                        backgroundColor: "#ee005e",
-                        textColor: "#fff",
-                        fontWeight: '900',
-                        borderTintColor: color.primary_color,
-                        backgroundTintColor: "#ee005e",
-                        textTintColor: "#fff"
-                      }}
-                      value={interest}
-                      selected={this.state.multipleSelectedData.includes(interest)}
-                      singleTap={valueTap =>
-                        this._singleTapMultipleSelectedButtons(interest)
-                      }
-                    />
-                  ))}
-                </View>
+
+              <View style={{ flexWrap: "wrap", flexDirection: "row", marginLeft: 20, justifyContent: "center", }}>
+     
+              {this.rendersingleslelcted(this.state.multipleSelectedData)}
+
+     </View>
+              
 
 
                 {this.state.multipleSelectedData.length == 4 ?
@@ -395,10 +426,15 @@ export default class Match extends Component {
 
     );
   }
-  play() {
-    Actions.playbfour();
-  }
 
+  play() {
+    if(this.state.allSelectedTickets.length < 1){
+      Alert.alert('Operarion failed', 'You must play atleast one game', [{ text: 'Okay' }])
+      return
+    }
+    const gamesDetails = { ticket: 100, type: 2, exact_order: false, }
+    Actions.confirmplay({allSelectedTickets: this.state.allSelectedTickets, gamesDetails: gamesDetails});
+  }
   addTicket() {
     if (this.state.multipleSelectedData.length == 4) {
 
@@ -413,55 +449,60 @@ export default class Match extends Component {
 
 
     } else {
-
+      Alert.alert('Operarion failed', 'Select one number from each column', [{ text: 'Okay' }])
+      return
     }
   }
 
   _singleTapMultipleSelectedButtons(interest, place) {
 
-    if(place == 1){
-      this.state.multipleSelectedData[0] = interest;
+   
+   
+    this.state.multipleSelectedData[place] = interest;
+
+    console.warn(this.state.multipleSelectedData)
+
+    if(place == 0){
+     
+
       if (this.state.multipleSelectedDataONE.includes(interest)) {
 
       } else {
         this.setState({
-          multipleSelectedDataONE: interest.split()
+          multipleSelectedDataONE: interest
         });
        
 
       }
       
-    }else  if(place == 2){
-      this.state.multipleSelectedData[1] = interest;
+    }else  if(place == 1){
       if (this.state.multipleSelectedDataTWO.includes(interest)) {
 
       } else {
         this.setState({
-          multipleSelectedDataTWO: interest.split()
+          multipleSelectedDataTWO: interest
         });
       
       }
      
     }
-    else  if(place == 3){
-      this.state.multipleSelectedData[2] = interest;
+    else  if(place == 2){
       if (this.state.multipleSelectedDataTHREE.includes(interest)) {
 
       } else {
         this.setState({
-          multipleSelectedDataTHREE: interest.split()
+          multipleSelectedDataTHREE: interest
         });
         
       }
       
     }
-    else  if(place == 4){
-      this.state.multipleSelectedData[3] = interest;
+    else  if(place == 3){
       if (this.state.multipleSelectedDataFOUR.includes(interest)) {
 
       } else {
         this.setState({
-          multipleSelectedDataFOUR: interest.split()
+          multipleSelectedDataFOUR: interest
         });
        
       }
@@ -477,6 +518,26 @@ export default class Match extends Component {
 
   selectMatch(arr, pos) {
     console.warn(arr, pos);
+  }
+
+
+  rendersingleslelcted(data) {
+    let cat = [];
+    for (var i = 0; i < data.length; i++) {
+      if(data[i] != null){
+        cat.push(
+          <TouchableOpacity style={{ height: 40, width: 40, marginRight: 2, marginLeft: 2, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ee005e',  borderRadius:3 }}>
+          <Text style={{ color: '#fff', fontSize: 14, marginRight: 15, marginLeft: 15, fontWeight: '600' }}>{data[i]} </Text>
+        </TouchableOpacity>
+        )
+      }
+      
+    
+    
+    }
+
+    return cat;
+
   }
 
   renderslelcted() {
@@ -536,12 +597,12 @@ export default class Match extends Component {
 
 
   deleteFromSelected(index) {
+    console.warn(index);
+  const allSelectedTickets = this.state.allSelectedTickets;
+  allSelectedTickets.splice(index - 1, 1);
+  this.setState({ allSelectedTickets });
 
-    const allSelectedTickets = this.state.allSelectedTickets;
-    allSelectedTickets.splice(index, 1);
-    this.setState({ allSelectedTickets });
-
-  }
+}
 
 }
 const styles = StyleSheet.create({

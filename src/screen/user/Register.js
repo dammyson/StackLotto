@@ -8,7 +8,7 @@ import { RippleLoader } from 'react-native-indicator';
 
 import color from '../../component/color'
 import { Card, Icon, SocialIcon } from 'react-native-elements'
-
+import PasswordTextBox  from './../../component/PasswordTextBox';
 
 
 export default class Login extends Component {
@@ -38,7 +38,8 @@ export default class Login extends Component {
 
   registrationRequest() {
 
-    const { phone,email, last_name, first_name, password,agree,  password2} = this.state
+    const { phone,email, last_name, first_name, password, agree,  password2} = this.state
+    console.warn(password)
 
     if (phone == "" || email == "" || last_name == "" || first_name == "" || password == "" || password2 == "") {
       Alert.alert('Validation failed', 'one or more fields are empty', [{ text: 'Okay' }])
@@ -55,7 +56,7 @@ export default class Login extends Component {
     }
   
     this.setState({ loading: true })
-    fetch(URL.url + 'profile/register', {
+    fetch(URL.url + 'profile/register/', {
       method: 'POST', headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -73,14 +74,15 @@ export default class Login extends Component {
       .then(res => {
         this.setState({ loading: false })
         const { statusCode, data } = res;
-        if (statusCode === 201) {
-          AsyncStorage.setItem('auth', data.data.token.toString());
-          AsyncStorage.setItem('step', 'one');
-          Actions.addpin();
+        console.warn(data)
+        if (statusCode === 200) {
+          Actions.login({type: 'replace'});
         } else if (statusCode === 422) {
-          Alert.alert('Validation failed', 'Phone number already exits', [{ text: 'Okay' }])
+          if(data.phone){
+            Alert.alert('Validation failed', data.phone.Phone, [{ text: 'Okay' }])
+          }
         } else {
-          Alert.alert('Operarion failed', 'Please check your phone number and retry', [{ text: 'Okay' }])
+          Alert.alert('Validation failed', 'Error connection to the server please check you details and try again', [{ text: 'Okay' }])
         }
       })
       .catch((error) => {
@@ -89,7 +91,6 @@ export default class Login extends Component {
         alert(error.message);
         this.setState({ loading: false })
       });
-
 
   }
   processResponse(response) {
@@ -100,13 +101,20 @@ export default class Login extends Component {
       data: res[1]
     }));
   }
+
+
+
+  _updateState(loo, ll){
+    console.warn(loo, ll)
+
+  }
   render() {
 
 
     if (this.state.loading) {
       return (
         <View
-          style={styles.backgroundImage}
+          style={[styles.backgroundImage, {height: Dimensions.get('window').height,}]}
         >
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <View style={styles.welcome}>
@@ -203,54 +211,11 @@ export default class Login extends Component {
                   
                 </View>
                
-                <View style={ styles.inputView}>
-                <TextInput
-                    placeholder="Password"
-                    placeholderTextColor={color.primary_color}
-                    returnKeyType="next"
-                    onSubmitEditing={() => this.password2.focus()}
-                    keyboardType='email-address'
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    inlineImageLeft='ios-call'
-                    style={{flex:1}}
-                    ref={(input) => this.password = input}
-                    onChangeText={text => this.setState({ password: text })}
-                  />
+                <PasswordTextBox icon="lock" label="Password" onChange={(v) => this.setState({ password: v })} />
+                <PasswordTextBox icon="lock" label="Confirm Password" onChange={(v) => this.setState({ password2: v })} />
 
-                   <TouchableOpacity  style={{ alignItems: 'center', justifyContent: 'center', marginRight:20}}>
-                   <Icon
-                        active
-                        name="ios-eye"
-                        type='ionicon'
-                        color='#000'
-                    />
-              </TouchableOpacity>
-                </View>
-                <View style={ styles.inputView}>
-                <TextInput
-                    placeholder="Confirm Password"
-                    placeholderTextColor={color.primary_color}
-                    returnKeyType="next"
-                    onSubmitEditing={() => this.registrationRequest()}
-                    keyboardType='email-address'
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    inlineImageLeft='ios-call'
-                    style={{flex:1}}
-                    ref={(input) => this.password2 = input}
-                    onChangeText={text => this.setState({ c_password: text })}
-                  />
 
-                   <TouchableOpacity  style={{ alignItems: 'center', justifyContent: 'center', marginRight:20}}>
-                   <Icon
-                        active
-                        name="ios-eye"
-                        type='ionicon'
-                        color='#000'
-                    />
-              </TouchableOpacity>
-                </View>
+               
 
               <View style={{marginTop: 9,  marginBottom: 9,flexDirection:'row' , marginLeft:45,   alignItems: 'center',}}>
               { !this.state.agree ?
@@ -293,7 +258,7 @@ export default class Login extends Component {
 
 
               
-              <Button onPress={() =>  Actions.login()} style={styles.buttonContainer} block iconLeft>
+              <Button onPress={() =>  this.registrationRequest()} style={styles.buttonContainer} block iconLeft>
                
                <Text style={{ color: '#fff', fontSize:14, fontWeight: '200' }}>Create Account </Text>
              </Button>
@@ -341,6 +306,7 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     width: Dimensions.get('window').width,
+    
   
   },
   input: {

@@ -45,7 +45,7 @@ export default class Login extends Component {
 
     }
     this.setState({ loading: true })
-    fetch(URL.url + 'profile/login', {
+    fetch(URL.url + 'profile/login/', {
       method: 'POST', headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -58,13 +58,13 @@ export default class Login extends Component {
       .then(res => {
         this.setState({ loading: false })
         const { statusCode, data } = res;
-        console.warn(statusCode, data)
+        console.warn(statusCode, data.profile)
         if (statusCode === 200) {
-          AsyncStorage.setItem('auth', data.token.toString());
-          AsyncStorage.setItem('profile', data.profile.toString());
+          AsyncStorage.setItem('data',  JSON.stringify(data.profile) );
           AsyncStorage.setItem('balance', this.currencyFormat(data.profile.balance));
           AsyncStorage.setItem('step', 'one');
-          Actions.home();
+          //Actions.otp();
+          Actions.home({type: 'replace'});
         } else {
           Alert.alert('Operarion failed', data.non_field_errors[0], [{ text: 'Okay' }])
         }
@@ -160,7 +160,7 @@ export default class Login extends Component {
 
 
 
-          <Button onPress={() => Actions.otp()} style={styles.buttonContainer} block iconLeft>
+          <Button onPress={() => this.loginRequest()} style={styles.buttonContainer} block iconLeft>
 
             <Text style={{ color: '#fff', fontSize: 14, fontWeight: '200' }}>Login </Text>
           </Button>
@@ -191,11 +191,6 @@ export default class Login extends Component {
 
 }
 const styles = StyleSheet.create({
-  welcome: {
-    height: 90,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   container: {
     flex: 1,
     justifyContent: 'center',

@@ -63,42 +63,32 @@ export default class Game extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            items: [],
-            phone: '',
+            data: '',
             loading: false,
-            type: '',
-            condition: false,
-            account: '',
-            complete_transaction: false,
-            showFilter: false,
-            startdate: "2019-05-29",
-            enddate: "2019-05-29",
-            todate: "2019-06-11",
+            balance: '',
         };
     }
 
 
     componentDidMount() {
-        AsyncStorage.getItem('type').then((value) => {
-            value == '' ? this.setState({ type: "null" }) : this.setState({ type: value })
+        AsyncStorage.getItem('data').then((value) => {
+          if (value == '') { } else {
+            this.setState({ data: JSON.parse(value) })
+          }
         })
-        var date = new Date().getDate();
-        var month = new Date().getMonth() + 1;
-        var year = new Date().getFullYear();
-        this.setState({
-            today: year + '-' + month + '-' + date,
-        });
-
-    }
+    
+        AsyncStorage.getItem('balance').then((value) => {
+          this.setState({ 'balance': value.toString() })
+          console.warn(value)
+        })
+    
+    
+      }
 
 
     render() {
 
-        const placeholder = {
-            label: 'Match 3',
-            value: null,
-            color: "#000",
-        };
+        const { data, balance } = this.state
 
         var left = (
             <Left style={{ flex: 1 }}>
@@ -117,7 +107,7 @@ export default class Game extends Component {
             <Right style={{ flex: 1, flexDirection:'row' }}>
             <View style={{ marginLeft:10 }}>
             <Text style={{ color: '#000', fontSize: 10, fontWeight: '400' }}>My Balance</Text>
-            <Text style={{ color: '#000', fontSize: 10, fontWeight: '400' }}>N 45,000.00 </Text>
+            <Text style={{ color: '#000', fontSize: 12, fontWeight: '600' }}>N {balance}  </Text>
             </View>
             </Right>
           );

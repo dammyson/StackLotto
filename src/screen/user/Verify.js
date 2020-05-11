@@ -5,7 +5,7 @@ import { Container, Content, View, Text, Button, Left, Right, Body, Title, List,
 import { Actions } from 'react-native-router-flux';
 import OTPInputView from '@twotalltotems/react-native-otp-input'
 import URL from '../../component/server'
-import { PulseIndicator } from 'react-native-indicators';
+import { RippleLoader } from 'react-native-indicator';
 import { Card, Icon, SocialIcon } from 'react-native-elements'
 
 import color from '../../component/color'
@@ -17,60 +17,52 @@ export default class Verify extends Component {
     super(props);
     this.state = {
       items: [],
-      phone: '',
+      code: '',
       loading: false,
-      type: '',
+      data: '',
     };
   }
 
-
   componentDidMount() {
-    AsyncStorage.getItem('type').then((value) => {
-      value == '' ? this.setState({ type: "null" }) : this.setState({ type: value })
+    AsyncStorage.getItem('data').then((value) => {
+      if (value == '') { } else {
+        this.setState({ data: JSON.parse(value) })
+      }
     })
-
 
   }
 
-  registrationRequest() {
 
-    const { phone, type } = this.state
+  verificationRequest(code) {
 
-    if (phone == "") {
+    this.setState({ loading: true })
+    const { data } = this.state
+    console.warn(data)
+
+    if (code == "") {
       Alert.alert('Validation failed', 'Phone field cannot be empty', [{ text: 'Okay' }])
       return
     } else {
-      if (phone.length == 15 || phone.length == 11) {
-
-      } else {
-        Alert.alert('Validation failed', 'Phone number is invalid', [{ text: 'Okay' }])
-      }
 
     }
-    this.setState({ loading: true })
-    var phonenumber = 0 + phone.substr(phone.length - 10);
-    const formData = new FormData();
-    formData.append('phone', phonenumber);
-    formData.append('user_type', type)
-    this.setState({ loading: true })
-    fetch(URL.url + '/register', {
+
+    fetch(URL.url + 'profile/verify/code/' +data.id+ '/', {
       method: 'POST', headers: {
         Accept: 'application/json',
-      }, body: formData,
+        'Content-Type': 'application/json',
+      }, body: JSON.stringify({
+        code: code,
+      }),
     })
-      .then(this.processResponse)
+    .then(res => res.json())
       .then(res => {
         this.setState({ loading: false })
-        const { statusCode, data } = res;
-        if (statusCode === 201) {
-          AsyncStorage.setItem('auth', data.data.token.toString());
-          AsyncStorage.setItem('step', 'one');
-          Actions.addpin();
-        } else if (statusCode === 422) {
-          Alert.alert('Validation failed', 'Phone number already exits', [{ text: 'Okay' }])
-        } else {
-          Alert.alert('Operarion failed', 'Please check your phone number and retry', [{ text: 'Okay' }])
-        }
+          if (res.success) {
+            Actions.home()
+          } else {
+            Alert.alert('Operarion failed', 'Please check your phone, get the approprate code and retry', [{ text: 'Okay' }])
+          }
+       
       })
       .catch((error) => {
         console.log("Api call error");
@@ -79,6 +71,40 @@ export default class Verify extends Component {
         this.setState({ loading: false })
       });
 
+  }
+
+  resendVerificationcodeRequest() {
+
+    this.setState({ loading: true })
+    const { data } = this.state
+   
+
+    fetch(URL.url + 'profile/resend/code/'+data.id+'/'+data.phone+'/', {
+      method: 'POST', headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      }, body: JSON.stringify({
+      }),
+    })
+    .then(this.processResponse)
+      .then(res => {
+        this.setState({ loading: false })
+        const { statusCode, data } = res;
+        console.warn(statusCode, data )
+        this.setState({ loading: false })
+          if (statusCode == 200) {
+            Alert.alert('Successfull', 'Please check your phone, get the approprate code and retry', [{ text: 'Okay' }])
+          } else {
+            Alert.alert('Operarion failed', 'Please check your phone, get the approprate code and retry', [{ text: 'Okay' }])
+          }
+       
+      })
+      .catch((error) => {
+        console.log("Api call error");
+        console.warn(error);
+        alert(error.message);
+        this.setState({ loading: false })
+      });
 
   }
   processResponse(response) {
@@ -99,60 +125,61 @@ export default class Verify extends Component {
         >
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <View style={styles.welcome}>
-              <PulseIndicator color={color.slide_color_dark} size={70} />
+              <RippleLoader color={color.slide_color_dark} size={50} />
             </View>
+            <Text style={{ color: color.slide_color_dark }}>Proccessing... </Text>
           </View>
         </View>
       );
     }
 
     return (
-            <View style={styles.backgroundImage}>
-             
-              <View style={{justifyContent:'flex-start', alignItems:'center'}}>
-              <View style={{margin:30, marginTop: 45}}>
-              <Text style={styles.title}>{"Enter \nVerification Code"} </Text>
-              <Text style={styles.information}>A text message with a 6 digit code was sent to your phone</Text>
+      <View style={styles.backgroundImage}>
 
-              </View>
-              
-              <View style={{justifyContent:'center', alignItems:'center'}}>
-              <OTPInputView
-                                            style={{
-                                                width: '70%', height: 70, marginLeft: 30,
-                                                marginRight: 30, justifyContent: 'center', color: '#fff',
-                                            }}
-                                            pinCount={6}
-                                            // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
-                                            // onCodeChanged = {code => { this.setState({code})}}
-                                            autoFocusOnLoad
-                                            codeInputFieldStyle={styles.underlineStyleBase}
-                                            codeInputHighlightStyle={styles.underlineStyleHighLighted}
-                                            onCodeFilled={(code => {
-                                                Actions.home();
-                                            })}
-                                        />
-                </View>
-              
-              
-             
-               
-               <Text style={{ textAlign:'center', color: '#000', fontSize:14, fontWeight: '200', opacity:0.6 }}>Didn't get text? </Text>
-            
+        <View style={{ justifyContent: 'flex-start', alignItems: 'center' }}>
+          <View style={{ margin: 30, marginTop: 45 }}>
+            <Text style={styles.title}>{"Enter \nVerification Code"} </Text>
+            <Text style={styles.information}>A text message with a 6 digit code was sent to your phone</Text>
 
+          </View>
 
-              <View style={{margin:30, marginTop: 19, flexDirection:'row' ,   alignItems: 'center', justifyContent: 'center', padding:20,}}>
-              
-              <TouchableOpacity  onPress={() =>  Actions.login()}>
-              <Text style={{ color: color.primary_colo, fontSize:15, fontWeight: '900' }}>{"RESEND "}  </Text> 
-              </TouchableOpacity>
-              </View>
-
-              </View>
+          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <OTPInputView
+              style={{
+                width: '70%', height: 70, marginLeft: 30,
+                marginRight: 30, justifyContent: 'center', color: '#fff',
+              }}
+              pinCount={6}
+              // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
+              onCodeChanged={code => { this.setState({ code }) }}
+              autoFocusOnLoad
+              codeInputFieldStyle={styles.underlineStyleBase}
+              codeInputHighlightStyle={styles.underlineStyleHighLighted}
+              onCodeFilled={(code => {
+                this.verificationRequest(code)
+              })}
+            />
+          </View>
 
 
 
-            </View>
+
+          <Text style={{ textAlign: 'center', color: '#000', fontSize: 14, fontWeight: '200', opacity: 0.6 }}>Didn't get text? </Text>
+
+
+
+          <View style={{ margin: 30, marginTop: 19, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', padding: 20, }}>
+
+            <TouchableOpacity onPress={() => this.resendVerificationcodeRequest()}>
+              <Text style={{ color: color.primary_colo, fontSize: 15, fontWeight: '900' }}>{"RESEND "}  </Text>
+            </TouchableOpacity>
+          </View>
+
+        </View>
+
+
+
+      </View>
 
     );
   }
@@ -169,7 +196,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-  
+
     alignItems: 'center',
 
   },
@@ -179,17 +206,17 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   backgroundImage: {
-    backgroundColor:'#fff',
+    backgroundColor: '#fff',
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
   },
   inputView: {
-  
-  
+
+
     marginLeft: 30,
     marginRight: 30,
-  
-   
+
+
   },
   buttonContainer: {
     backgroundColor: color.secondary_color,
@@ -203,14 +230,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
 
   },
-  information:{
+  information: {
     marginLeft: 3,
     color: '#5f6066',
     marginTop: 10,
-    fontSize:13,
+    fontSize: 13,
     marginBottom: 30,
   },
- 
+
   title: {
     marginTop: 7,
     marginBottom: 15,
@@ -223,23 +250,23 @@ const styles = StyleSheet.create({
   borderStyleBase: {
     width: 30,
     height: 45
-},
+  },
 
-borderStyleHighLighted: {
+  borderStyleHighLighted: {
     borderColor: "red",
-},
+  },
 
-underlineStyleBase: {
+  underlineStyleBase: {
     width: 30,
     height: 45,
     borderWidth: 0,
     borderBottomWidth: 4,
     borderColor: "black",
-    color:'black'
-},
+    color: 'black'
+  },
 
-underlineStyleHighLighted: {
+  underlineStyleHighLighted: {
     borderColor: "black",
-},
+  },
 });
 
