@@ -8,8 +8,8 @@ export default class Splash extends Component {
 
     async componentDidMount() {
         setTimeout(() => {
-       // this.initPage();
-    Actions.account();
+       this.initPage();
+   // Actions.fundwallet();
           }, 3000);
     }
 
@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
     backgroundImage: {
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
+        backgroundColor:'#0f154a'
     },
     logo: {
       marginBottom:100,

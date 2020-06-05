@@ -156,11 +156,7 @@ export default class ResultDetails extends Component {
                               
                               </View>
                             </View>
-
-
-
                             <View style={{ marginTop: 15 }}>
-
                                 <FlatList
                                     style={{ paddingBottom: 5 }}
                                     data={sports}
@@ -169,7 +165,6 @@ export default class ResultDetails extends Component {
                                     ItemSeparatorComponent={this.renderSeparator}
                                     ListHeaderComponent={this.renderHeader}
                                 />
-
                             </View>
 
 

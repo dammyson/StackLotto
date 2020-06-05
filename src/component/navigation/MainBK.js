@@ -42,6 +42,8 @@ import Verify from '../../screen/user/Verify';
 import Logout from '../../screen/user/Logout';
 
 import ConfirmPlay from '../../screen/game/ConfirmPlay';
+import TransactionsHistory from '../../screen/wallet/TransactionsHistory';
+import FundWallet from '../../screen/setting/FundWallet';
 
 
 
@@ -85,6 +87,7 @@ export default class Main extends Component {
              <Scene key="createW" component={CreateWithdrawer} hideNavBar />
              <Scene key="orderW" component={WithdrawerOrder} hideNavBar />
              <Scene key="transW" component={WalletTransactions} hideNavBar />
+             <Scene key="transH" component={TransactionsHistory} hideNavBar />
              <Scene key="home" component={Home} hideNavBar onBack={()=>{ this.showToast() }} back={true} />
              <Scene key="how" component={How} hideNavBar />
              <Scene key="noti" component={Notifications} hideNavBar />
@@ -102,6 +105,7 @@ export default class Main extends Component {
              <Scene key="selectFive" component={SelectFiveNumber} hideNavBar />
              <Scene key="selectFour" component={SelectFourNumber} hideNavBar />
              <Scene key="confirmplay" component={ConfirmPlay} hideNavBar />
+             <Scene key="fundwallet" component={FundWallet} hideNavBar />
           </Scene>
         </Router>
       </Root>

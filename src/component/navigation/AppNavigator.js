@@ -241,11 +241,9 @@ const AppNavigator = createStackNavigator({
       header: null
     }
   },
-  
+
 }
 );
-
-
 
 const App = createAppContainer(AppNavigator);
 
@@ -253,16 +251,16 @@ export default App;
 
 const prevGetStateForActionHomeStack = AppNavigator.router.getStateForAction;
 AppNavigator.router.getStateForAction = (action, state) => {
-    if (state && action.type === 'ReplaceCurrentScreen') {
-      const routes = state.routes.slice(0, state.routes.length - 1);
-      routes.push(action);
-      return {
-        ...state,
-        routes,
-        index: routes.length - 1,
-      };
-    }
-    return prevGetStateForActionHomeStack(action, state);
+  if (state && action.type === 'ReplaceCurrentScreen') {
+    const routes = state.routes.slice(0, state.routes.length - 1);
+    routes.push(action);
+    return {
+      ...state,
+      routes,
+      index: routes.length - 1,
+    };
   }
+  return prevGetStateForActionHomeStack(action, state);
+}
 
 

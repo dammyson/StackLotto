@@ -40,7 +40,7 @@ const sports = [
     },
 ];
 
-export default class WalletTransactions extends Component {
+export default class TransactionsHistory extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -112,71 +112,17 @@ export default class WalletTransactions extends Component {
 
         return (
             <Container style={{ backgroundColor: color.primary_color }}>
-                <Navbar left={left} title='Wallet' bg='#fff' tbg='#000' />
+                <Navbar left={left} title='Transactions History' bg='#fff' tbg='#000' />
                 <Content>
                     <View style={styles.backgroundImage}>
-                        <View style={{ flex: 1 }}>
-                            <View style={{ flexDirection: 'row', marginTop: 30 }}>
-                                <View style={[styles.card, { marginLeft: 12 }]}>
-
-                                    <View style={{ marginRight: 10 }}>
-                                        <Icon
-                                            active
-                                            name="wallet"
-                                            type='entypo'
-                                            color={color.secondary_color}
-                                            size={40}
-                                        />
-                                    </View>
-                                    <View>
-                                        <Text style={{ color: color.primary_color, fontSize: 12, fontWeight: '400' }}>Deposit </Text>
-                                        <Text style={{ color: color.primary_color, marginTop: 10, fontSize: 14, fontWeight: '800' }}>N105,000.00 </Text>
-                                    </View>
-                                </View>
-
-
-                                <View style={[styles.card, { marginRight: 12 }]}>
-
-                                    <View style={{ marginRight: 10 }}>
-                                        <Icon
-                                            active
-                                            name="wallet"
-                                            type='entypo'
-                                            color={color.primary_color}
-                                            size={40}
-                                        />
-                                    </View>
-                                    <View>
-                                        <Text style={{ color: color.primary_color, fontSize: 12, fontWeight: '400' }}>winning </Text>
-                                        <Text style={{ color: color.primary_color, marginTop: 10, fontSize: 14, fontWeight: '800' }}>N105,000.00 </Text>
-                                    </View>
-                                </View>
-
-                            </View>
-
-                            <View style={{ flexDirection: 'row', marginTop: 30 }}>
-
-                                <Button onPress={() => Actions.how()} style={[styles.secondaryButtonContainer, { backgroundColor: "#fff" }]} block iconLeft>
-
-                                    <Text style={{ color: '#000', fontSize: 14, fontWeight: '500' }}>FUND WALLET </Text>
-                                </Button>
-
-
-                                <Button onPress={() => Actions.createW()} style={styles.secondaryButtonContainer} block iconLeft>
-
-                                    <Text style={{ color: '#fff', fontSize: 14, fontWeight: '500' }}>WITHDRAW </Text>
-                                </Button>
-                            </View>
-
-
-                            <Text style={styles.informationHead}>Recent Transactions History</Text>
-
+                        <View style={{ flex: 1 ,marginTop: 15 }}>
+                           
 
                             {
                                 this.state.showFilter ?
 
                                     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-                                        <Text style={styles.information}>Filter Transactions</Text>
+                                        <Text style={styles.information}>Transactions History</Text>
 
 
 

@@ -9,6 +9,7 @@
   "dependencies": {
     "@react-native-community/art": "^1.2.0",
     "@twotalltotems/react-native-otp-input": "^1.1.5",
+    "jetifier": "^1.6.5",
     "native-base": "^2.13.8",
     "react": "16.8.3",
     "react-native": "0.59.5",
@@ -19,6 +20,7 @@
     "react-native-indicator": "^1.2.0",
     "react-native-indicators": "^0.17.0",
     "react-native-modals": "^0.19.9",
+    "react-native-paystack": "^3.4.0",
     "react-native-picker-select": "^6.5.0",
     "react-native-router-flux": "^4.0.6",
     "react-native-selectmultiple-button": "^0.1.105",

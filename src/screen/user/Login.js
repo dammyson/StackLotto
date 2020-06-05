@@ -58,10 +58,9 @@ export default class Login extends Component {
       .then(res => {
         this.setState({ loading: false })
         const { statusCode, data } = res;
-        console.warn(statusCode, data.profile)
         if (statusCode === 200) {
-          AsyncStorage.setItem('data',  JSON.stringify(data.profile) );
-          AsyncStorage.setItem('balance', this.currencyFormat(data.profile.balance));
+          AsyncStorage.setItem('data',  JSON.stringify(data.data) );
+          AsyncStorage.setItem('balance', this.currencyFormat(data.data.balance));
           AsyncStorage.setItem('step', 'one');
           //Actions.otp();
           Actions.home({type: 'replace'});
