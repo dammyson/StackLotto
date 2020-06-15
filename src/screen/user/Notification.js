@@ -118,7 +118,7 @@ export default class Notification extends Component {
                             <TouchableOpacity style={styles.oneRow}
                 underlayColor="red">
                 <View style={{ flex: 1 }}>
-                    <Text style={{ color: "#fff", fontSize: 13, fontWeight: '500' }}> WelcOme to stacklotto Match 3 draw winning, Number.</Text>
+                    <Text style={{ color: "#fff", fontSize: 13, fontWeight: '500' }}> Welcome to stacklotto Match 3 draw winning, Number.</Text>
                     <Text style={{ color: "#fff", fontSize: 13, fontWeight: '900' }}>Game type: Match 3  </Text>
                     <Text style={{ color: "#fff", fontSize: 13, fontWeight: '900' }}>Draw date: March 3 </Text>
                     <Text style={{ color: "#fff", fontSize: 13, fontWeight: '900' }}>Fri Jul 20 2018 09:19:00  </Text>

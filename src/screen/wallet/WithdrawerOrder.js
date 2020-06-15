@@ -143,7 +143,7 @@ export default class WithdrawerOrder extends Component {
 
                 <Button  style={styles.secondaryButtonContainer} block iconLeft>
 
-                  <Text style={{ color: '#fff', fontSize: 14, fontWeight: '500' }}>WIRHDRAW </Text>
+                  <Text style={{ color: '#fff', fontSize: 14, fontWeight: '500' }}>WITHDRAW </Text>
                 </Button>
               </View>
 
@@ -178,7 +178,7 @@ export default class WithdrawerOrder extends Component {
 
                <View style={styles.inputView}>
                 <TextInput
-                  placeholder="Ammount"
+                  placeholder="Amount"
                   placeholderTextColor={color.primary_color}
                   returnKeyType="next"
                   onSubmitEditing={() => this.passwordInput.focus()}

@@ -192,7 +192,7 @@ export default class Match extends Component {
             <View style={{ flex: 1 }}>
 
               <View>
-                <Text style={{ fontSize: 15, textAlign: 'center', margin: 20, color: '#fff' }}>Select 4 number from 0-9 OR Choose Quick Pick Draw date 2020-01-20 16:00:00</Text>
+                <Text style={{ fontSize: 15, textAlign: 'center', margin: 20, color: '#fff' }}>Select 4 numbers from 0-9 OR Choose Quick Pick Draw date 2020-01-20 16:00:00</Text>
               </View>
 
               <View style={{ flexDirection: 'row', marginBottom: 20, }}>

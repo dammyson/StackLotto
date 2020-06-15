@@ -8,8 +8,8 @@ export default class Splash extends Component {
 
     async componentDidMount() {
         setTimeout(() => {
-       this.initPage();
-   // Actions.fundwallet();
+      // this.initPage();
+      Actions.h();
           }, 3000);
     }
 
@@ -25,10 +25,8 @@ export default class Splash extends Component {
           }
           else{
             Actions.intro();
-          } 
-            
+          }            
         })
-       
       }
    
     render() {

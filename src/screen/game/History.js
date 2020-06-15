@@ -61,7 +61,15 @@ export default class History extends Component {
     }
 
 
+
     componentDidMount() {
+        AsyncStorage.getItem('data').then((value) => {
+            if (value == '') { } else {
+                this.setState({ data: JSON.parse(value) })
+            }
+            console.warn(value)
+        })
+
         AsyncStorage.getItem('type').then((value) => {
             value == '' ? this.setState({ type: "null" }) : this.setState({ type: value })
         })
@@ -71,6 +79,51 @@ export default class History extends Component {
         this.setState({
             today: year + '-' + month + '-' + date,
         });
+
+    }
+
+    getTicketRequest() {
+
+        const { data, startdate, enddate, type } = this.state
+        var date = new Date(startdate).getDate();
+        var month = new Date(startdate).getMonth() + 1;
+        var year = new Date(startdate).getFullYear();
+        console.warn(date, month , year )
+
+        this.setState({ loading: true })
+
+        fetch(URL.url + 'profile/save/plays/' + data.id + '/' + type + '/' +  date + '/' + month + '/' + year + '/',{
+            method: 'POST', headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(this.processResponse)
+            .then(res => {
+                this.setState({ loading: false })
+                const { statusCode, data } = res;
+                console.warn(statusCode, data)
+                this.setState({ loading: false })
+
+                if (statusCode == 200) {
+
+                } else if (statusCode == 400) {
+
+                    Alert.alert('Operarion failed', 'Make sure the new password is defferent from the old one', [{ text: 'Okay' }])
+
+                } else {
+
+                    Alert.alert('Operarion failed', '', [{ text: 'Okay' }])
+
+                }
+
+            })
+            .catch((error) => {
+                console.log("Api call error");
+                console.warn(error);
+                alert(error.message);
+                this.setState({ loading: false })
+            });
 
     }
 
@@ -124,115 +177,120 @@ export default class History extends Component {
 
                             <View style={styles.bigCard}>
                                 <View style={{ marginTop: 20 }} >
-                                    <Text style={{ color: '#000', fontSize: 12, fontWeight:'500', marginLeft: 15 }}>Filter History</Text>
+                                    <Text style={{ color: '#000', fontSize: 12, fontWeight: '500', marginLeft: 15 }}>Filter History</Text>
                                 </View>
 
-                              
-                                <View style={{ flexDirection:'row'}}>
-                                 <View style={{ marginTop: 10,  flex:1  }}>
-                                          <View style={{ flex: 1, }}>
-                                                <Text style={{ color: '#000', fontSize: 12, fontWeight:'700', marginLeft: 15 }}>Start Date </Text>
-                                                <View style={styles.inputView}>
-                                                    <TextInput
-                                                        placeholder="27/02/2002"
-                                                        placeholderTextColor={color.primary_color}
-                                                        returnKeyType="next"
-                                                        onSubmitEditing={() => this.passwordInput.focus()}
-                                                        keyboardType='email-address'
-                                                        autoCapitalize="none"
-                                                        autoCorrect={false}
-                                                        inlineImageLeft='ios-call'
-                                                        style={{ flex: 1 }}
-                                                        onChangeText={text => this.setState({ phone: text })}
-                                                    />
 
-
-                                                </View>
-                                            </View>
-                                            <View style={styles.inputView}>
-                                                <View style={{ flex: 1 }}>
-                                                    <RNPickerSelect
-                                                        placeholder={placeholder}
-                                                        placeholderTextColor={'#000'}
-                                                        items={sports}
-                                                        onValueChange={value => {
-                                                            this.setState({
-                                                                account: value,
-                                                            });
-                                                        }}
-                                                        style={pickerSelectStyles}
-                                                        value={this.state.account}
-                                                        useNativeAndroidPickerStyle={false}
-
-                                                    /></View>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <View style={{ marginTop: 10, flex: 1 }}>
+                                        <View style={{ flex: 1, }}>
+                                            <Text style={{ color: '#000', fontSize: 12, fontWeight: '700', marginLeft: 15 }}>Start Date </Text>
+                                            <View style={styles.inputViewDate}>
+                                                <DatePicker
+                                                    style={{ flex:1,}}
+                                                    date={this.state.startdate}
+                                                    mode="date"
+                                                    showIcon={false}
+                                                    placeholder="select date"
+                                                    format="YYYY-MM-DD"
+                                                    minDate="2020-05-01"
+                                                    maxDate="2050-06-01"
+                                                    confirmBtnText="Confirm"
+                                                    cancelBtnText="Cancel"
+                                                    customStyles={{
+                                                        // ... You can check the source to find the other keys.
+                                                    }}
+                                                    onDateChange={(date) => { this.setState({ startdate: date }) }}
+                                                />
 
                                             </View>
-
-                                          
                                         </View>
-                                        <View style={{  marginTop: 10, flex:1 }}>
-                                           
+                                        <View style={styles.inputView}>
+                                            <View style={{ flex: 1 }}>
+                                                <RNPickerSelect
+                                                    placeholder={placeholder}
+                                                    placeholderTextColor={'#000'}
+                                                    items={sports}
+                                                    onValueChange={value => {
+                                                        this.setState({
+                                                            type: value,
+                                                        });
+                                                    }}
+                                                    style={pickerSelectStyles}
+                                                    value={this.state.account}
+                                                    useNativeAndroidPickerStyle={false}
 
-                                            <View style={{ flex: 1, }}>
-                                                <Text style={{ color: '#000', fontWeight:'700', fontSize: 12, marginLeft: 15 }}>End Date </Text>
-                                                <View style={styles.inputView}>
-                                                    <TextInput
-                                                        placeholder="27/02/2002"
-                                                        placeholderTextColor={color.primary_color}
-                                                        returnKeyType="next"
-                                                        onSubmitEditing={() => this.passwordInput.focus()}
-                                                        keyboardType='email-address'
-                                                        autoCapitalize="none"
-                                                        autoCorrect={false}
-                                                        inlineImageLeft='ios-call'
-                                                        style={{ flex: 1 }}
-                                                        onChangeText={text => this.setState({ phone: text })}
-                                                    />
+                                                /></View>
+
+                                        </View>
 
 
-                                                </View>
+                                    </View>
+                                    <View style={{ marginTop: 10, flex: 1 }}>
+
+
+                                        <View style={{ flex: 1, }}>
+                                            <Text style={{ color: '#000', fontWeight: '700', fontSize: 12, marginLeft: 15 }}>End Date </Text>
+                                            <View style={styles.inputViewDate}>
+                                                <DatePicker
+                                                    style={{ flex:1,}}
+                                                    date={this.state.enddate}
+                                                    mode="date"
+                                                    showIcon={false}
+                                                    placeholder="select date"
+                                                    format="YYYY-MM-DD"
+                                                    minDate="2020-05-01"
+                                                    maxDate="2050-06-01"
+                                                    confirmBtnText="Confirm"
+                                                    cancelBtnText="Cancel"
+                                                    customStyles={{
+                                                        // ... You can check the source to find the other keys.
+                                                    }}
+                                                    onDateChange={(date) => { this.setState({ enddate: date }) }}
+                                                />
+
                                             </View>
+                                        </View>
 
-                                            <View style={[styles.inputView,{borderColor:'#fff', paddingLeft:0}]}>
-                                            <TouchableOpacity onPress={() => this.setState({ result: true, })} style={styles.primaryButtonContainer} block iconLeft>
-
-                                            <Text style={{ color: '#fff', fontSize: 14, fontWeight: '500' }}>SHOW </Text>
+                                        <View style={[styles.inputView, { borderColor: '#fff', paddingLeft: 0 }]}>
+                                            <TouchableOpacity onPress={() => this.getTicketRequest()} style={styles.primaryButtonContainer} block iconLeft>
+                                                <Text style={{ color: '#fff', fontSize: 14, fontWeight: '500' }}>SHOW </Text>
                                             </TouchableOpacity>
-                                            </View>
                                         </View>
+                                    </View>
 
-                                       
-                                        </View>
+
+                                </View>
                             </View>
 
                             {this.state.result ?
 
-                            <View style={{ marginTop: 20, }}>
-                                <View style={{ flexDirection: 'row', marginLeft: 20, marginRight: 20, borderBottomColor: '#fff', borderBottomWidth: 3 }}>
-                                    <Text style={{ color: '#fff', fontSize: 14, fontWeight: '700', flex: 1, }}>Ticket# </Text>
-                                    <Text style={{ color: '#fff', fontSize: 14, fontWeight: '700', flex: 1, }}>Selection </Text>
-                                    <Text style={{ color: '#fff', fontSize: 14, fontWeight: '700', flex: 1, }}>Draw date </Text>
+                                <View style={{ marginTop: 20, }}>
+                                    <View style={{ flexDirection: 'row', marginLeft: 20, marginRight: 20, borderBottomColor: '#fff', borderBottomWidth: 3 }}>
+                                        <Text style={{ color: '#fff', fontSize: 14, fontWeight: '700', flex: 1, }}>Ticket# </Text>
+                                        <Text style={{ color: '#fff', fontSize: 14, fontWeight: '700', flex: 1, }}>Selection </Text>
+                                        <Text style={{ color: '#fff', fontSize: 14, fontWeight: '700', flex: 1, }}>Draw date </Text>
+
+                                    </View>
+                                    <View style={{ marginTop: 15 }}>
+
+                                        <FlatList
+                                            style={{ paddingBottom: 5 }}
+                                            data={sports}
+                                            renderItem={this.renderItem}
+                                            keyExtractor={item => item.id}
+                                            ItemSeparatorComponent={this.renderSeparator}
+                                            ListHeaderComponent={this.renderHeader}
+                                        />
+
+                                    </View>
 
                                 </View>
-                                <View style={{ marginTop: 15 }}>
-
-                                    <FlatList
-                                        style={{ paddingBottom: 5 }}
-                                        data={sports}
-                                        renderItem={this.renderItem}
-                                        keyExtractor={item => item.id}
-                                        ItemSeparatorComponent={this.renderSeparator}
-                                        ListHeaderComponent={this.renderHeader}
-                                    />
-
-                                </View>
-
-                            </View>
-                             :
-                             null
+                                :
+                                null
 
 
-                         }
+                            }
 
                         </View>
                     </View>
@@ -299,7 +357,7 @@ const styles = StyleSheet.create({
     primaryButtonContainer: {
         height: 40,
         justifyContent: 'center',
-        alignItems:'center',
+        alignItems: 'center',
         backgroundColor: color.secondary_color,
         borderRadius: 5,
         flex: 1,
@@ -337,6 +395,21 @@ const styles = StyleSheet.create({
         fontSize: 13,
         marginBottom: 10,
         paddingLeft: 10,
+        justifyContent: 'center',
+        flex: 1,
+        borderWidth: 0.8,
+        borderColor: color.primary_color,
+    },
+    inputViewDate: {
+        height: 40,
+        flexDirection: 'row',
+        color: color.primary_color,
+        marginLeft: 15,
+        marginRight: 15,
+        backgroundColor: "#fff",
+        fontSize: 13,
+        marginBottom: 10,
+        paddingLeft: 0,
         justifyContent: 'center',
         flex: 1,
         borderWidth: 0.8,

@@ -1,17 +1,14 @@
 // React native and others libraries imports
 import React, { Component } from 'react';
 import { Alert, TextInput, FlatList, Dimensions, StyleSheet, Image, AsyncStorage, TouchableOpacity } from 'react-native';
-import { Container, Content, View, Text, Button, Left, Right, Body, Title, List, Item, Thumbnail, Grid, Col } from 'native-base';
+import { Container, Content, View, Text, Button, Left } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import URL from '../../component/server'
 import { PulseIndicator } from 'react-native-indicators';
 import Navbar from '../../component/Navbar';
-import Modal, { ModalContent } from 'react-native-modals';
-
 import color from '../../component/color'
-import { Card, Icon, SocialIcon } from 'react-native-elements'
-import DatePicker from 'react-native-datepicker'
-import RNPickerSelect from 'react-native-picker-select';
+import { Icon } from 'react-native-elements'
+
 
 
 const sports = [
@@ -41,8 +38,10 @@ export default class TicketCheck extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            data: '',
+            loading: false,
             items: [],
-            phone: '',
+            ticket_numbers: '',
             showresult: false,
             type: '',
             condition: false,
@@ -57,6 +56,13 @@ export default class TicketCheck extends Component {
 
 
     componentDidMount() {
+        AsyncStorage.getItem('data').then((value) => {
+            if (value == '') { } else {
+                this.setState({ data: JSON.parse(value) })
+            }
+            console.warn(value)
+        })
+
         AsyncStorage.getItem('type').then((value) => {
             value == '' ? this.setState({ type: "null" }) : this.setState({ type: value })
         })
@@ -68,6 +74,59 @@ export default class TicketCheck extends Component {
         });
 
     }
+
+    saveTicketRequest() {
+
+        const { ticket_numbers, data } = this.state
+        console.warn(ticket_numbers, data)
+
+        this.setState({ loading: true })
+
+         fetch(URL.url + 'profile/save/tickets/' + data.id + '/' + ticket_numbers + '/', {
+            method: 'POST', headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            })
+            .then(this.processResponse)
+            .then(res => {
+              this.setState({ loading: false })
+              const { statusCode, data } = res;
+              console.warn(statusCode, data)
+              this.setState({ loading: false })
+
+              if (statusCode == 200) {
+               
+              } else if (statusCode == 400) {
+
+                Alert.alert('Operarion failed', 'Make sure the new password is defferent from the old one', [{ text: 'Okay' }])
+
+              } else {
+                 
+                Alert.alert('Operarion failed', '', [{ text: 'Okay' }])
+                
+              }
+      
+            })
+            .catch((error) => {
+              console.log("Api call error");
+              console.warn(error);
+              alert(error.message);
+              this.setState({ loading: false })
+            });
+
+            
+
+    }
+
+    processResponse(response) {
+        const statusCode = response.status;
+        const data = response.json();
+        return Promise.all([statusCode, data]).then(res => ({
+          statusCode: res[0],
+          data: res[1]
+        }));
+      }
 
 
     render() {
@@ -95,7 +154,7 @@ export default class TicketCheck extends Component {
         if (this.state.loading) {
             return (
                 <View
-                    style={styles.backgroundImage}
+                    style={styles.loadingBackgroundImage}
                 >
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                         <View style={styles.welcome}>
@@ -107,8 +166,8 @@ export default class TicketCheck extends Component {
         }
 
         return (
-            <Container style={{ backgroundColor: color.primary_color}}>
-                <Navbar left={left} title='Check your tickets'  bg='transparent'  tbg='#fff' />
+            <Container style={{ backgroundColor: color.primary_color }}>
+                <Navbar left={left} title='Check your tickets' bg='transparent' tbg='#fff' />
                 <Content>
                     <View style={styles.backgroundImage}>
                         <View style={{ flex: 1 }}>
@@ -184,13 +243,13 @@ export default class TicketCheck extends Component {
                                     placeholder=""
                                     placeholderTextColor={color.primary_color}
                                     returnKeyType="next"
-                                    onSubmitEditing={() => this.passwordInput.focus()}
+                                    onSubmitEditing={() => this.saveTicketRequest()}
                                     keyboardType='email-address'
                                     autoCapitalize="none"
                                     autoCorrect={false}
                                     inlineImageLeft='ios-call'
                                     style={{ flex: 1 }}
-                                    onChangeText={text => this.setState({ password: text })}
+                                    onChangeText={text => this.setState({ ticket_numbers: text })}
                                 />
 
                             </View>
@@ -200,40 +259,40 @@ export default class TicketCheck extends Component {
 
 
 
-                            <TouchableOpacity onPress={()=> this.setState({ showresult: true })} style={{ height: 50, flexDirection: 'row', margin: 20, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: color.secondary_color }}>
+                            <TouchableOpacity onPress={() => this.saveTicketRequest()} style={{ height: 50, flexDirection: 'row', margin: 20, flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 5, backgroundColor: color.secondary_color }}>
                                 <Text style={{ color: '#fff', fontSize: 15, fontWeight: '600' }}>Check your Ticket ID</Text>
                             </TouchableOpacity>
 
-{ this.state.showresult ? 
-<View>
-                            <View style={{ marginLeft: 20, marginBottom:15 }}>
-                                <Text style={{ color: '#fff', fontSize: 15, fontWeight: '500' }}>Ticket Result  </Text>
-                                <Text style={{ color: '#fff', fontSize: 14, fontWeight: '400' }}>3 tickets won of 3  the tickets played  </Text>
+                            {this.state.showresult ?
+                                <View>
+                                    <View style={{ marginLeft: 20, marginBottom: 15 }}>
+                                        <Text style={{ color: '#fff', fontSize: 15, fontWeight: '500' }}>Ticket Result  </Text>
+                                        <Text style={{ color: '#fff', fontSize: 14, fontWeight: '400' }}>3 tickets won of 3  the tickets played  </Text>
 
-                            </View>
-                            <View style={{ flexDirection: 'row', marginLeft: 20, marginRight: 20, borderBottomColor: color.primary_color, borderBottomWidth: 3 }}>
-                                <Text style={{ color: '#fff', fontSize: 14, fontWeight: '700', flex: 2 }}>Ticket# </Text>
-                                <Text style={{ color: '#fff', fontSize: 14, fontWeight: '700', flex: 2 , }}>Selection </Text>
-                                <Text style={{ color: '#fff', fontSize: 14, fontWeight: '700', flex: 1 }}>Outcome </Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row', marginLeft: 20, marginRight: 20, borderBottomColor: color.primary_color, borderBottomWidth: 3 }}>
+                                        <Text style={{ color: '#fff', fontSize: 14, fontWeight: '700', flex: 2 }}>Ticket# </Text>
+                                        <Text style={{ color: '#fff', fontSize: 14, fontWeight: '700', flex: 2, }}>Selection </Text>
+                                        <Text style={{ color: '#fff', fontSize: 14, fontWeight: '700', flex: 1 }}>Outcome </Text>
 
-                            </View>
+                                    </View>
 
-                            <View style={{ marginTop: 15 }}>
+                                    <View style={{ marginTop: 15 }}>
 
-                                <FlatList
-                                    style={{ paddingBottom: 5 }}
-                                    data={sports}
-                                    renderItem={this.renderItem}
-                                    keyExtractor={item => item.id}
-                                    ItemSeparatorComponent={this.renderSeparator}
-                                    ListHeaderComponent={this.renderHeader}
-                                />
+                                        <FlatList
+                                            style={{ paddingBottom: 5 }}
+                                            data={sports}
+                                            renderItem={this.renderItem}
+                                            keyExtractor={item => item.id}
+                                            ItemSeparatorComponent={this.renderSeparator}
+                                            ListHeaderComponent={this.renderHeader}
+                                        />
 
-                            </View>
-                            </View>
-                            :
-                            null
-    }
+                                    </View>
+                                </View>
+                                :
+                                null
+                            }
 
                         </View>
                     </View>
@@ -251,7 +310,7 @@ export default class TicketCheck extends Component {
         return (
             <View style={{ flexDirection: 'row', marginLeft: 20, marginRight: 20, }}>
                 <Text style={{ color: '#fff', fontSize: 14, fontWeight: '400', flex: 2 }}>ABCDEFGV </Text>
-                <Text style={{ color: '#fff', fontSize: 14, fontWeight: '300', flex: 2 , opacity: 0.5}}> 1, 45, 56, 2, 4, 4 </Text>
+                <Text style={{ color: '#fff', fontSize: 14, fontWeight: '300', flex: 2, opacity: 0.5 }}> 1, 45, 56, 2, 4, 4 </Text>
                 <Text style={{ color: 'green', fontSize: 14, fontWeight: '300', flex: 1 }}> won </Text>
 
 
@@ -265,15 +324,14 @@ export default class TicketCheck extends Component {
 }
 const styles = StyleSheet.create({
     welcome: {
-        height: 90,
-        alignItems: 'center',
-        justifyContent: 'center',
+        fontSize: 20,
+        textAlign: 'center',
+        margin: 10,
     },
     container: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-
     },
     welcome: {
         fontSize: 20,
@@ -282,6 +340,11 @@ const styles = StyleSheet.create({
     },
     backgroundImage: {
         width: Dimensions.get('window').width,
+
+    },
+    loadingBackgroundImage: {
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
 
     },
     input: {
